@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -50,7 +48,7 @@ public class ImplementedPrefixResource {
     public Response findAllPrefixes() {
         final List<String> implementedPrefixes;
 
-            implementedPrefixes = queryOperations.findImplementedPrefixes();
+        implementedPrefixes = queryOperations.findImplementedPrefixes();
 
         Writer strWriter = new StringWriter();
         try {

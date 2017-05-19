@@ -30,7 +30,7 @@ public class LogonDao {
     }
 
     public List<Long> findLogonsByUserId(String userid){
-        String sql = "Select starttime from userlogon where userid=?";
+        String sql = "Select starttime from userLogon where userid=?";
         List<Timestamp> logonsTimestamp = jdbcTemplate.queryForList(sql,new Object[]{userid}, Timestamp.class);
         List<Long> logons = new ArrayList<>(logonsTimestamp.size());
         for (Timestamp timestamp : logonsTimestamp) {
@@ -40,7 +40,7 @@ public class LogonDao {
     }
 
     public List<Long> findLogonsByUserId(String userid, DateTime startPeriod, DateTime endPeriod){
-        String sql = "Select starttime from userlogon where userid=? and starttime > ? and starttime < ?";
+        String sql = "Select starttime from userLogon where userid=? and starttime > ? and starttime < ?";
         long millisFrom = startPeriod.minusMillis(1).getMillis() ;
         long millisTo = endPeriod.plusMillis(1).getMillis();
         List<Timestamp> logonsTimestamp = jdbcTemplate.queryForList(sql,new Object[]{userid,new Timestamp(millisFrom), new Timestamp(millisTo)}, Timestamp.class);
@@ -52,7 +52,7 @@ public class LogonDao {
     }
 
     public List<Long> findLogons(DateTime startPeriod, DateTime endPeriod) {
-        String sql = "Select starttime from userlogon where starttime > ? and starttime < ?";
+        String sql = "Select starttime from userLogon where starttime > ? and starttime < ?";
         long millisFrom = startPeriod.minusMillis(1).getMillis() ;
         long millisTo = endPeriod.plusMillis(1).getMillis() ;
         List<Long> logons = new ArrayList<>();

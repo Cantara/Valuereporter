@@ -28,7 +28,7 @@ public class Main {
     public static final int DEFAULT_PORT_NO = 4901;
     public static final String CONTEXT_PATH = "/reporter";
     private static final Logger log = LoggerFactory.getLogger(Main.class);
-    private static final java.lang.String DATABASE_URL = "jdbc.url";
+    public static final java.lang.String DATABASE_URL = "jdbc.url";
 
     private Server server;
     private String resourceBase;
@@ -39,7 +39,7 @@ public class Main {
 
         try{
             new EmbeddedDatabaseHelper(resources).initializeDatabase();
-            if (useLocalDatabase(resources) && isFlywaySupported(resources)) {
+            if (useLocalDatabase(resources) && DatabaseMigrationHelper.isFlywaySupported(resources)) {
                 new DatabaseMigrationHelper(resources).upgradeDatabase();
             }
             jettyPort = PropertiesHelper.findHttpPort(resources);
@@ -139,16 +139,7 @@ public class Main {
         return useLocal;
     }
 
-    boolean isFlywaySupported(Properties resources) {
-        boolean isSupported = false;
-        String url = resources.getProperty(DATABASE_URL);
-        if (url != null && url.contains("sqlserver")) {
-            isSupported = true;
-        } else {
-            log.info("Currently database migration supports ms-sql only. Database will not be automatically upgraded.");
-        }
-        return isSupported;
-    }
+
 
     public int getPortNumber() {
         return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
