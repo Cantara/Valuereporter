@@ -23,17 +23,16 @@ public class DatabaseMigrationHelper {
     public static final String ADMIN_PASSWORD = "admin.connection.password";
     public static final String JDBC_URL = "jdbc.url";
     private Flyway flyway;
-    private final Properties properties;
+//    private final Properties properties;
 
-    public DatabaseMigrationHelper(Properties resources) {
-        this.properties = resources;
+    public DatabaseMigrationHelper() {
         try {
 //            DataSource masterDs = createMasterDataSource(resources);
             flyway = new Flyway();
             flyway.setValidateOnMigrate(false);
-            String jdbcUrl = (String) properties.get(JDBC_URL);
-            String adminUser = (String) properties.get(ADMIN_USERNAME);
-            String adminPassword = (String) properties.get(ADMIN_PASSWORD);
+            String jdbcUrl = Configuration.getString(JDBC_URL);
+            String adminUser = Configuration.getString(ADMIN_USERNAME);
+            String adminPassword = Configuration.getString(ADMIN_PASSWORD);
             flyway.setDataSource(jdbcUrl, adminUser, adminPassword);
 //            flyway.setDataSource(masterDs);
         } catch (Exception e) {
@@ -55,7 +54,7 @@ public class DatabaseMigrationHelper {
             flyway.configure(configuration);
             flyway.migrate();
         } catch (FlywayException e) {
-            log.error("Failed to upgrade using Flyway. Configuration \n{}. \nReason {}. ", properties,e.getMessage(), e);
+            log.error("Failed to upgrade using Flyway. Configuration \n{}. \nReason {}. ", Configuration.printProperties(),e.getMessage(), e);
             throw new ValuereporterTechnicalException("Database upgrade failed.", e,StatusType.RETRY_NOT_POSSIBLE);
         }
     }
@@ -129,12 +128,11 @@ public class DatabaseMigrationHelper {
 
     /**
      * State which databases that are supported by Flyway.
-     * @param resources
      * @return
      */
-    public static boolean isFlywaySupported(Properties resources) {
+    public static boolean isFlywaySupported() {
         boolean isSupported = false;
-        String url = resources.getProperty(Main.DATABASE_URL);
+        String url = Configuration.getString(Main.DATABASE_URL);
         if (url != null && url.contains("mysql")) {
             isSupported = true;
         } else {

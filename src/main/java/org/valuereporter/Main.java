@@ -11,15 +11,14 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.valuereporter.helper.Configuration;
 import org.valuereporter.helper.DatabaseMigrationHelper;
 import org.valuereporter.helper.EmbeddedDatabaseHelper;
-import org.valuereporter.helper.PropertiesHelper;
 import org.valuereporter.helper.StatusType;
 
 import java.io.File;
 import java.net.BindException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
@@ -35,14 +34,14 @@ public class Main {
     private int jettyPort = -1;
 
     public Main() {
-        Properties resources = PropertiesHelper.findProperties();
+        //Properties resources = PropertiesHelper.findProperties();
 
         try{
-            new EmbeddedDatabaseHelper(resources).initializeDatabase();
-            if (useLocalDatabase(resources) && DatabaseMigrationHelper.isFlywaySupported(resources)) {
-                new DatabaseMigrationHelper(resources).upgradeDatabase();
+            new EmbeddedDatabaseHelper().initializeDatabase();
+            if (useLocalDatabase() && DatabaseMigrationHelper.isFlywaySupported()) {
+                new DatabaseMigrationHelper().upgradeDatabase();
             }
-            jettyPort = PropertiesHelper.findHttpPort(resources);
+            jettyPort = Configuration.getInt("jetty.http.port", DEFAULT_PORT_NO);
         } catch (ValuereporterException tde) {
             log.error("Could not initalize the service. Exiting. ", tde);
             System.exit(0);
@@ -133,8 +132,8 @@ public class Main {
     public void join() throws InterruptedException {
         server.join();
     }
-    private boolean useLocalDatabase(Properties resources) {
-        boolean useEmbedded = EmbeddedDatabaseHelper.useEmbeddedDb(resources);
+    private boolean useLocalDatabase() {
+        boolean useEmbedded = EmbeddedDatabaseHelper.useEmbeddedDb();
         boolean useLocal = !useEmbedded;
         return useLocal;
     }

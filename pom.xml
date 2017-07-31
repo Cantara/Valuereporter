@@ -3,7 +3,7 @@
 
     <groupId>org.valuereporter</groupId>
     <artifactId>valuereporter</artifactId>
-    <version>0.9.5-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>valuereporter</name>
@@ -74,6 +74,7 @@
         <metrics.version>3.1.0</metrics.version>
         <jtds.version>1.3.1</jtds.version>
         <flyway.version>4.2.0</flyway.version>
+        <constretto.version>2.2.2</constretto.version>
     </properties>
 
     <build>
@@ -147,7 +148,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -221,7 +222,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.3</version>
+                <version>1.8.1</version>
                 <configuration>
                     <repositoryLayout>flat</repositoryLayout>
                     <includeConfigurationDirectoryInClasspath>false</includeConfigurationDirectoryInClasspath>
@@ -362,6 +363,22 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.constretto</groupId>
+            <artifactId>constretto-api</artifactId>
+            <version>${constretto.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.constretto</groupId>
+            <artifactId>constretto-core</artifactId>
+            <version>${constretto.version}</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.constretto</groupId>-->
+            <!--<artifactId>constretto-spring</artifactId>-->
+            <!--<version>${constretto.version}</version>-->
+        <!--</dependency>-->
         <!--Codehale Metrics -->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>

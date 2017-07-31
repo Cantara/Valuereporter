@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * @Deprecated use {@link Configuration}
  * @author <a href="bard.lind@gmail.com">Bard Lind</a>
  */
 public class PropertiesHelper {
@@ -48,6 +49,8 @@ public class PropertiesHelper {
         }
         return properties;
     }
+
+    @Deprecated
     public static int findHttpPort(Properties resoruces) throws ValuereporterException {
         int retPort = -1;
         String httpPort = resoruces.getProperty("jetty.http.port");

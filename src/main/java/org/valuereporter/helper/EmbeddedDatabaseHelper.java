@@ -10,7 +10,6 @@ import org.valuereporter.ValuereporterTechnicalException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Setting up the embedding database. Hsqldb.
@@ -44,17 +43,17 @@ public class EmbeddedDatabaseHelper {
     private String jdbcAdminUserName;
 
 
-    public EmbeddedDatabaseHelper(Properties resources) throws ClassNotFoundException {
+    public EmbeddedDatabaseHelper() throws ClassNotFoundException {
         queryRunner = new QueryRunner();
-        useEmbeddedDb = useEmbeddedDb(resources);
-        setupNewDatabase = doSetupNewDatabase(resources);
+        useEmbeddedDb = useEmbeddedDb();
+        setupNewDatabase = doSetupNewDatabase();
         log.info("Using embedded database {}", useEmbeddedDb);
-        this.jdbcDriverClassName = resources.getProperty(JDBC_DRIVER_NAME_KEY, DEFAULT_JDBC_DRIVER);
-        this.jdbcUrl = resources.getProperty(JDBC_URL_KEY, DEFAULT_JDBC_URL);
-        this.jdbcUserName = resources.getProperty(JDBC_USERNAME_KEY, DEFAULT_JDBC_USERNAME);
-        this.jdbcPassword = resources.getProperty(JDBC_PASSWORD_KEY, DEFAULT_JDBC_PASSWORD);
-        this.jdbcAdminUserName = resources.getProperty(JDBC_ADMIN_USERNAME_KEY, DEFAULT_JDBC_ADMIN_USERNAME);
-        this.jdbcAdminPassword = resources.getProperty(JDBC_ADMIN_PASSWORD_KEY, DEFAULT_JDBC_ADMIN_PASSWORD);
+        this.jdbcDriverClassName = Configuration.getString(JDBC_DRIVER_NAME_KEY, DEFAULT_JDBC_DRIVER);
+        this.jdbcUrl = Configuration.getString(JDBC_URL_KEY, DEFAULT_JDBC_URL);
+        this.jdbcUserName = Configuration.getString(JDBC_USERNAME_KEY, DEFAULT_JDBC_USERNAME);
+        this.jdbcPassword = Configuration.getString(JDBC_PASSWORD_KEY, DEFAULT_JDBC_PASSWORD);
+        this.jdbcAdminUserName = Configuration.getString(JDBC_ADMIN_USERNAME_KEY, DEFAULT_JDBC_ADMIN_USERNAME);
+        this.jdbcAdminPassword = Configuration.getString(JDBC_ADMIN_PASSWORD_KEY, DEFAULT_JDBC_ADMIN_PASSWORD);
 
         try {
             Class.forName(jdbcDriverClassName);
@@ -94,21 +93,22 @@ public class EmbeddedDatabaseHelper {
 
     }
 
-    public static boolean useEmbeddedDb(Properties resources) {
-        boolean useEmbedded = true;
-        String useEmbeddedDbValue = resources.getProperty(USE_EMBEDDED_KEY);
-        if (useEmbeddedDbValue != null && useEmbeddedDbValue.equalsIgnoreCase("false")) {
-            useEmbedded =  false;
-        }
+    public static boolean useEmbeddedDb() {
+        boolean useEmbedded = Configuration.getBoolean(USE_EMBEDDED_KEY);
+//        String useEmbeddedDbValue = Configuration.getString(USE_EMBEDDED_KEY);
+//        if (useEmbeddedDbValue != null && useEmbeddedDbValue.equalsIgnoreCase("false")) {
+//            useEmbedded =  false;
+//        }
+        
         return useEmbedded;
     }
 
-    public static boolean doSetupNewDatabase(Properties resources) {
-        boolean setupNewDb = false;
-        String setupNewDbValue = resources.getProperty(SETUP_NEW_DATABASE);
-        if (setupNewDbValue != null && setupNewDbValue.equalsIgnoreCase("true")) {
-            setupNewDb =  true;
-        }
+    public static boolean doSetupNewDatabase() {
+        boolean setupNewDb = Configuration.getBoolean(SETUP_NEW_DATABASE);
+//        String setupNewDbValue = Configuration.getString(SETUP_NEW_DATABASE);
+//        if (setupNewDbValue != null && setupNewDbValue.equalsIgnoreCase("true")) {
+//            setupNewDb =  true;
+//        }
         return setupNewDb;
     }
 
