@@ -75,6 +75,8 @@
         <jtds.version>1.3.1</jtds.version>
         <flyway.version>4.2.0</flyway.version>
         <constretto.version>2.2.2</constretto.version>
+        <hystrix-core.version>1.4.12</hystrix-core.version>
+        <rxjava_version_requested_by_hystrix-core>1.0.13</rxjava_version_requested_by_hystrix-core>
     </properties>
 
     <build>
@@ -498,6 +500,25 @@
             <version>3.1</version>
         </dependency>
 
+        <!-- Use Hystrix when dealing with connections -->
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
+            <version>${hystrix-core.version}</version>
+        </dependency>
+        <!--Error in dependency mgmt of Hystrix -->
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>${rxjava_version_requested_by_hystrix-core}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>6.0</version>
+        </dependency>
+
         <!--Statistics with Commons Math-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -627,6 +648,11 @@
             <artifactId>http-request</artifactId>
             <version>6.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
 
