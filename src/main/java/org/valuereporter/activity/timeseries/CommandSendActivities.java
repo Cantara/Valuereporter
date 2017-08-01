@@ -22,11 +22,8 @@ public class CommandSendActivities extends HystrixCommand<String>  {
     private static final Logger log = getLogger(CommandSendActivities.class);
 
 
-    private final String prefix;
     private final List<ObservedActivity> observedActivities;
-    private final String reporterHost;
-    private final String reporterPort;
-//    private ObjectMapper mapper = new ObjectMapper();
+
     private static final int STATUS_OK = 200;
     private static final int STATUS_NO_CONTENT = 204;
     private static final int STATUS_FORBIDDEN = 403;
@@ -55,14 +52,11 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         this.databaseName = databaseName;
         observedActivitiesJson = buildBody(observedActivities);
         no_of_activities = observedActivities.size();
-        this.reporterHost = null;
-        this.reporterPort = null;
-        this.prefix = null;
         this.observedActivities = observedActivities;
     }
 
     protected String buildBody(List<ObservedActivity> observedActivities)  {
-        String json = "client-access,host=dev.shareproc.com,service=api,function=login,ip=127.0.0.1 count=1\n";
+        //"client-access,host=whydahdev.cantara.no,service=sts,function=login,ip=127.0.0.1 count=1\n";
         String body = "";
         String line = "";
         for (ObservedActivity activity : observedActivities) {
@@ -100,6 +94,7 @@ public class CommandSendActivities extends HystrixCommand<String>  {
 
     @Override
     protected String run() {
+        String status = "OK";
         String observationUrl = influxDbUri + "/write?db=" + databaseName;
 //        http://influxdb-component-ox6b3xp9td0-772793266.eu-west-1.elb.amazonaws.com:8086/write?db=shareproc";
         log.info("Connection to InfluxDb on {} num of activities: {}" , observationUrl,no_of_activities);
@@ -115,6 +110,7 @@ public class CommandSendActivities extends HystrixCommand<String>  {
                 break;
             case STATUS_FORBIDDEN:
                 log.warn("Can not access InfluxDb. The application will function as normally, though Observation statistics will not be stored. URL {}, HttpStatus {}, Response {}, ", observationUrl,statusCode, responseBody);
+                status = "FORBIDDEN";
                 break;
             default:
                 log.trace("Retrying access to InfluxDb");
@@ -125,9 +121,10 @@ public class CommandSendActivities extends HystrixCommand<String>  {
                     log.trace("Retry via http ok. Response is {}", responseBody);
                 } else {
                     log.error("Error while accessing InfluxDb. The application will function as normally, though Observation statistics will not be stored. URL {}, HttpStatus {},Response from InfluxDb {}", observationUrl, statusCode, responseBody);
+                    status = "FAILED";
                 }
         }
-        return "OK";
+        return status;
 
 
     }

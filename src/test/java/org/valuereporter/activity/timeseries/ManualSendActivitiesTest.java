@@ -1,5 +1,6 @@
 package org.valuereporter.activity.timeseries;
 
+import org.slf4j.Logger;
 import org.valuereporter.activity.CountedActivity;
 import org.valuereporter.activity.ObservedActivity;
 
@@ -9,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Created by baardl on 31.07.17.
  */
 public class ManualSendActivitiesTest {
+    private static final Logger log = getLogger(ManualSendActivitiesTest.class);
 
     public static void main(String[] args) {
         URI influxDbUri = URI.create("http://influxdb-component-ox6b3xp9td0-772793266.eu-west-1.elb.amazonaws.com:8086"); ///write?db=";
@@ -30,7 +34,8 @@ public class ManualSendActivitiesTest {
         ObservedActivity activity = new CountedActivity(name,startTime,data);
         observedActivities.add(activity);
         CommandSendActivities sendActivities = new CommandSendActivities(influxDbUri, database, observedActivities);
-        sendActivities.execute();
+        String status = sendActivities.execute();
+        log.info("DONE. Status {}", status);
     }
 
 }
