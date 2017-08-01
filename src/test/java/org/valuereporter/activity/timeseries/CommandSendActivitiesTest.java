@@ -18,7 +18,7 @@ import static org.testng.Assert.assertEquals;
  */
 public class CommandSendActivitiesTest {
     List<ObservedActivity> observedActivities = null;
-    ObservedActivity activity = null;
+    CountedActivity activity = null;
     CommandSendActivities commandSendActivities = null;
     @BeforeMethod
     public void setUp() throws Exception {
@@ -52,7 +52,9 @@ public class CommandSendActivitiesTest {
 
     @Test
     public void testBuildMeasurement() throws Exception {
-
+        String measurment = commandSendActivities.buildMeasurement(activity);
+        assertEquals(measurment, "count=1");
+        assertEquals(commandSendActivities.buildMeasurement(null), "");
     }
 
     @Test
@@ -60,8 +62,6 @@ public class CommandSendActivitiesTest {
         String expected = "service=sts,function=login,ip=127.0.0.1,host=whydahdev.cantara.no";
         assertEquals(commandSendActivities.buildTags(activity), expected);
         assertEquals(commandSendActivities.buildTags(null), "");
-
-
     }
 
 }
