@@ -32,6 +32,10 @@ public class CommandSendActivitiesTest {
         activity = new CountedActivity(name,startTime,data);
         observedActivities = new ArrayList<>();
         observedActivities.add(activity);
+        Map<String, Object> data2 = data;
+        data2.put("ip", "127.0.0.2");
+        observedActivities.add(new CountedActivity(name, System.nanoTime(), data2));
+
 
         URI uri = URI.create("http://localhost");
         String databaseName = "testdb";
@@ -40,6 +44,10 @@ public class CommandSendActivitiesTest {
 
     @Test
     public void testBuildBody() throws Exception {
+        String body = commandSendActivities.buildBody(observedActivities);
+        String expected = "client-access,service=sts,function=login,ip=127.0.0.2,host=whydahdev.cantara.no count=1\n" +
+                "client-access,service=sts,function=login,ip=127.0.0.2,host=whydahdev.cantara.no count=1\n";
+        assertEquals(body, expected);
     }
 
     @Test
