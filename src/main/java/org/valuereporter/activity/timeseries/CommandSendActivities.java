@@ -61,15 +61,20 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         String line = "";
         for (ObservedActivity activity : observedActivities) {
             if (activity instanceof CountedActivity) {
-                line = activity.getName() + "," + buildTags(activity) + " " + buildMeasurement((CountedActivity)activity) + "\n";
+                line = activity.getName() + "," + buildTags(activity) + " " + buildMeasurement((CountedActivity)activity) +
+                        " " + buildTimestamp(activity) +"\n";
             } else {
-                line = activity.getName() + "," + buildTags(activity) + " count=1\n";
+                line = activity.getName() + "," + buildTags(activity) + " count=1 " + " " + buildTimestamp(activity) + "\n";
 
             }
             log.trace("Line: [{}]", line);
             body += line;
         }
         return body;
+    }
+
+    private String buildTimestamp(ObservedActivity activity) {
+        return activity.getStartTime() + "";
     }
 
     protected String buildMeasurement(CountedActivity activity) {
@@ -92,10 +97,11 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         return tags.toString();
     }
 
+
     @Override
     protected String run() {
         String status = "OK";
-        String observationUrl = influxDbUri + "/write?db=" + databaseName;
+        String observationUrl = influxDbUri + "/write?db=" + databaseName +"&precision=ms";
 //        http://influxdb-component-ox6b3xp9td0-772793266.eu-west-1.elb.amazonaws.com:8086/write?db=shareproc";
         log.info("Connection to InfluxDb on {} num of activities: {}" , observationUrl,no_of_activities);
         HttpRequest request = HttpRequest.post(observationUrl ).acceptJson().contentType(APPLICATION_BINARY).send(observedActivitiesJson);

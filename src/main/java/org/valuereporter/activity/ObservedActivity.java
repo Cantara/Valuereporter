@@ -34,6 +34,10 @@ public class ObservedActivity {
         this.data = data;
     }
 
+    public ObservedActivity(String name, Map<String,Object> data) {
+        this(name, System.nanoTime(), data);
+    }
+
     public String getName() {
         return name;
     }

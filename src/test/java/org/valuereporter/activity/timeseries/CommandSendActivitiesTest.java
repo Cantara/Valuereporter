@@ -51,6 +51,14 @@ public class CommandSendActivitiesTest {
     }
 
     @Test
+    public void testBuildInfluxDbTimestamp() throws Exception {
+        String startTime = new Long(activity.getStartTime()).toString();
+        String influxDbTimestamp = "1422568543702900257";
+        assertEquals(startTime.length(), influxDbTimestamp.length());
+    }
+
+
+    @Test
     public void testBuildMeasurement() throws Exception {
         String measurment = commandSendActivities.buildMeasurement(activity);
         assertEquals(measurment, "count=1");
