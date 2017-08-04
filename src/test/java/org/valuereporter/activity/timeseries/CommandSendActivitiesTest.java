@@ -39,7 +39,9 @@ public class CommandSendActivitiesTest {
 
         URI uri = URI.create("http://localhost");
         String databaseName = "testdb";
-        commandSendActivities = new CommandSendActivities(uri, databaseName, observedActivities);
+        String username = "testmeuser";
+        String password = "testmepassword";
+        commandSendActivities = new CommandSendActivities(uri, databaseName, username, password,observedActivities);
     }
 
     @Test

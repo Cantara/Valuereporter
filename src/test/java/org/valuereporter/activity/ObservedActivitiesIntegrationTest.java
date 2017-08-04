@@ -21,6 +21,7 @@ public class ObservedActivitiesIntegrationTest {
         String userid = "TODO";
         do {
             org.valuereporter.agent.activity.ObservedActivity observedActivity = new UserLogonObservedActivity(userid);
+            observedActivity.put("started-at", new Long(System.currentTimeMillis()).toString());
             MonitorReporter.reportActivity(observedActivity);
             Thread.sleep(100);
         } while (true);

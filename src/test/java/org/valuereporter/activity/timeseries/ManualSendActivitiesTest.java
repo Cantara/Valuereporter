@@ -21,6 +21,8 @@ public class ManualSendActivitiesTest {
     public static void main(String[] args) {
         URI influxDbUri = URI.create("http://influxdb-component-ox6b3xp9td0-772793266.eu-west-1.elb.amazonaws.com:8086"); ///write?db=";
         String database = "whydahdev";
+        String username = "whydahdev";
+        String password = "WriteOrReadYouDecideDude2";
 
         List<ObservedActivity> observedActivities = new ArrayList<>();
         //client-access,host=dev.shareproc.com,service=api,function=login,ip=127.0.0.1 count=1
@@ -36,7 +38,7 @@ public class ManualSendActivitiesTest {
         Map<String, Object> data2 = new HashMap<>(data);
         data2.put("ip", "127.0.0.4");
         observedActivities.add(new CountedActivity(name, System.currentTimeMillis(),data2));
-        CommandSendActivities sendActivities = new CommandSendActivities(influxDbUri, database, observedActivities);
+        CommandSendActivities sendActivities = new CommandSendActivities(influxDbUri, database,username, password, observedActivities);
         String status = sendActivities.execute();
         log.info("DONE. Status {}", status);
     }

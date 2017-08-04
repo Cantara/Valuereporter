@@ -2,10 +2,13 @@ package org.valuereporter.activity;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.valuereporter.activity.timeseries.CommandSendActivities;
 import org.valuereporter.whydah.LogonDao;
 
+import java.net.URI;
 import java.util.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -19,11 +22,22 @@ public class ActivitiesService {
 
     private final ActivitiesDao activitiesDao;
     private final LogonDao logonDao;
+    private final URI timeseriesUri;
+    private final String timeseriesDatabaseName;
+    private final String timeseriesUsername;
+    private final String timeseriesPassword;
 
     @Autowired
-    public ActivitiesService(ActivitiesDao activitiesDao, LogonDao logonDao) {
+    public ActivitiesService(ActivitiesDao activitiesDao, LogonDao logonDao, @Value("${timeseries.uri}") String timeseriesUrl ,
+                             @Value("${timeseries.databasename}") String timeseriesDatabaseName,
+                             @Value("${timeseries.username}") String timeseriesUsername,
+                             @Value("${timeseries.password}") String timeseriesPassword) {
         this.activitiesDao = activitiesDao;
         this.logonDao = logonDao;
+        this.timeseriesUri = URI.create(timeseriesUrl);
+        this.timeseriesDatabaseName = timeseriesDatabaseName;
+        this.timeseriesUsername = timeseriesUsername;
+        this.timeseriesPassword = timeseriesPassword;
     }
 
     public long updateActivities(String prefix, List<ObservedActivity> observedActivities) {
@@ -47,9 +61,16 @@ public class ActivitiesService {
             Set<String> names = activitiesByName.keySet();
             for (String activityName : names) {
                 List<ObservedActivity> activities = activitiesByName.get(activityName);
-                long updateCount = updateActivitiesByName(activities);
+               //FIXME long updateCount = updateActivitiesByName(activities);
+                log.warn("update to database is disabled");
+                long updateCount = 0;
                 updatedActivities += updateCount;
             }
+
+            log.trace("Send {} activities to Timeseries", observedActivities.size());
+            CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri,timeseriesDatabaseName, timeseriesUsername, timeseriesPassword, observedActivities);
+            String result = sendActivities.execute();
+            log.trace("Result from sending activities to Timeseries: {}", result);
         }
         return updatedActivities;
     }

@@ -33,6 +33,8 @@ public class CommandSendActivities extends HystrixCommand<String>  {
     private final int no_of_activities;
     private final URI influxDbUri;
     private final String databaseName;
+    private final String username;
+    private final String password;
 
     /*
     public CommandSendActivities(final String reporterHost, final String reporterPort, final String prefix, final List<ObservedActivity> observedActivities) {
@@ -46,10 +48,12 @@ public class CommandSendActivities extends HystrixCommand<String>  {
     }
     */
 
-    public CommandSendActivities(URI influxDbUri, String databaseName, List<ObservedActivity> observedActivities) {
+    public CommandSendActivities(URI influxDbUri, String databaseName, String username, String password, List<ObservedActivity> observedActivities) {
         super(HystrixCommandGroupKey.Factory.asKey("ValueReporter-Activities-group"));
         this.influxDbUri = influxDbUri;
         this.databaseName = databaseName;
+        this.username = username;
+        this.password = password;
         observedActivitiesJson = buildBody(observedActivities);
         no_of_activities = observedActivities.size();
         this.observedActivities = observedActivities;
@@ -104,7 +108,8 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         String observationUrl = influxDbUri + "/write?db=" + databaseName +"&precision=ms";
 //        http://influxdb-component-ox6b3xp9td0-772793266.eu-west-1.elb.amazonaws.com:8086/write?db=shareproc";
         log.info("Connection to InfluxDb on {} num of activities: {}" , observationUrl,no_of_activities);
-        HttpRequest request = HttpRequest.post(observationUrl ).acceptJson().contentType(APPLICATION_BINARY).send(observedActivitiesJson);
+        HttpRequest request = HttpRequest.post(observationUrl ).acceptJson().contentType(APPLICATION_BINARY);
+        request.basic(username, password).send(observedActivitiesJson);
         int statusCode = request.code();
         String responseBody = request.body();
         switch (statusCode) {
