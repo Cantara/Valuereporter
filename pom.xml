@@ -18,8 +18,8 @@
             <roles>
                 <role>Developer</role>
             </roles>
-            <organization>Altran Norge AS</organization>
-            <organizationUrl>http://www.altran.no/</organizationUrl>
+            <organization>Cantara</organization>
+            <organizationUrl>http://wiki.cantara.no/</organizationUrl>
         </developer>
     </developers>
 
@@ -60,8 +60,9 @@
         <repository>
             <id>monetdb</id>
             <name>Needed for MonetDb</name>
-            <url>http://repository.pentaho.org/artifactory/repo/</url>
+            <url>http://repository.cloudera.com/artifactory/repo/</url>
         </repository>
+
     </repositories>
 
 
