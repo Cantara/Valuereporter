@@ -58,11 +58,16 @@
         </repository>
         <!--MonetDb repository-->
         <repository>
-            <id>monetdb</id>
+            <id>monetdb2</id>
             <name>Needed for MonetDb</name>
             <url>http://repository.cloudera.com/artifactory/repo/</url>
         </repository>
 
+        <repository>
+            <id>monetdb</id>
+            <name>Needed for MonetDb</name>
+            <url>http://mvnrepository.com/artifactory/repo/</url>
+        </repository>
     </repositories>
 
 
