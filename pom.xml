@@ -18,8 +18,8 @@
             <roles>
                 <role>Developer</role>
             </roles>
-            <organization>Altran Norge AS</organization>
-            <organizationUrl>http://www.altran.no/</organizationUrl>
+            <organization>Cantara</organization>
+            <organizationUrl>http://wiki.cantara.no/</organizationUrl>
         </developer>
     </developers>
 
@@ -428,7 +428,6 @@
             <artifactId>postgresql</artifactId>
             <version>9.4-1200-jdbc41</version>
         </dependency>
-
         <!--
         <dependency>
             <groupId>net.sourceforge.jtds</groupId>
