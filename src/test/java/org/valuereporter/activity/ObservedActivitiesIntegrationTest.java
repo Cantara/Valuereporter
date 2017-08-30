@@ -10,8 +10,9 @@ public class ObservedActivitiesIntegrationTest {
 
     public static void main(String[] args) throws InterruptedException {
 
-        String reporterHost = "localhost";
-        String reporterPort = "4901";
+        String reporterHost = "reporter.valuereporter.org";
+        reporterHost = "valuereporter-960449489.eu-west-1.elb.amazonaws.com";
+        String reporterPort = "80";
         String prefix = "test";
         int cacheSize = 1;
         int forwardInterval = 10;
