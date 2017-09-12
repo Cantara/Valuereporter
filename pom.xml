@@ -26,7 +26,7 @@
     <parent>
         <groupId>no.cantara.emi</groupId>
         <artifactId>parent</artifactId>
-        <version>5</version>
+        <version>6</version>
     </parent>
 
     <scm>
@@ -45,6 +45,18 @@
             <url>http://mvnrepo.cantara.no/content/repositories/releases/</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <repository>
+            <id>cantara-releases</id>
+            <name>cantara-releases</name>
+            <url>https://mvnrepo.cantara.no/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>cantara-snapshots</id>
+            <name>cantara-releases</name>
+            <url>https://mvnrepo.cantara.no/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
     <properties>
