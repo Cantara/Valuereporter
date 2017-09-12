@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.valuereporter.activity.timeseries.CommandSendActivities;
+import org.valuereporter.activity.timeseries.TimeseriesConnection;
 import org.valuereporter.whydah.LogonDao;
 
 import java.net.URI;
 import java.util.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.valuereporter.helper.Configuration.getString;
+import static org.valuereporter.helper.StringHelper.hasContent;
 
 /**
  * Created by t-blind5-01 on 02.03.2016.
@@ -19,6 +22,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Service
 public class ActivitiesService {
     private static final Logger log = getLogger(ActivitiesService.class);
+    public static final String DEFAULT_DATABASE = "default";
 
     private final ActivitiesDao activitiesDao;
     private final LogonDao logonDao;
@@ -26,6 +30,7 @@ public class ActivitiesService {
     private final String timeseriesDatabaseName;
     private final String timeseriesUsername;
     private final String timeseriesPassword;
+    private Map<String, TimeseriesConnection> timeseriesConfigs = new HashMap<>();
 
     @Autowired
     public ActivitiesService(ActivitiesDao activitiesDao, LogonDao logonDao, @Value("${timeseries.uri}") String timeseriesUrl ,
@@ -38,6 +43,9 @@ public class ActivitiesService {
         this.timeseriesDatabaseName = timeseriesDatabaseName;
         this.timeseriesUsername = timeseriesUsername;
         this.timeseriesPassword = timeseriesPassword;
+        TimeseriesConnection defaultTSDb = new TimeseriesConnection(DEFAULT_DATABASE, timeseriesDatabaseName,timeseriesUsername,timeseriesPassword);
+        timeseriesConfigs.put(defaultTSDb.getPrefix(), defaultTSDb);
+
     }
 
     public long updateActivities(String prefix, List<ObservedActivity> observedActivities) {
@@ -68,12 +76,45 @@ public class ActivitiesService {
                 updatedActivities += updateCount;
             }
 
-            log.trace("Send {} activities to Timeseries", observedActivities.size());
-            CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri,timeseriesDatabaseName, timeseriesUsername, timeseriesPassword, observedActivities);
-            String result = sendActivities.execute();
-            log.trace("Result from sending activities to Timeseries: {}", result);
+            sendActivities(prefix, observedActivities);
+
         }
         return updatedActivities;
+    }
+
+    protected void sendActivities(String prefix, List<ObservedActivity> observedActivities) {
+        log.trace("Send {} activities to Timeseries", observedActivities.size());
+        TimeseriesConnection connection = findConnection(prefix);
+        CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri,timeseriesDatabaseName, timeseriesUsername, timeseriesPassword, observedActivities);
+        String result = sendActivities.execute();
+        log.trace("Result from sending activities to Timeseries: {}", result);
+
+    }
+
+    protected TimeseriesConnection findConnection(String prefix) {
+        TimeseriesConnection connection = null;
+        connection = timeseriesConfigs.get(prefix);
+        if (connection == null) {
+            connection = findConnectionInProperties(prefix);
+            if (connection == null) {
+                connection = timeseriesConfigs.get(DEFAULT_DATABASE);
+            } else {
+                timeseriesConfigs.put(prefix, connection);
+            }
+        }
+
+        return connection;
+    }
+
+    protected TimeseriesConnection findConnectionInProperties(String prefix) {
+        TimeseriesConnection connection = null;
+        if (hasContent(prefix)) {
+            String timeseriesDatabaseName = getString("timeseries." + prefix + ".databasename");
+            String timeseriesUsername = getString("timeseries." + prefix + ".username");
+            String timeseriesPassword = getString("timeseries." + prefix + ".password");
+            connection = new TimeseriesConnection(prefix, timeseriesDatabaseName, timeseriesUsername, timeseriesPassword);
+        }
+        return connection;
     }
 
     protected long updateActivitiesByName(List<ObservedActivity> observedActivities) {
