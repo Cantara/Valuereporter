@@ -59,6 +59,10 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         this.observedActivities = observedActivities;
     }
 
+    public CommandSendActivities(URI timeseriesUri, TimeseriesConnection connection, List<ObservedActivity> observedActivities) {
+        this(timeseriesUri, connection.getDatabaseName(),connection.getUsername(),connection.getPassword(), observedActivities);
+    }
+
     protected String buildBody(List<ObservedActivity> observedActivities)  {
         //"client-access,host=whydahdev.cantara.no,service=sts,function=login,ip=127.0.0.1 count=1\n";
         String body = "";

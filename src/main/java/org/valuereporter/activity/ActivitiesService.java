@@ -85,9 +85,13 @@ public class ActivitiesService {
     protected void sendActivities(String prefix, List<ObservedActivity> observedActivities) {
         log.trace("Send {} activities to Timeseries", observedActivities.size());
         TimeseriesConnection connection = findConnection(prefix);
-        CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri,timeseriesDatabaseName, timeseriesUsername, timeseriesPassword, observedActivities);
-        String result = sendActivities.execute();
-        log.trace("Result from sending activities to Timeseries: {}", result);
+        if (connection != null) {
+            CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri, connection, observedActivities);
+            String result = sendActivities.execute();
+            log.trace("Result from sending activities to Timeseries: {}", result);
+        } else {
+            log.warn("No connection was found for prefix {}. Could not send {} activities to Timeseries", prefix, observedActivities.size());
+        }
 
     }
 
