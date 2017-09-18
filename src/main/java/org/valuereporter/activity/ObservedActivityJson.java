@@ -11,7 +11,8 @@ import java.util.Map;
 public class ObservedActivityJson extends ObservedActivity {
 
     @JsonCreator
-    public ObservedActivityJson(@JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String,Object> data) {
+    public ObservedActivityJson(@JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String,Object> data, @JsonProperty("contextInfo") Map<String,Object> contextInfo) {
         super(name, startTime, data);
+
     }
 }

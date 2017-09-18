@@ -23,11 +23,34 @@ Example Output
 Show how much of your functionallity that are actually beeing used.
 ![Functionallity Usage](./doc/images/usage-of-new-service.png "Functionallity Usage")
 
+Getting started
+===================
+
+TODO Use Docker: 
+Contains: Valuereporter, MySql and InfluxDb
+
+### Maven
+
+TODO 
+
+### Setup forwarding of data to Valuereporter
+
+TODO
+
+### Report Value from your code
+``` 
+import org.valuereporter.agent.MonitorReporter;
+Code code = codeService.getNextValidCode();
+            ObservedActivity observedActivity = new ObservedActivity("next-valid-code", System.currentTimeMillis());
+            observedActivity.put("code", code.getCode());
+
+            MonitorReporter.reportActivity(observedActivity);
+```
 
 Installation
 ===================
 
-* Copy Proprerties file
+* Copy Properties file
 ```
 mkdir config_override
 cp src/main/resources/valuereporter.properties config_override/
@@ -36,6 +59,12 @@ cp src/main/resources/valuereporter.properties config_override/
 
 * Create database. Use sql resources\db\initialize_new_database.sql
 ** The updates to the database will be managed by Flyway
+
+### Timeseries database
+
+* TODO installation - using https to transfer data
+
+
 
 
 Running Valuereporter
@@ -59,3 +88,10 @@ Configuration
 
 See Installation, copy properties into config_override.
 
+
+# Migrate to 1.0
+
+ObservedActivity:
+name -> activityName
+data -> contextInfo
+prefix -> serviceName
