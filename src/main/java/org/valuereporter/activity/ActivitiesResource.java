@@ -65,7 +65,7 @@ public class ActivitiesResource {
             observedActivities = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedActivityJson>>(){ });
             if (observedActivities != null) {
                 for (ObservedActivity observedActivity : observedActivities) {
-                    observedActivity.setPrefix(prefix);
+                    observedActivity.setServiceName(prefix);
                 }
             }
         } catch (IOException e) {

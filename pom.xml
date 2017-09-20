@@ -327,6 +327,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.valuereporter</groupId>
+            <artifactId>valuereporter-java-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.constretto</groupId>
             <artifactId>constretto-api</artifactId>
             <version>${constretto.version}</version>
@@ -595,12 +600,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>3.2.2.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.valuereporter</groupId>
-            <artifactId>valuereporter-agent</artifactId>
-            <version>0.6</version>
             <scope>test</scope>
         </dependency>
 

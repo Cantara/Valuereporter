@@ -55,7 +55,7 @@ public class ActivitiesDao {
                     ps.setTimestamp(1, new java.sql.Timestamp(activity.getStartTime()));
                     int paramNum = 2;
                     for (String columnName : columnNames) {
-                        ps.setObject(paramNum, activity.getValue(columnName));
+                        ps.setObject(paramNum, activity.getContextInfoValue(columnName));
                         paramNum ++;
                     }
 //                ps.setObject(1, activity.getValue(columnNames.get(0)));
