@@ -1,5 +1,6 @@
 package org.valuereporter.activity;
 
+import org.constretto.exception.ConstrettoException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -113,10 +114,14 @@ public class ActivitiesService {
     protected TimeseriesConnection findConnectionInProperties(String prefix) {
         TimeseriesConnection connection = null;
         if (hasContent(prefix)) {
-            String timeseriesDatabaseName = getString("timeseries." + prefix + ".databasename");
-            String timeseriesUsername = getString("timeseries." + prefix + ".username");
-            String timeseriesPassword = getString("timeseries." + prefix + ".password");
-            connection = new TimeseriesConnection(prefix, timeseriesDatabaseName, timeseriesUsername, timeseriesPassword);
+            try {
+                String timeseriesDatabaseName = getString("timeseries." + prefix + ".databasename");
+                String timeseriesUsername = getString("timeseries." + prefix + ".username");
+                String timeseriesPassword = getString("timeseries." + prefix + ".password");
+                connection = new TimeseriesConnection(prefix, timeseriesDatabaseName, timeseriesUsername, timeseriesPassword);
+            } catch (ConstrettoException e) {
+                log.trace("Timeseries configuration for serviceName {} was not found. ", prefix);
+            }
         }
         return connection;
     }

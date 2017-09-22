@@ -97,6 +97,7 @@ public class CommandSendActivities extends HystrixCommand<String>  {
         StringJoiner tags = new StringJoiner(",");
         if (activity != null) {
             Map tagMap = activity.getContextInfo();
+            //FIXME check for NULL
             Set<Map.Entry> entries = tagMap.entrySet();
             for (Map.Entry entry : entries) {
                 tags.add(entry.getKey() + "=" +entry.getValue());

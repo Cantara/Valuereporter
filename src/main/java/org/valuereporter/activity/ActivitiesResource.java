@@ -3,6 +3,7 @@ package org.valuereporter.activity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class ActivitiesResource {
         log.trace("addObservationActivity prefix {} , jsonBody {}.", prefix, jsonBody);
         List<ObservedActivity> observedActivities = null;
         try {
-            observedActivities = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedActivityJson>>(){ });
+            observedActivities = buildObservedActivitiesFromJson(jsonBody);
             if (observedActivities != null) {
                 for (ObservedActivity observedActivity : observedActivities) {
                     observedActivity.setServiceName(prefix);
@@ -84,5 +85,19 @@ public class ActivitiesResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error converting to requested format.").build();
         }
         return Response.ok(strWriter.toString()).build();
+    }
+
+    List<ObservedActivity> buildObservedActivitiesFromJson(String jsonBody) throws IOException {
+        List<ObservedActivity> observedActivities;
+        observedActivities = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedActivityJson>>(){ });
+        if (observedActivities.size() > 1) {
+            if (observedActivities.get(0).getContextInfo() == null) {
+                String hasDataExpression = "$.[:1].data";
+                if (JsonPath.parse(jsonBody).read(hasDataExpression)){
+                    observedActivities = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedActivityJsonDeprecated>>(){ });
+                }
+            }
+        }
+        return observedActivities;
     }
 }

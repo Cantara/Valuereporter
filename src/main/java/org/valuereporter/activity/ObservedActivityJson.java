@@ -12,7 +12,14 @@ public class ObservedActivityJson extends ObservedActivity {
 
     @JsonCreator
     public ObservedActivityJson(@JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String,Object> data, @JsonProperty("contextInfo") Map<String,Object> contextInfo) {
-        super(name, startTime, data);
-
+        super(name, startTime, contextInfo);
+        if (data != null) {
+            for (String key : data.keySet()) {
+                Object value = data.get(key);
+                if (value != null) {
+                    super.addContextInfo(key, value);
+                }
+            }
+        }
     }
 }
