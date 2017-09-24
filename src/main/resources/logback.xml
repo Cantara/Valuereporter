@@ -33,7 +33,7 @@
     <logger name="org.springframework.jdbc" level="trace"/>
 
 
-    <logger name="org.valuereporter" level="trace"/>
+    <logger name="org.valuereporter" level="TRACE"/>
     <logger name="org.springframework.web" level="INFO"/>
     <root level="trace">
         <appender-ref ref="logfile" />

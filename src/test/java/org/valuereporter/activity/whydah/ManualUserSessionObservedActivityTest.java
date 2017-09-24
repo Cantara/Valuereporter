@@ -23,7 +23,6 @@ public class ManualUserSessionObservedActivityTest {
         String serviceName = "test";
         String userId = useridTemplate + System.currentTimeMillis();
         UserSessionObservedActivity observedActivity = new UserSessionObservedActivity(userId, userSessionFunction,applcationTokenId);
-        observedActivity.addContextInfo("started-at", new Long(System.currentTimeMillis()).toString());
         observedActivity.setServiceName(serviceName);
         //2. Push WhydahUserSessionObservedActivity
         List<ObservedActivity> observedActivities = new ArrayList<>();
