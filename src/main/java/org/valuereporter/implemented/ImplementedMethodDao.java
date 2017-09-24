@@ -26,9 +26,9 @@ public class ImplementedMethodDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<ImplementedMethod> findImplementedMethodsByPrefix(String prefix) {
-        String sql = "SELECT prefix,methodName FROM ImplementedMethod WHERE prefix = ? ORDER BY methodName ASC ";
-        Object[] parameters = new Object[] {prefix};
+    public List<ImplementedMethod> findImplementedMethodsByPrefix(String serviceName) {
+        String sql = "SELECT serviceName,methodName FROM ImplementedMethod WHERE serviceName = ? ORDER BY methodName ASC ";
+        Object[] parameters = new Object[] {serviceName};
         List<ImplementedMethod> implementedMethods = jdbcTemplate.query(sql, parameters, new RowMapper<ImplementedMethod>() {
             @Override
             public ImplementedMethod mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -42,9 +42,9 @@ public class ImplementedMethodDao {
         });
         return implementedMethods;
     }
-    public List<ImplementedMethod> findImplementedMethods(String prefix, String name) {
-        String sql = "SELECT prefix,methodName FROM ImplementedMethod WHERE prefix = ? AND methodName = ? ORDER BY methodName ASC ";
-        Object[] parameters = new Object[] {prefix,name};
+    public List<ImplementedMethod> findImplementedMethods(String serviceName, String name) {
+        String sql = "SELECT serviceName,methodName FROM ImplementedMethod WHERE serviceName = ? AND methodName = ? ORDER BY methodName ASC ";
+        Object[] parameters = new Object[] {serviceName,name};
         List<ImplementedMethod> implementedMethods = jdbcTemplate.query(sql, parameters, new RowMapper<ImplementedMethod>() {
             @Override
             public ImplementedMethod mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -64,13 +64,13 @@ public class ImplementedMethodDao {
     public int addAll(final List<ImplementedMethod> implementedMethods) {
         String sql = "INSERT INTO "
                 + "ImplementedMethod "
-                + "(prefix,methodName) "
+                + "(serviceName,methodName) "
                 + "VALUES " + "(?,?)";
 
         int inserted = 0;
         for (ImplementedMethod implementedMethod : implementedMethods) {
             try {
-                log.debug("Insert {}, prefix {}, methodName {}", sql, implementedMethod.getPrefix(), implementedMethod.getName());
+                log.debug("Insert {}, serviceName {}, methodName {}", sql, implementedMethod.getPrefix(), implementedMethod.getName());
                 jdbcTemplate.update(sql, implementedMethod.getPrefix(), implementedMethod.getName());
                 inserted ++;
             } catch (DuplicateKeyException dke) {
@@ -82,7 +82,7 @@ public class ImplementedMethodDao {
     }
 
     public List<String> findImplementedPrefixes() {
-        String sql = "SELECT DISTINCT prefix FROM ImplementedMethod ORDER BY prefix ASC ;";
+        String sql = "SELECT DISTINCT serviceName FROM ImplementedMethod ORDER BY serviceName ASC ;";
         List<String> implementedMethods = jdbcTemplate.queryForList(sql, String.class);
         return implementedMethods;
 

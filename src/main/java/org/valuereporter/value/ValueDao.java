@@ -25,13 +25,13 @@ public class ValueDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<ValuableMethod> findUsageByMethod(String prefix) {
+    public List<ValuableMethod> findUsageByMethod(String serviceName) {
 
-        String sql = "SELECT methodName, COUNT(*) FROM ObservedMethod WHERE prefix = ? GROUP BY methodName";
-        sql = "SELECT ok.PREFIX, ok.METHODNAME, count(oi.VRCOUNT) FROM OBSERVEDINTERVAL oi, OBSERVEDKEYS ok " +
+        String sql = "SELECT methodName, COUNT(*) FROM ObservedMethod WHERE serviceName = ? GROUP BY methodName";
+        sql = "SELECT ok.SERVICENAME, ok.METHODNAME, count(oi.VRCOUNT) FROM OBSERVEDINTERVAL oi, OBSERVEDKEYS ok " +
                 "WHERE oi.OBSERVEDKEYSID = ok.ID AND ok.PREFIX = ? " +
                 "GROUP BY ok.ID;";
-        Object[] parameters = new Object[] {prefix};
+        Object[] parameters = new Object[] {serviceName};
         List<ValuableMethod> valuableMethods = jdbcTemplate.query(sql, parameters, new RowMapper<ValuableMethod>() {
             @Override
             public ValuableMethod mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -39,7 +39,7 @@ public class ValueDao {
                 ValuableMethod observedMethod = new ValuableMethod(
                         resultSet.getString(2),
                         resultSet.getLong(3));
-                observedMethod.setPrefix(resultSet.getString(1));
+                observedMethod.setServiceName(resultSet.getString(1));
                 return observedMethod;
             }
         });

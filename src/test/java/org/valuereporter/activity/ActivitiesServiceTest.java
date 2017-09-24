@@ -34,7 +34,7 @@ public class ActivitiesServiceTest {
     public void testFindConnection() throws Exception {
         TimeseriesConnection defaultConnection = activitiesService.findConnection(null);
         assertNotNull(defaultConnection);
-        assertEquals(defaultConnection.getPrefix(), ActivitiesService.DEFAULT_DATABASE);
+        assertEquals(defaultConnection.getServiceName(), ActivitiesService.DEFAULT_DATABASE);
         assertEquals(defaultConnection.getDatabaseName(),timeseriesDbName);
 
     }
@@ -43,7 +43,7 @@ public class ActivitiesServiceTest {
     public void testFindConnectionInProperties() throws Exception {
         TimeseriesConnection connection = activitiesService.findConnectionInProperties("test");
         assertNotNull(connection);
-        assertEquals(connection.getPrefix(),"test");
+        assertEquals(connection.getServiceName(),"test");
     }
 
 }

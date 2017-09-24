@@ -21,7 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by baardl on 29.07.15.
  */
 @Component
-@Path("/implementedprefix")
+@Path("/implementedserviceName")
 public class ImplementedPrefixResource {
     private static final Logger log = getLogger(ImplementedPrefixResource.class);
 
@@ -36,9 +36,9 @@ public class ImplementedPrefixResource {
         this.writeOperations = writeOperations;
     }
 
-    //http://localhost:4901/reporter/observe/implementedprefix
+    //http://localhost:4901/reporter/observe/implementedserviceName
     /**
-     * List prefixes registered in the database
+     * List serviceNamees registered in the database
      *
      * @return  List of ImplementedPrefix'es
      */

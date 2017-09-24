@@ -49,24 +49,24 @@ public class ObservedMethodsResouce {
 
 
 
-    //http://localhost:4901/reporter/observe/observedmethods/{prefix}/{name}
+    //http://localhost:4901/reporter/observe/observedmethods/{serviceName}/{name}
     /**
      * A request with no filtering parameters should return a list of all observations.
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @param name    package.classname.method
      * @return  List of observations
      */
     @GET
-    @Path("/{prefix}/{name}")
+    @Path("/{serviceName}/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findObservationsByName(@PathParam("prefix") String prefix,@PathParam("name") String name) {
+    public Response findObservationsByName(@PathParam("serviceName") String serviceName,@PathParam("name") String name) {
         final List<ObservedMethod> observedMethods;
 
         //Should also support no queryParams -> findAll
         if (name != null ) {
             log.trace("findObservationsByName name={}", name);
-            observedMethods = queryOperations.findObservationsByName(prefix, name);
+            observedMethods = queryOperations.findObservationsByName(serviceName, name);
         } else {
             throw new UnsupportedOperationException("You must supply a name. <package.classname.method>");
         }
@@ -81,26 +81,26 @@ public class ObservedMethodsResouce {
         return Response.ok(strWriter.toString()).build();
     }
 
-    //http://localhost:4901/reporter/observe/observedmethods/{prefix}
+    //http://localhost:4901/reporter/observe/observedmethods/{serviceName}
     @POST
-    @Path("/{prefix}")
+    @Path("/{serviceName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addObservationMethod(@PathParam("prefix") String prefix, String jsonBody){
-        log.trace("addObservationMethod prefix {} , jsonBody {}.", prefix, jsonBody);
+    public Response addObservationMethod(@PathParam("serviceName") String serviceName, String jsonBody){
+        log.trace("addObservationMethod serviceName {} , jsonBody {}.", serviceName, jsonBody);
         List<ObservedMethod> observedMethods = null;
         try {
             observedMethods = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedMethodJson>>(){ });
             if (observedMethods != null) {
                 for (ObservedMethod observedMethod : observedMethods) {
-                    observedMethod.setPrefix(prefix);
+                    observedMethod.setPrefix(serviceName);
                 }
             }
         } catch (IOException e) {
-            log.warn("Unexpected error trying to produce list of ObservedMethod from \n prefix {} \n json {}, \n Reason {}",prefix, jsonBody, e.getMessage());
+            log.warn("Unexpected error trying to produce list of ObservedMethod from \n serviceName {} \n json {}, \n Reason {}",serviceName, jsonBody, e.getMessage());
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Error converting to requested format.").build();
         }
 
-        long updatedCount = writeOperations.addObservations(prefix,observedMethods);
+        long updatedCount = writeOperations.addObservations(serviceName,observedMethods);
         String message =  "added " + updatedCount + " observedMethods.";
         Writer strWriter = new StringWriter();
         try {

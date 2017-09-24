@@ -35,13 +35,13 @@ public class ValueMethodServiceTest {
 
     @Test
     public void testFindValuableDistribution() throws Exception {
-        String prefix = "test";
+        String serviceName = "test";
         /** TODO put on hold
         ArrayList<ValuableMethod> implementedList = (ArrayList<ValuableMethod>) buildStubList();
-        when(mockImplementedMethodDao.findImplementedMethodsByPrefix(eq(prefix))).thenReturn(implementedList);
+        when(mockImplementedMethodDao.findImplementedMethodsByPrefix(eq(serviceName))).thenReturn(implementedList);
         List<ValuableMethod> usedList = buildUsedStubList();
-        Mockito.doReturn(usedList).when(mockValueDao.findUsageByMethod(eq(prefix)));
-        valueMethodService.findValuableDistribution(prefix);
+        Mockito.doReturn(usedList).when(mockValueDao.findUsageByMethod(eq(serviceName)));
+        valueMethodService.findValuableDistribution(serviceName);
          **/
 
     }

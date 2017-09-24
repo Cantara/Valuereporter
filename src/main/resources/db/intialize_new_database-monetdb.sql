@@ -9,19 +9,19 @@ ALTER USER vrAdmin SET SCHEMA valuereporter;
 
 CREATE TABLE observedmethod (
 	id  			BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	prefix    VARCHAR(255) NOT NULL,
+	serviceName    VARCHAR(255) NOT NULL,
 	methodname VARCHAR(255) NOT NULL,
 	starttime timestamp NOT NULL,
 	endtime   timestamp NOT NULL,
 	duration  integer NOT NULL
 );
 
-insert into observedmethod (prefix,methodname, starttime, endtime, duration) values ('inital', 'com.valuereporter.test', '2014-05-13 12:02:43.296','2014-05-13 12:02:43.596','300');
+insert into observedmethod (serviceName,methodname, starttime, endtime, duration) values ('inital', 'com.valuereporter.test', '2014-05-13 12:02:43.296','2014-05-13 12:02:43.596','300');
 
 CREATE TABLE implementedmethod(
 	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	prefix varchar(255) NOT NULL,
+	serviceName varchar(255) NOT NULL,
 	methodname varchar(255) NOT NULL
 );
-ALTER TABLE implementedmethod ADD CONSTRAINT IMK_PrefixMethodName2 UNIQUE (prefix, methodname);
-insert into implementedmethod (prefix,methodname) values ('inital', 'com.valuereporter.test');
+ALTER TABLE implementedmethod ADD CONSTRAINT IMK_PrefixMethodName2 UNIQUE (serviceName, methodname);
+insert into implementedmethod (serviceName,methodname) values ('inital', 'com.valuereporter.test');

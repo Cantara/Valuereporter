@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib serviceName="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>Some graphing examples</title>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../css/jqplot/jquery.jqplot.css" />
     <script type="text/javascript">
         $(document).ready(function(){
-            var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/${model.prefix}/${model.methodName}";
+            var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/${model.serviceName}/${model.methodName}";
             var line1=[];
             $.getJSON(uptime_vs_in_use_url,  function(data) {
                 console.info("data:" + data[0].name);
@@ -53,7 +53,7 @@
     </script>
 </head>
 <body>
-<h2>SLA graf for ${model.prefix}</h2>
+<h2>SLA graf for ${model.serviceName}</h2>
 <h4>${message}</h4>
 <div id="chart2" style="height:300px; width:500px;"></div>
 </body>

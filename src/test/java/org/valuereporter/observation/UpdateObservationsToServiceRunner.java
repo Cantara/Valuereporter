@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class UpdateObservationsToServiceRunner extends Thread {
 
-    private static final String PREFIX = ThreadSafeObservationsRepositoryVerification.PREFIX;
+    private static final String SERVICE_NAME = ThreadSafeObservationsRepositoryVerification.SERVICE_NAME;
     private final Logger log = LoggerFactory.getLogger(UpdateObservationsToServiceRunner.class);
     private final ObservationsService observationsService;
 
@@ -28,14 +28,14 @@ public class UpdateObservationsToServiceRunner extends Thread {
                 } catch (InterruptedException e) {
                     log.trace("Interupted {}", getName());
                 }
-                observationsService.addObservations(PREFIX, getFirstMethods());
+                observationsService.addObservations(SERVICE_NAME, getFirstMethods());
             } else {
                 try {
                     Thread.sleep((int)(Math.random() * 1000));
                 } catch (InterruptedException e) {
                     log.trace("Interupted {}", getName());
                 }
-                observationsService.addObservations(PREFIX, getSecondMethods());
+                observationsService.addObservations(SERVICE_NAME, getSecondMethods());
             }
         }
     }
@@ -45,7 +45,7 @@ public class UpdateObservationsToServiceRunner extends Thread {
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 1000;
         long duration = 1000;
-        firstMethods.add(new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
+        firstMethods.add(new ObservedMethod(SERVICE_NAME, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
         return firstMethods;
     }
 
@@ -54,7 +54,7 @@ public class UpdateObservationsToServiceRunner extends Thread {
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 200;
         long duration = 200;
-        firstMethods.add(new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
+        firstMethods.add(new ObservedMethod(SERVICE_NAME, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
         return firstMethods;
     }
 }

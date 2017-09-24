@@ -7,5 +7,5 @@ import org.joda.time.DateTime;
  */
 public interface SlaQueryOperations {
 
-    SlaStatisticsRepresentation findSlaStatistics(String prefix, String methodName, DateTime start, DateTime end);
+    SlaStatisticsRepresentation findSlaStatistics(String serviceName, String methodName, DateTime start, DateTime end);
 }

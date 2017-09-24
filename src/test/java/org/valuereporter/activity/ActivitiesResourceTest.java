@@ -25,7 +25,7 @@ public class ActivitiesResourceTest {
 
     @Test
     public void testBuildObservedActivitiesFromJson() throws Exception {
-        String jsonBody = "[{\"serviceName\": \"test\",\"activityName\": \"userSession\",\"startTime\": 1506003702276,\"contextInfo\": {\"usersessionfunction\": \"someActivity\",\"started-at\": \"1506003704598\",\"applicationid\": \"SomeArbitraryId\",\"userid\": \"testuser11506003702220\",\"applicationtokenid\": \"application1\"}}]";
+        String jsonBody = "[{\"SERVICE_NAME\": \"test\",\"activityName\": \"userSession\",\"startTime\": 1506003702276,\"contextInfo\": {\"usersessionfunction\": \"someActivity\",\"started-at\": \"1506003704598\",\"applicationid\": \"SomeArbitraryId\",\"userid\": \"testuser11506003702220\",\"applicationtokenid\": \"application1\"}}]";
         List<ObservedActivity> observedActivities = activitiesResource.buildObservedActivitiesFromJson(jsonBody);
         assertEquals(observedActivities.size(), 1);
         ObservedActivity observedActivity = observedActivities.get(0);
@@ -37,7 +37,7 @@ public class ActivitiesResourceTest {
 
     @Test
     public void testBuildObservedActivitiesFromDeprecatedJson() throws Exception {
-        String jsonBody = "[{\"serviceName\": \"test\",\"activityName\": \"userSession\",\"startTime\": 1506003702276,\"data\": {\"usersessionfunction\": \"someActivity\",\"started-at\": \"1506003704598\",\"applicationid\": \"SomeArbitraryId\",\"userid\": \"testuser11506003702220\",\"applicationtokenid\": \"application1\"}}]";
+        String jsonBody = "[{\"SERVICE_NAME\": \"test\",\"activityName\": \"userSession\",\"startTime\": 1506003702276,\"data\": {\"usersessionfunction\": \"someActivity\",\"started-at\": \"1506003704598\",\"applicationid\": \"SomeArbitraryId\",\"userid\": \"testuser11506003702220\",\"applicationtokenid\": \"application1\"}}]";
         List<ObservedActivity> observedActivities = activitiesResource.buildObservedActivitiesFromJson(jsonBody);
         assertEquals(observedActivities.size(), 1);
         ObservedActivity observedActivity = observedActivities.get(0);

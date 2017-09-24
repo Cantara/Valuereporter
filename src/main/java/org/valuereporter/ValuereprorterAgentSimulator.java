@@ -45,19 +45,19 @@ public class ValuereprorterAgentSimulator {
     public static void main(String[] args) {
 
         ValuereprorterAgentSimulator simulator = new ValuereprorterAgentSimulator();
-        String prefix = "template-prefix";
-        simulator.addSomeAction(prefix);
+        String serviceName = "template-SERVICE_NAME";
+        simulator.addSomeAction(serviceName);
 
 
     }
 
-    private void addSomeAction(String prefix) {
+    private void addSomeAction(String serviceName) {
 
         try {
-            List<ObservedMethod> observedMethods = buildSomeStubMethods(prefix);
+            List<ObservedMethod> observedMethods = buildSomeStubMethods(serviceName);
             String observedMethodsJson = mapper.writeValueAsString(observedMethods);
             log.trace("Forwarding observedMethods as Json \n{}", observedMethodsJson);
-            WebTarget webTarget = observationTarget.path("observedmethods").path(prefix);
+            WebTarget webTarget = observationTarget.path("observedmethods").path(serviceName);
 
             Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.entity(observedMethodsJson, MediaType.APPLICATION_JSON));
             log.info("Sent this json {} to {}. Response: {}", observedMethodsJson, webTarget.getUri(), response);
@@ -66,14 +66,14 @@ public class ValuereprorterAgentSimulator {
         }
     }
 
-    private List<ObservedMethod> buildSomeStubMethods(String prefix) {
+    private List<ObservedMethod> buildSomeStubMethods(String serviceName) {
         List<ObservedMethod> observedMethods = new ArrayList<>();
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-100, System.currentTimeMillis()));
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-200, System.currentTimeMillis()-100));
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-300, System.currentTimeMillis()-280));
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-50, System.currentTimeMillis()));
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-50, System.currentTimeMillis()-45));
-        observedMethods.add(new ObservedMethod(prefix,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-300, System.currentTimeMillis()-200));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-100, System.currentTimeMillis()));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-200, System.currentTimeMillis()-100));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.ping", System.currentTimeMillis()-300, System.currentTimeMillis()-280));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-50, System.currentTimeMillis()));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-50, System.currentTimeMillis()-45));
+        observedMethods.add(new ObservedMethod(serviceName,"org.valuereporter.Welcome.hello", System.currentTimeMillis()-300, System.currentTimeMillis()-200));
         return observedMethods;
     }
 }

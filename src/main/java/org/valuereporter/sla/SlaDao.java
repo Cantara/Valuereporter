@@ -29,10 +29,10 @@ public class SlaDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<UsageStatistics> findUsage(String prefix, String methodFilter, DateTime start, DateTime end) {
-        String sql = "select ok.prefix, ok.methodName, oi.duration,oi.startTime, oi.vrCount, oi.vrMax, oi.vrMin, oi.vrMean, oi.vrMedian, oi.stdDev, oi.p95, oi.p98, oi.p99  \n" +
+    public List<UsageStatistics> findUsage(String serviceName, String methodFilter, DateTime start, DateTime end) {
+        String sql = "select ok.serviceName, ok.methodName, oi.duration,oi.startTime, oi.vrCount, oi.vrMax, oi.vrMin, oi.vrMean, oi.vrMedian, oi.stdDev, oi.p95, oi.p98, oi.p99  \n" +
                 "   from ObservedInterval oi, ObservedKeys ok \n" +
-                "   where oi.startTime >= ? and oi.startTime <= ? and ok.prefix= ? and ok.methodName= ? and ok.id = oi.observedKeysId \n" +
+                "   where oi.startTime >= ? and oi.startTime <= ? and ok.serviceName= ? and ok.methodName= ? and ok.id = oi.observedKeysId \n" +
                 "   order by oi.startTime asc";
 
 
@@ -48,7 +48,7 @@ public class SlaDao {
         endTime = new Timestamp(end.getMillis());
         startTime = new Timestamp(start.getMillis());
 
-        Object[] parameters = new Object[] {startTime, endTime,prefix,methodFilter};
+        Object[] parameters = new Object[] {startTime, endTime,serviceName,methodFilter};
         List<UsageStatistics> usageStatisticses = jdbcTemplate.query(sql, parameters, new RowMapper<UsageStatistics>() {
             @Override
             public UsageStatistics mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -74,22 +74,22 @@ public class SlaDao {
 
     }
 
-    public List<SlaStatistics> findSlaStatistics(String prefix, String methodName, DateTime start, DateTime end){
+    public List<SlaStatistics> findSlaStatistics(String serviceName, String methodName, DateTime start, DateTime end){
         String sql = "select  oi.startTime,oi.duration, oi.vrCount, oi.vrMax, oi.vrMin, oi.vrMean, oi.p95  \n" +
                 "   from ObservedInterval oi, ObservedKeys ok \n" +
-                "   where oi.startTime >= ? and oi.startTime <= ? and ok.prefix= ? and ok.methodName= ? and ok.id = oi.observedKeysId \n" +
+                "   where oi.startTime >= ? and oi.startTime <= ? and ok.serviceName= ? and ok.methodName= ? and ok.id = oi.observedKeysId \n" +
                 "   order by oi.startTime desc";
 
-        if (isInValid(prefix) || isInValid(methodName) || isInValidDate(start) || isInValidDate(end)) {
-            log.trace("Invalid values for one of prefix {}, methodName {}, start {}, end {}. Will throw exception.", prefix, methodName, start, end);
-            throw new ValuereporterInputException("Invalid data for prefix " + prefix + ", methodName " + methodName + ",startDate " + start
+        if (isInValid(serviceName) || isInValid(methodName) || isInValidDate(start) || isInValidDate(end)) {
+            log.trace("Invalid values for one of serviceName {}, methodName {}, start {}, end {}. Will throw exception.", serviceName, methodName, start, end);
+            throw new ValuereporterInputException("Invalid data for serviceName " + serviceName + ", methodName " + methodName + ",startDate " + start
             + ", or endDate " +end, StatusType.data_error);
         }
 
         Timestamp endTime = new Timestamp(end.getMillis());
         Timestamp startTime = new Timestamp(start.getMillis());
 
-        Object[] parameters = new Object[] {startTime, endTime,prefix,methodName};
+        Object[] parameters = new Object[] {startTime, endTime,serviceName,methodName};
         List<SlaStatistics> slaStatisticses = jdbcTemplate.query(sql, parameters, new RowMapper<SlaStatistics>() {
             @Override
             public SlaStatistics mapRow(ResultSet resultSet, int i) throws SQLException {

@@ -94,4 +94,4 @@ See Installation, copy properties into config_override.
 ObservedActivity:
 name -> activityName
 data -> contextInfo
-prefix -> serviceName
+serviceName -> serviceName

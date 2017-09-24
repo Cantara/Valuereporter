@@ -31,19 +31,19 @@ public class ValueMethodService implements QueryOperations, WriteOperations{
     }
 
     @Override
-    public List<ValuableMethod> findValuableMethods(String prefix) {
+    public List<ValuableMethod> findValuableMethods(String serviceName) {
         return buildStubList();
     }
 
     @Override
-    public List<ValuableMethod> findValuableDistribution(String prefix, String filterOnName) {
+    public List<ValuableMethod> findValuableDistribution(String serviceName, String filterOnName) {
         boolean doFilter = filterOnName != null;
         ValuableMethod unused = new ValuableMethod("Unused", 0);
         ValuableMethod lowUsage = new ValuableMethod("Less than 5", 0);
         ValuableMethod highUsage = new ValuableMethod("HighUsage", 0);
 
-        List<ImplementedMethod> implementedMethods = implementedMethodDao.findImplementedMethodsByPrefix(prefix);
-        List<ValuableMethod> usageCountMethods = valueDao.findUsageByMethod(prefix);
+        List<ImplementedMethod> implementedMethods = implementedMethodDao.findImplementedMethodsByPrefix(serviceName);
+        List<ValuableMethod> usageCountMethods = valueDao.findUsageByMethod(serviceName);
         log.trace("Usage count: {}", buildUsageCountCsv(usageCountMethods));
         Map<String, ValuableMethod> usageCountMap = buildMap(usageCountMethods);
 

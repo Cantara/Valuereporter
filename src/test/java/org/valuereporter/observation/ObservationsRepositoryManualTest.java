@@ -21,7 +21,7 @@ public class ObservationsRepositoryManualTest extends AbstractTestNGSpringContex
     private static final Logger log = LoggerFactory.getLogger(ObservationsRepositoryManualTest.class);
     private final ObservationsRepository repository;
     private final ObservationDao observationDao;
-    private final static String PREFIX = "ManualTest";
+    private final static String SERVICE_NAME = "ManualTest";
 
     @Autowired
     public ObservationsRepositoryManualTest(ObservationsRepository repository, ObservationDao observationDao) {
@@ -54,19 +54,19 @@ public class ObservationsRepositoryManualTest extends AbstractTestNGSpringContex
 
 
     public void testObservationsRepositoryAddAndPersist() {
-        repository.updateStatistics(PREFIX,1L,observedMethodsStubs());
-        PrefixCollection prefixCollection = repository.getCollection(PREFIX, 1L);
-        List<ObservedInterval> intervalls = prefixCollection.getIntervals();
-        repository.persistAndResetStatistics(PREFIX, 1L);
+        repository.updateStatistics(SERVICE_NAME,1L,observedMethodsStubs());
+        PrefixCollection serviceNameCollection = repository.getCollection(SERVICE_NAME, 1L);
+        List<ObservedInterval> intervalls = serviceNameCollection.getIntervals();
+        repository.persistAndResetStatistics(SERVICE_NAME, 1L);
     }
 
     private static List<ObservedMethod> observedMethodsStubs() {
         List<ObservedMethod> observedMethods = new ArrayList<>();
         long end = System.currentTimeMillis();
         long start = new DateTime(end).minusMillis(50).getMillis();
-        observedMethods.add(new ObservedMethod(PREFIX,"firstMethod",start, end));
-        observedMethods.add(new ObservedMethod(PREFIX,"firstMethod",start +2, end +3));
-        observedMethods.add(new ObservedMethod(PREFIX,"secondMethodddd",start +10, end +12));
+        observedMethods.add(new ObservedMethod(SERVICE_NAME,"firstMethod",start, end));
+        observedMethods.add(new ObservedMethod(SERVICE_NAME,"firstMethod",start +2, end +3));
+        observedMethods.add(new ObservedMethod(SERVICE_NAME,"secondMethodddd",start +10, end +12));
         return observedMethods;
     }
 }

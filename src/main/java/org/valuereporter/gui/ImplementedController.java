@@ -17,17 +17,17 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Controller
 public class ImplementedController {
     private static final Logger log = getLogger(ImplementedController.class);
-    public static final String PREFIX = "prefix";
+    public static final String SERVICE_NAME = "serviceName";
     public static final String METHOD_NAME = "methodName";
     public static final String FROM = "from";
     public static final String TO = "to";
 
     @RequestMapping("/implemented")
-    public ModelAndView showSlaGraph(@RequestParam(value = PREFIX, required = true) String prefix, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
+    public ModelAndView showSlaGraph(@RequestParam(value = SERVICE_NAME, required = true) String serviceName, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
         Map model = new HashMap<String,String>();
-        model.put(PREFIX, prefix);
+        model.put(serviceName, serviceName);
         model.put(METHOD_NAME, methodName);
-        log.trace("Input prefix {}, methodName {}", prefix,methodName);
+        log.trace("Input SERVICE_NAME {}, methodName {}", serviceName,methodName);
         return new ModelAndView("implemented", "model", model);
     }
 }

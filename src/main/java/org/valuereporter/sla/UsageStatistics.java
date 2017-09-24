@@ -4,7 +4,7 @@ package org.valuereporter.sla;
  * @author <a href="mailto:bard.lind@gmail.com">Bard Lind</a>
  */
 public class UsageStatistics {
-    private final String prefix;
+    private final String serviceName;
     private final String methodName;
     private final long duration;
     private final long startTime;
@@ -18,8 +18,8 @@ public class UsageStatistics {
     private final double p98;
     private final double p99;
 
-    public UsageStatistics(String prefix, String methodName, long duration, long startTime, long count, long max, long min, double mean, double median, double stdDev, double p95, double p98, double p99) {
-        this.prefix = prefix;
+    public UsageStatistics(String serviceName, String methodName, long duration, long startTime, long count, long max, long min, double mean, double median, double stdDev, double p95, double p98, double p99) {
+        this.serviceName = serviceName;
         this.methodName = methodName;
         this.duration = duration;
         this.startTime = startTime;
@@ -35,7 +35,7 @@ public class UsageStatistics {
     }
 
     public String getPrefix() {
-        return prefix;
+        return serviceName;
     }
 
     public String getMethodName() {
@@ -89,7 +89,7 @@ public class UsageStatistics {
     @Override
     public String toString() {
         return "UsageStatistics{" +
-                "prefix='" + prefix + '\'' +
+                "serviceName='" + serviceName + '\'' +
                 ", methodName='" + methodName + '\'' +
                 ", duration=" + duration +
                 ", startTime=" + startTime +

@@ -34,7 +34,7 @@ public class ObservedMethodDataMigration {
         Properties properties = findProperties();
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/tools/applicationContext-datamigration.xml");
         ObservationDao dao = (ObservationDao) applicationContext.getBean("observationDao");
-        String prefix = properties.getProperty("datamigration.prefix");
+        String serviceName = properties.getProperty("datamigration.serviceName");
         ObservedMethodDataMigration migrator = new ObservedMethodDataMigration(dao);
         log.info("Spring context initialized.");
 
@@ -43,13 +43,13 @@ public class ObservedMethodDataMigration {
         //DateTime end = new DateTime(2014,6, 5, 9,45,0 );
         DateTime end = new DateTime(2014,9, 29, 23,45,0 );
         //Do some work.
-        migrator.createSummary(prefix, methodNames, start, end );
+        migrator.createSummary(serviceName, methodNames, start, end );
 
 
     }
 
-    private void createSummary(String prefix, List<String> methodNames, DateTime firstDate, DateTime lastDate) {
-        PrefixCollection prefixCollection = new PrefixCollection(prefix);
+    private void createSummary(String serviceName, List<String> methodNames, DateTime firstDate, DateTime lastDate) {
+        PrefixCollection serviceNameCollection = new PrefixCollection(serviceName);
         log.info("CreateSummary from {} to {}, for methodNames {}", firstDate, lastDate, methodNames);
         //(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         DateTime start = new DateTime(firstDate); // new DateTime(2014,9, 23, 13,40,0 );
@@ -62,24 +62,24 @@ public class ObservedMethodDataMigration {
             log.info("Finding statistics from {} to {}", start, end);
 
             for (String methodName : methodNames) {
-                log.trace("Find ObservedMethods. prefix {}, methodName {}, start {}, end {}", prefix, methodName, start, end);
-                List<ObservedMethod> observedMethods = observationDao.findObservedMethods(prefix, methodName, start, end);
+                log.trace("Find ObservedMethods. serviceName {}, methodName {}, start {}, end {}", serviceName, methodName, start, end);
+                List<ObservedMethod> observedMethods = observationDao.findObservedMethods(serviceName, methodName, start, end);
                 if (observedMethods.size() > 0) {
                     countMethods = countMethods + observedMethods.size();
                     log.trace("Found {} methods. ", observedMethods.size());
                     long interval = end.getMillis() - start.getMillis();
-                    prefixCollection.updateStatisticsList(observedMethods, start.getMillis(), interval);
+                    serviceNameCollection.updateStatisticsList(observedMethods, start.getMillis(), interval);
                 }
             }
 
-            List<ObservedInterval> observedIntervals = prefixCollection.getIntervals();
+            List<ObservedInterval> observedIntervals = serviceNameCollection.getIntervals();
             log.trace("Found {} intervals.", observedIntervals.size());
             if (observedIntervals.size() > 0) {
                 countIntervals = countIntervals + observedIntervals.size();
-                int countStat = observationDao.updateStatistics(prefix, observedIntervals);
+                int countStat = observationDao.updateStatistics(serviceName, observedIntervals);
                 log.trace("Updated interval to statistics. count: {}" + countStat);
             }
-            prefixCollection = new PrefixCollection(prefix);
+            serviceNameCollection = new PrefixCollection(serviceName);
             //Loop for next interval.
             start = start.plusMinutes(INTERVAL_MINUTES);
         }  while (start.isBefore(lastDate));

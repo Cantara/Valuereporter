@@ -13,11 +13,13 @@ public class ObservedActivitiesIntegrationTest {
 
         String reporterHost = "reporter.valuereporter.org";
         reporterHost = "valuereporter-960449489.eu-west-1.elb.amazonaws.com";
+        reporterHost = "localhost";
         String reporterPort = "80";
-        String prefix = "test";
+        reporterPort = "4901";
+        String serviceName = "test";
         int cacheSize = 1;
         int forwardInterval = 10;
-        new Thread(ObservedActivityDistributer.getInstance(reporterHost, reporterPort, prefix, cacheSize, forwardInterval)).start();
+        new Thread(ObservedActivityDistributer.getInstance(reporterHost, reporterPort, serviceName, cacheSize, forwardInterval)).start();
 
 
         String userid = "TODO";

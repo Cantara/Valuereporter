@@ -10,19 +10,19 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class PrefixCollection {
 
-    private final String prefix;
+    private final String serviceName;
     private final long intervalInSec;
     private ConcurrentMap<String, ObservedInterval> intervals = new ConcurrentHashMap<>();
     private final long defaultInterval = 5 * 1000;
 
-    public PrefixCollection(String prefix) {
-        this.prefix = prefix;
+    public PrefixCollection(String serviceName) {
+        this.serviceName = serviceName;
         this.intervalInSec = defaultInterval;
     }
 
-    public PrefixCollection(String prefix, long intervalInSec) {
+    public PrefixCollection(String serviceName, long intervalInSec) {
         this.intervalInSec = intervalInSec;
-        this.prefix = prefix;
+        this.serviceName = serviceName;
     }
 
     public void updateStatistics(ObservedMethod method) {
@@ -61,7 +61,7 @@ public class PrefixCollection {
     @Override
     public String toString() {
         return "PrefixCollection{" +
-                "prefix='" + prefix + '\'' +
+                "serviceName='" + serviceName + '\'' +
                 ", intervals=" + intervals +
                 ", defaultInterval=" + defaultInterval +
                 '}';

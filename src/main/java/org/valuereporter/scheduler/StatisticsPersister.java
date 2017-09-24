@@ -28,9 +28,9 @@ public class StatisticsPersister {
         this.scheduler = Executors.newScheduledThreadPool(NUM_THREADS);
     }
 
-    public void startScheduler(ObservationsRepository repository, String prefix){
-        log.info("Starting scheduler for prefix {}, initialDelay {}, delayBetweenRuns {}", prefix, initialDelay, delayBetweenRuns);
-        Runnable persist = new PersistTask(repository, prefix);
+    public void startScheduler(ObservationsRepository repository, String serviceName){
+        log.info("Starting scheduler for serviceName {}, initialDelay {}, delayBetweenRuns {}", serviceName, initialDelay, delayBetweenRuns);
+        Runnable persist = new PersistTask(repository, serviceName);
         ScheduledFuture<?> persistenceFuture = scheduler.scheduleWithFixedDelay(
                 persist, initialDelay, delayBetweenRuns, TimeUnit.SECONDS
         );
@@ -38,16 +38,16 @@ public class StatisticsPersister {
 
     private class PersistTask implements Runnable {
         private ObservationsRepository repository;
-        private String prefix;
+        private String serviceName;
 
-        private PersistTask(ObservationsRepository repository, String prefix) {
+        private PersistTask(ObservationsRepository repository, String serviceName) {
             this.repository = repository;
-            this.prefix = prefix;
+            this.serviceName = serviceName;
         }
         @Override
         public void run() {
-            log.trace("Persist prefix {}", prefix);
-            repository.persistAndResetStatistics(prefix, delayBetweenRuns);
+            log.trace("Persist serviceName {}", serviceName);
+            repository.persistAndResetStatistics(serviceName, delayBetweenRuns);
         }
 
     }

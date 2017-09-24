@@ -18,12 +18,12 @@ public class HttpRequestIntegrationTest {
 
         String reporterHost = "localhost";
         String reporterPort = "4901";
-        String prefix = "All";
+        String serviceName = "All";
         String observedMethodsJson = "[]";
         String observationUrl = "http://"+reporterHost + ":" + reporterPort +"/reporter/observe";
         log.info("Connection to ValueReporter on {}" , observationUrl);
-        HttpRequest request = HttpRequest.post(observationUrl + "/observedmethods/" + prefix).acceptJson().contentType(APPLICATION_JSON).send(observedMethodsJson);
-//        WebTarget webResource = observationTarget.path("observedmethods").path(prefix);
+        HttpRequest request = HttpRequest.post(observationUrl + "/observedmethods/" + serviceName).acceptJson().contentType(APPLICATION_JSON).send(observedMethodsJson);
+//        WebTarget webResource = observationTarget.path("observedmethods").path(serviceName);
 //        log.trace("Forwarding observedMethods as Json \n{}", observedMethodsJson);
 
 //        Response response = webResource.request(MediaType.APPLICATION_JSON).post(Entity.entity(observedMethodsJson, MediaType.APPLICATION_JSON));

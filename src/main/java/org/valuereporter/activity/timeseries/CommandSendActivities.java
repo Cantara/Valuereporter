@@ -37,13 +37,13 @@ public class CommandSendActivities extends HystrixCommand<String>  {
     private final String password;
 
     /*
-    public CommandSendActivities(final String reporterHost, final String reporterPort, final String prefix, final List<ObservedActivity> observedActivities) {
+    public CommandSendActivities(final String reporterHost, final String reporterPort, final String SERVICE_NAME, final List<ObservedActivity> observedActivities) {
         super(HystrixCommandGroupKey.Factory.asKey("ValueReporter-Activities-group"));
         observedActivitiesJson = buildBody(observedActivities);
         no_of_activities = observedActivities.size();
         this.reporterHost = reporterHost;
         this.reporterPort = reporterPort;
-        this.prefix = prefix;
+        this.SERVICE_NAME = SERVICE_NAME;
         this.observedActivities = observedActivities;
     }
     */

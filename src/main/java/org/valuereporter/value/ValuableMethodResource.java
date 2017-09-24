@@ -36,24 +36,24 @@ public class ValuableMethodResource {
         this.mapper = mapper;
     }
 
-    //http://localhost:4901/reporter/observe/valuemethods/{prefix}
+    //http://localhost:4901/reporter/observe/valuemethods/{serviceName}
     /**
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @return  List of ImplementedMethods
      */
     @GET
-    @Path("/{prefix}")
+    @Path("/{serviceName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findValuableMethods(@PathParam("prefix") String prefix) {
+    public Response findValuableMethods(@PathParam("serviceName") String serviceName) {
         final List<ValuableMethod> implementedMethods;
 
         //Should also support no queryParams -> findAll
-        if (prefix != null ) {
-            log.trace("findValuableMethods prefix={}", prefix);
-            implementedMethods = queryOperations.findValuableMethods(prefix);
+        if (serviceName != null ) {
+            log.trace("findValuableMethods serviceName={}", serviceName);
+            implementedMethods = queryOperations.findValuableMethods(serviceName);
         } else {
-            throw new UnsupportedOperationException("You must supply a prefix.");
+            throw new UnsupportedOperationException("You must supply a serviceName.");
         }
 
         Writer strWriter = new StringWriter();
@@ -66,23 +66,23 @@ public class ValuableMethodResource {
         return Response.ok(strWriter.toString()).build();
     }
 
-    //http://localhost:4901/reporter/observe/valuemethods/{prefix}/chart
+    //http://localhost:4901/reporter/observe/valuemethods/{serviceName}/chart
     /**
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @return  List of ImplementedMethods
      */
     @GET
-    @Path("/{prefix}/chart")
+    @Path("/{serviceName}/chart")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findValuableDistribution(@PathParam("prefix") String prefix) {
+    public Response findValuableDistribution(@PathParam("serviceName") String serviceName) {
         final List<ValuableMethod> valuableMethods;
 
-        if (prefix != null ) {
-            log.trace("findValuableMethods prefix={}", prefix);
-            valuableMethods = queryOperations.findValuableDistribution(prefix, null);
+        if (serviceName != null ) {
+            log.trace("findValuableMethods serviceName={}", serviceName);
+            valuableMethods = queryOperations.findValuableDistribution(serviceName, null);
         } else {
-            throw new UnsupportedOperationException("You must supply a prefix.");
+            throw new UnsupportedOperationException("You must supply a serviceName.");
         }
 
         Writer strWriter = new StringWriter();
@@ -94,23 +94,23 @@ public class ValuableMethodResource {
         }
         return Response.ok(strWriter.toString()).build();
     }
-    //http://localhost:4901/reporter/observe/valuemethods/{prefix}/chart/{filter}
+    //http://localhost:4901/reporter/observe/valuemethods/{serviceName}/chart/{filter}
     /**
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @return  List of ImplementedMethods
      */
     @GET
-    @Path("/{prefix}/chart/{filter}")
+    @Path("/{serviceName}/chart/{filter}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findValuableDistribution(@PathParam("prefix") String prefix,@PathParam("filter") String filter ) {
+    public Response findValuableDistribution(@PathParam("serviceName") String serviceName,@PathParam("filter") String filter ) {
         final List<ValuableMethod> valuableMethods;
 
-        if (prefix != null ) {
-            log.trace("findValuableMethods prefix={}, filter {}", prefix, filter);
-            valuableMethods = queryOperations.findValuableDistribution(prefix, filter);
+        if (serviceName != null ) {
+            log.trace("findValuableMethods serviceName={}, filter {}", serviceName, filter);
+            valuableMethods = queryOperations.findValuableDistribution(serviceName, filter);
         } else {
-            throw new UnsupportedOperationException("You must supply a prefix.");
+            throw new UnsupportedOperationException("You must supply a serviceName.");
         }
 
         Writer strWriter = new StringWriter();

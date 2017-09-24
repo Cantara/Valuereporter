@@ -1,11 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib serviceName="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>Usage %</title>
 
 </head>
 <body>
-<h2>Usage graf for ${model.prefix}</h2>
+<h2>Usage graf for ${model.serviceName}</h2>
 
 <div id="usage" style="height:300px; width:500px;"></div>
 
@@ -16,9 +16,9 @@
 <script type="text/javascript">
     var chart;
     var filterOnName = '${model.filterOnName}';
-    var chartDataUrl = "/reporter/observe/valuemethods/${model.prefix}/chart/${model.filterOnName}";
+    var chartDataUrl = "/reporter/observe/valuemethods/${model.serviceName}/chart/${model.filterOnName}";
     if (!filterOnName) {
-        chartDataUrl = "/reporter/observe/valuemethods/${model.prefix}/chart";
+        chartDataUrl = "/reporter/observe/valuemethods/${model.serviceName}/chart";
     }
     alert("Chart " + chartDataUrl);
     $.getJSON(chartDataUrl, function(data) {

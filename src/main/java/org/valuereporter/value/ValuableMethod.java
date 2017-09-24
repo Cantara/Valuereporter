@@ -5,7 +5,7 @@ package org.valuereporter.value;
  */
 public class ValuableMethod {
 
-    private String prefix = "";
+    private String serviceName = "";
     private String name;
     private long usageCount;
     private long startTime;
@@ -15,18 +15,36 @@ public class ValuableMethod {
         this.name = name;
         this.usageCount = usageCount;
     }
-    public ValuableMethod(String prefix,String name, long usageCount) {
-        this.prefix = prefix;
+    public ValuableMethod(String serviceName,String name, long usageCount) {
+        this.serviceName = serviceName;
         this.name = name;
         this.usageCount = usageCount;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
+     * @deprecated Use getServiceName()
+     * @return
+     */
+    @Deprecated
+    public String getPrefix() {
+        return getServiceName();
+    }
+
+    /**
+     * @deprecated use setServiceName()
+     * @param serviceName
+     */
+    @Deprecated
+    public void setPrefix(String serviceName) {
+        setServiceName(serviceName);
     }
 
     public String getName() {
@@ -61,9 +79,9 @@ public class ValuableMethod {
         if (name == null) {
             name = "";
         }
-        if (prefix == null) {
-            prefix = "";
+        if (serviceName == null) {
+            serviceName = "";
         }
-        return prefix.trim() + "," + name.trim() + "," + usageCount + "," + startTime + "," + endTime;
+        return serviceName.trim() + "," + name.trim() + "," + usageCount + "," + startTime + "," + endTime;
     }
 }

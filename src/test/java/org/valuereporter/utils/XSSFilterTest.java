@@ -11,7 +11,7 @@ import static org.valuereporter.utils.XSSFilter.hasXssRisk;
  */
 public class XSSFilterTest {
     public static final String XSS_FAULTY = "window.location=74796878/*'*(window.location=74796878)*'\"*(window.location=74796878)*\"*/";
-    private static final String SAFE_CONTENT = "some_prefixeWeWant4Us";
+    private static final String SAFE_CONTENT = "some_serviceNameeWeWant4Us";
     @Test
     public void testSpring4Xss() throws Exception {
         assertTrue(hasXssRisk(XSS_FAULTY));

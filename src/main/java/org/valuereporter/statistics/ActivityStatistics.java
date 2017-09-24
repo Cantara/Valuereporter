@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class ActivityStatistics {
 
-    private String prefix = "ALL";
+    private String serviceName = "ALL";
     private String activityName;
     private Long startTime;
     private Long endTime;
@@ -18,19 +18,19 @@ public class ActivityStatistics {
         this.activityName = activityName;
     }
 
-    public ActivityStatistics(String prefix, String activityName, Long startTime, Long endTime) {
-        this.prefix = prefix;
+    public ActivityStatistics(String serviceName, String activityName, Long startTime, Long endTime) {
+        this.serviceName = serviceName;
         this.activityName = activityName;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     public String getPrefix() {
-        return prefix;
+        return serviceName;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setPrefix(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getActivityName() {

@@ -19,42 +19,42 @@ import static org.valuereporter.utils.XSSFilter.hasXssRisk;
 public class SlaController {
     private static final Logger log = LoggerFactory.getLogger(SlaController.class);
 
-    public static final String PREFIX = "prefix";
+    public static final String SERVICE_NAME = "serviceName";
     public static final String METHOD_NAME = "methodName";
     public static final String FROM = "from";
     public static final String TO = "to";
 
     @RequestMapping("/sla")
-    public ModelAndView showSlaGraph(@RequestParam(value = PREFIX, required = true) String prefix, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
-        if (hasXssRisk(prefix) || hasXssRisk(methodName)) {
+    public ModelAndView showSlaGraph(@RequestParam(value = SERVICE_NAME, required = true) String serviceName, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
+        if (hasXssRisk(serviceName) || hasXssRisk(methodName)) {
             throw new IllegalInputException();
         }
         Map model = new HashMap<String,String>();
-        model.put(PREFIX, prefix);
+        model.put(serviceName, serviceName);
         model.put(METHOD_NAME, methodName);
-        log.trace("Input prefix {}, methodName {}", prefix,methodName);
+        log.trace("Input SERVICE_NAME {}, methodName {}", serviceName,methodName);
         return new ModelAndView("sla", "model", model);
     }
     @RequestMapping("/slahc")
-    public ModelAndView showSlaGraphHighChart(@RequestParam(value = PREFIX, required = true) String prefix, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
-        if (hasXssRisk(prefix) || hasXssRisk(methodName)) {
+    public ModelAndView showSlaGraphHighChart(@RequestParam(value = SERVICE_NAME, required = true) String serviceName, @RequestParam(value = METHOD_NAME, required = true) String methodName) {
+        if (hasXssRisk(serviceName) || hasXssRisk(methodName)) {
             throw new IllegalInputException();
         }
         Map model = new HashMap<String,String>();
-        model.put(PREFIX, prefix);
+        model.put(serviceName, serviceName);
         model.put(METHOD_NAME, methodName);
-        log.trace("Input prefix {}, methodName {}", prefix,methodName);
+        log.trace("Input SERVICE_NAME {}, methodName {}", serviceName,methodName);
         return new ModelAndView("slahc", "model", model);
     }
 
     @RequestMapping("/slainterval")
-    public ModelAndView showSlaGraphInterval(@RequestParam(value = PREFIX, required = true) String prefix, @RequestParam(value = METHOD_NAME, required = true) String methodName,
+    public ModelAndView showSlaGraphInterval(@RequestParam(value = SERVICE_NAME, required = true) String serviceName, @RequestParam(value = METHOD_NAME, required = true) String methodName,
                                              @RequestParam(value = FROM, required = false) Long from, @RequestParam(value = TO, required = false) String to) {
-        if (hasXssRisk(prefix) || hasXssRisk(methodName)) {
+        if (hasXssRisk(serviceName) || hasXssRisk(methodName)) {
             throw new IllegalInputException();
         }
         Map model = new HashMap<String,String>();
-        model.put(PREFIX, prefix);
+        model.put(SERVICE_NAME, serviceName);
         model.put(METHOD_NAME, methodName);
         if (from != null) {
             model.put(FROM, from);
@@ -62,7 +62,7 @@ public class SlaController {
         if (to != null) {
             model.put(TO, to);
         }
-        log.trace("Input prefix {}, methodName {}", prefix,methodName);
+        log.trace("Input SERVICE_NAME {}, methodName {}", serviceName,methodName);
         return new ModelAndView("slainterval", "model", model);
     }
 }

@@ -74,12 +74,12 @@ public class ObservationDao {
         return 0;
 
     }
-    public List<ObservedMethod> findObservedMethods(String prefix, String name) {
+    public List<ObservedMethod> findObservedMethods(String serviceName, String name) {
 
         //TODO Alter time
-        //String sql = "SELECT prefix,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE prefix = ? AND methodName = ? AND startTime > DATEADD(month,-2,GETDATE() ) ORDER BY startTime ASC ";
-        String sql = "SELECT prefix,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE prefix = ? AND methodName = ? ORDER BY startTime ASC ";
-        Object[] parameters = new Object[] {prefix,name};
+        //String sql = "SELECT serviceName,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE serviceName = ? AND methodName = ? AND startTime > DATEADD(month,-2,GETDATE() ) ORDER BY startTime ASC ";
+        String sql = "SELECT serviceName,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE serviceName = ? AND methodName = ? ORDER BY startTime ASC ";
+        Object[] parameters = new Object[] {serviceName,name};
         List<ObservedMethod> observedMethods = jdbcTemplate.query(sql, parameters, new RowMapper<ObservedMethod>() {
             @Override
             public ObservedMethod mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -98,12 +98,12 @@ public class ObservationDao {
         return observedMethods;
     }
 
-    public List<ObservedMethod> findObservedMethods(String prefix, String name, DateTime start, DateTime end) {
+    public List<ObservedMethod> findObservedMethods(String serviceName, String name, DateTime start, DateTime end) {
 
-        String sql = "SELECT prefix,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE startTime >= ? and startTime <= ? AND prefix = ? AND methodName = ? ORDER BY startTime ASC ";
+        String sql = "SELECT serviceName,methodName, startTime, endTime, duration  FROM ObservedMethod WHERE startTime >= ? and startTime <= ? AND serviceName = ? AND methodName = ? ORDER BY startTime ASC ";
         Timestamp endTime = new Timestamp(end.getMillis());
         Timestamp startTime = new Timestamp(start.getMillis());
-        Object[] parameters = new Object[] {startTime , endTime, prefix,name};
+        Object[] parameters = new Object[] {startTime , endTime, serviceName,name};
         List<ObservedMethod> observedMethods = jdbcTemplate.query(sql, parameters, new RowMapper<ObservedMethod>() {
             @Override
             public ObservedMethod mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -120,12 +120,12 @@ public class ObservationDao {
         return observedMethods;
     }
 
-    public void addAll(final String prefix, final List<ObservedMethod> observedMethods) {
+    public void addAll(final String serviceName, final List<ObservedMethod> observedMethods) {
         if (observedMethods != null && observedMethods.size() > 0) {
             try {
                 String sql = "INSERT INTO "
                         + "ObservedMethod "
-                        + "(prefix,methodName, startTime, endTime, duration) "
+                        + "(serviceName,methodName, startTime, endTime, duration) "
                         + "VALUES " + "(?,?,?,?,?)";
 
                 jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -135,7 +135,7 @@ public class ObservationDao {
                             throws SQLException {
 
                         ObservedMethod observedMethod = observedMethods.get(i);
-                        ps.setString(1, prefix);
+                        ps.setString(1, serviceName);
                         ps.setString(2, observedMethod.getName());
                         ps.setTimestamp(3, new Timestamp(observedMethod.getStartTime()));
                         ps.setTimestamp(4, new Timestamp(observedMethod.getEndTime()));
@@ -157,14 +157,14 @@ public class ObservationDao {
 
     }
 
-    public synchronized int updateStatistics(final String prefix, final List<ObservedInterval> intervals) {
-        log.trace("Calling update statistics. prefix {}, intervals count {}", prefix, intervals.size());
+    public synchronized int updateStatistics(final String serviceName, final List<ObservedInterval> intervals) {
+        log.trace("Calling update statistics. serviceName {}, intervals count {}", serviceName, intervals.size());
 
         String sql = "insert into ObservedInterval (observedKeysId, startTime, duration, vrCount, vrMax, vrMin, vrMean, vrMedian, stdDev, p95, p98, p99)\n" +
                 "select o.id," +
                 "?, ?,?,?,?,?,?,?,?,?,? " +
                 "  from ObservedKeys o\n" +
-                "  where prefix= ? and methodName = ?;";
+                "  where serviceName= ? and methodName = ?;";
 
         int[] intervalsUpdated;
         intervalsUpdated = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -185,7 +185,7 @@ public class ObservationDao {
                 ps.setDouble(9, interval.getP95());
                 ps.setDouble(10, interval.getP98());
                 ps.setDouble(11, interval.getP99());
-                ps.setString(12,prefix);
+                ps.setString(12,serviceName);
                 ps.setString(13, interval.getMethodName());
 
             }
@@ -203,14 +203,14 @@ public class ObservationDao {
                 "  select o.id, '" + sqlDate + "', "+duration +","+ count +"," + max +"," +min + "," + mean + "," + median + "," + standardDeviation +
                 "," + p95+"," + p98+"," + p99+ "\n" +
                 "  from ObservedKeys o\n" +
-                "  where prefix='" + prefix + "' and methodName = '" + methodName + "';";
+                "  where serviceName='" + serviceName + "' and methodName = '" + methodName + "';";
         return sql;
         */
     }
 
-    public int[] ensureObservedKeys(final String prefix, final List<String> methodNames) {
+    public int[] ensureObservedKeys(final String serviceName, final List<String> methodNames) {
         log.debug("ensureObservedKeys. MethodNames {}", methodNames);
-        String sql = "insert ignore into ObservedKeys (prefix, methodName)"
+        String sql = "insert ignore into ObservedKeys (serviceName, methodName)"
                 + "VALUES " + "(?,?)";
 
         int[] keysUpdated = null;
@@ -221,7 +221,7 @@ public class ObservationDao {
                 public void setValues(PreparedStatement ps, int i)
                         throws SQLException {
 
-                    ps.setString(1, prefix);
+                    ps.setString(1, serviceName);
                     ps.setString(2, methodNames.get(i));
 
                 }
@@ -243,20 +243,20 @@ public class ObservationDao {
     
 
 
-    public List<String> findObservedKeys(String prefix) {
+    public List<String> findObservedKeys(String serviceName) {
         List<String> observedKeys = new ArrayList<>();
-        String sql = "SELECT methodName  FROM ObservedKeys WHERE prefix = ?";
-        observedKeys= jdbcTemplate.queryForList(sql, String.class, prefix);
+        String sql = "SELECT methodName  FROM ObservedKeys WHERE serviceName = ?";
+        observedKeys= jdbcTemplate.queryForList(sql, String.class, serviceName);
         return observedKeys;
     }
 
-    public int insertObservedKey(String prefix, String methodName) {
+    public int insertObservedKey(String serviceName, String methodName) {
         int rowsUpdated = 0;
         try {
-            String sql = "INSERT into ObservedKeys (prefix, methodName) values (?,?)";
-            rowsUpdated = jdbcTemplate.update(sql, prefix, methodName);
+            String sql = "INSERT into ObservedKeys (serviceName, methodName) values (?,?)";
+            rowsUpdated = jdbcTemplate.update(sql, serviceName, methodName);
         } catch (DuplicateKeyException e) {
-            log.trace("Key exists, not inserted. Prefix {}, methodName {}", prefix, methodName);
+            log.trace("Key exists, not inserted. Prefix {}, methodName {}", serviceName, methodName);
         }
         return rowsUpdated;
     }

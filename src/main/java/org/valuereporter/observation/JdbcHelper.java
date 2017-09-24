@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class JdbcHelper {
 
 
-    protected static String insertObservedInterval(String prefix, String methodName, long timestamp, Object[] values) {
+    protected static String insertObservedInterval(String serviceName, String methodName, long timestamp, Object[] values) {
         Timestamp sqlDate = new Timestamp(timestamp);
         int duration = 15*60*1000;
         long count = (Long)values[0];
@@ -25,7 +25,7 @@ public class JdbcHelper {
                 "  select o.id, '" + sqlDate + "', "+duration +","+ count +"," + max +"," +min + "," + mean + "," + median + "," + standardDeviation +
                 "," + p95+"," + p98+"," + p99+ "\n" +
                 "  from ObservedKeys o\n" +
-                "  where prefix='" + prefix + "' and methodName = '" + methodName + "';";
+                "  where serviceName='" + serviceName + "' and methodName = '" + methodName + "';";
         return sql;
     }
 }

@@ -5,5 +5,5 @@ package org.valuereporter.statistics;
  */
 public class ShowUnusedMethodsDao {
 
-    private static final String selectDistinctObservations = "SELECT DISTINCT  methodName FROM ObservedMethod where prefix like ?";
+    private static final String selectDistinctObservations = "SELECT DISTINCT  methodName FROM ObservedMethod where serviceName like ?";
 }

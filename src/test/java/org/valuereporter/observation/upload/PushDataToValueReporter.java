@@ -25,17 +25,17 @@ public class PushDataToValueReporter {
     private static final Logger log = LoggerFactory.getLogger(PushDataToValueReporter.class);
     private String reporterHost = "localhost";
     private String reporterPort = "4901";
-    private String prefix = "PushDataToValueReporter";
+    private String serviceName = "PushDataToValueReporter";
     private static ObjectMapper mapper = new ObjectMapper();
     private static final int STATUS_BAD_REQUEST = 400; //Response.Status.BAD_REQUEST.getStatusCode();
     private static final int STATUS_OK = 200; //Response.Status.OK.getStatusCode();
     private static final int STATUS_FORBIDDEN = 403;
 
 
-    public PushDataToValueReporter(String reporterHost, String reporterPort, String prefix) {
+    public PushDataToValueReporter(String reporterHost, String reporterPort, String serviceName) {
         this.reporterHost = reporterHost;
         this.reporterPort = reporterPort;
-        this.prefix = prefix;
+        this.serviceName = serviceName;
     }
     public static void main(String[] args) {
 
@@ -60,8 +60,8 @@ public class PushDataToValueReporter {
         String observationUrl = "http://"+reporterHost + ":" + reporterPort +"/reporter/observe";
         log.info("Connection to ValueReporter on {}" , observationUrl);
         final WebTarget observationTarget = client.target(observationUrl);
-        //WebTarget webResource = findWebResourceByPrefix(prefix);
-        WebTarget webResource = observationTarget.path("observedmethods").path(prefix);
+        //WebTarget webResource = findWebResourceByPrefix(serviceName);
+        WebTarget webResource = observationTarget.path("observedmethods").path(serviceName);
         //String observedMethodsJson = mapper.writeValueAsString(observedMethods);
         log.trace("Forwarding implementedMethods as Json \n{}", implementedMethodsAsJson);
 
@@ -85,8 +85,8 @@ public class PushDataToValueReporter {
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 1000;
         long duration = 1000;
-        firstMethods.add(new ObservedMethod(prefix, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
-        firstMethods.add(new ObservedMethod(prefix, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
+        firstMethods.add(new ObservedMethod(serviceName, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
+        firstMethods.add(new ObservedMethod(serviceName, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
         return firstMethods;
     }
 
@@ -95,7 +95,7 @@ public class PushDataToValueReporter {
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 200;
         long duration = 200;
-        secondMethods.add(new ObservedMethod(prefix, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
+        secondMethods.add(new ObservedMethod(serviceName, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
         return secondMethods;
     }
 

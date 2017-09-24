@@ -43,32 +43,32 @@ public class ObservationsService implements QueryOperations, WriteOperations {
     }
 
     @Override
-    public List<ObservedMethod> findObservationsByName(String prefix, String name) {
-        List<ObservedMethod> returnResult = getObservedMethods(prefix,name);
+    public List<ObservedMethod> findObservationsByName(String serviceName, String name) {
+        List<ObservedMethod> returnResult = getObservedMethods(serviceName,name);
         if (returnResult == null || returnResult.size() < 1) {
             returnResult = new ArrayList<>();
-            returnResult.add(new ObservedMethod(prefix,name +"-template", System.currentTimeMillis(), System.currentTimeMillis() + 1));
+            returnResult.add(new ObservedMethod(serviceName,name +"-template", System.currentTimeMillis(), System.currentTimeMillis() + 1));
         }
         return returnResult;
     }
 
     @Override
-    public long addObservations(String prefix, List<ObservedMethod> observedMethods) {
+    public long addObservations(String serviceName, List<ObservedMethod> observedMethods) {
         long size = 0;
         if (observedMethods != null) {
-            if (!isScheduled(prefix)) {
-                createScheduler(prefix);
+            if (!isScheduled(serviceName)) {
+                createScheduler(serviceName);
             }
-            observationsRepository.updateStatistics(prefix, intervalSeconds, observedMethods);
+            observationsRepository.updateStatistics(serviceName, intervalSeconds, observedMethods);
             if (isPersistMethodDetails()) {
-                observationDao.addAll(prefix, observedMethods);
+                observationDao.addAll(serviceName, observedMethods);
             }
             size = observedMethods.size();
         }
         return size;
     }
 
-    synchronized void createScheduler(String prefix) {
+    synchronized void createScheduler(String serviceName) {
         if (statisticsPersister == null) {
             long initialDelay = INITIAL_DELAY;
             long delayBetweenRuns = DELAY_BETWEEN_RUNS;
@@ -79,14 +79,14 @@ public class ObservationsService implements QueryOperations, WriteOperations {
             long shutdownAfter = -1; //Not used
             statisticsPersister = new StatisticsPersister(initialDelay, delayBetweenRuns, shutdownAfter);
         }
-        statisticsPersister.startScheduler(observationsRepository, prefix);
-        scheduledPrefixes.put(prefix, statisticsPersister);
+        statisticsPersister.startScheduler(observationsRepository, serviceName);
+        scheduledPrefixes.put(serviceName, statisticsPersister);
 
     }
 
-    synchronized boolean isScheduled(String prefix) {
+    synchronized boolean isScheduled(String serviceName) {
         boolean isScheduled = false;
-        if (scheduledPrefixes.get(prefix) != null) {
+        if (scheduledPrefixes.get(serviceName) != null) {
             //TODO And secure that the scheduler is active.
             isScheduled = true;
         }
@@ -106,8 +106,8 @@ public class ObservationsService implements QueryOperations, WriteOperations {
 
     }
 
-    public List<ObservedMethod> getObservedMethods(String prefix, String name) {
-        List<ObservedMethod> observedMethods = observationDao.findObservedMethods(prefix, name);
+    public List<ObservedMethod> getObservedMethods(String serviceName, String name) {
+        List<ObservedMethod> observedMethods = observationDao.findObservedMethods(serviceName, name);
         return observedMethods;
 
     }

@@ -37,9 +37,9 @@ public class ActivitiesResource {
         this.activitiesService = activitiesService;
     }
 
-    //Available at http://localhost:4901/reporter/observe/activities/{prefix}/logon/user/{userid}
+    //Available at http://localhost:4901/reporter/observe/activities/{SERVICE_NAME}/logon/user/{userid}
     @GET
-    @Path("/{prefix}/logon/user/{userid}")
+    @Path("/{serviceName}/logon/user/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listLogon(@PathParam("userid") String userid) {
         List<Long> logons = new ArrayList<>();
@@ -55,27 +55,27 @@ public class ActivitiesResource {
         return Response.ok(logonlist).build();
 
     }
-    //Available at http://localhost:4901/reporter/observe/activities/{prefix}
+    //Available at http://localhost:4901/reporter/observe/activities/{SERVICE_NAME}
     @POST
-    @Path("/{prefix}")
+    @Path("/{serviceName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addObservationActivity(@PathParam("prefix") String prefix, String jsonBody){
-        log.trace("addObservationActivity prefix {} , jsonBody {}.", prefix, jsonBody);
+    public Response addObservationActivity(@PathParam("serviceName") String serviceName, String jsonBody){
+        log.trace("addObservationActivity SERVICE_NAME {} , jsonBody {}.", serviceName, jsonBody);
         List<ObservedActivity> observedActivities = null;
         try {
             observedActivities = buildObservedActivitiesFromJson(jsonBody);
             if (observedActivities != null) {
                 for (ObservedActivity observedActivity : observedActivities) {
-                    observedActivity.setServiceName(prefix);
+                    observedActivity.setServiceName(serviceName);
                 }
             }
         } catch (IOException e) {
-            log.warn("Unexpected error trying to produce list of ObservedActivity from \n prefix {} \n json {}, \n Reason {}",prefix, jsonBody, e.getMessage());
+            log.warn("Unexpected error trying to produce list of ObservedActivity from \n SERVICE_NAME {} \n json {}, \n Reason {}",serviceName, jsonBody, e.getMessage());
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Error converting to requested format.").build();
         }
 
-//        long updatedCount = observedActivities.size(); //writeOperations.addObservations(prefix,observedMethods);
-        long updatedCount = activitiesService.updateActivities(prefix,observedActivities);
+//        long updatedCount = observedActivities.size(); //writeOperations.addObservations(SERVICE_NAME,observedMethods);
+        long updatedCount = activitiesService.updateActivities(serviceName,observedActivities);
         String message =  "added " + updatedCount + " observedMethods.";
         Writer strWriter = new StringWriter();
         try {

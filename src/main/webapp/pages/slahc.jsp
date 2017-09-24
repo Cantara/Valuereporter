@@ -1,11 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib serviceName="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>SLA using HighChart</title>
 
 </head>
 <body>
-<h2>SLA graf for ${model.prefix}</h2>
+<h2>SLA graf for ${model.serviceName}</h2>
 <h4>${message}</h4>
 <div id="chart2" style="height:300px; width:500px;"></div>
 
@@ -16,8 +16,8 @@
 <script type="text/javascript">
     var chart;
     var dill='${pageContext.request.contextPath}/graph/collection.json';
-    var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/${model.prefix}/${model.methodName}";
-    $.getJSON('/reporter/observe/observedmethods/${model.prefix}/${model.methodName}', function(data) {
+    var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/${model.serviceName}/${model.methodName}";
+    $.getJSON('/reporter/observe/observedmethods/${model.serviceName}/${model.methodName}', function(data) {
         var mySeries = [];
 
         console.log(data);

@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ObservedQueryOperations {
 
-    List<UsageStatistics> findUsage(String prefix, String filter, DateTime from, DateTime to);
+    List<UsageStatistics> findUsage(String serviceName, String filter, DateTime from, DateTime to);
 
 }

@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib serviceName="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>Whydah User Logons</title>
@@ -15,16 +15,16 @@
 <script src="//code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript">
     //Expected output
-    //{"prefix":"All","activityName":"userlogon","startTime":1457332861892,"endTime":1457419261892,"activities":{"userlogons":[1457419114782,1457419114782]}}
+    //{"serviceName":"All","activityName":"userlogon","startTime":1457332861892,"endTime":1457419261892,"activities":{"userlogons":[1457419114782,1457419114782]}}
     //Current output
-    //[{"prefix":"initial","methodName":"com.valuereporter.test","duration":900000,"startTime":1457348563296,"count":4,"max":50,"min":2,"mean":5.0,"median":0.0,"stdDev":0.0,"p95":0.0,"p98":0.0,"p99":0.0}]
+    //[{"serviceName":"initial","methodName":"com.valuereporter.test","duration":900000,"startTime":1457348563296,"count":4,"max":50,"min":2,"mean":5.0,"median":0.0,"stdDev":0.0,"p95":0.0,"p98":0.0,"p99":0.0}]
     Highcharts.setOptions({
         global: {
             useUTC: false
         }
     });
     var chart;
-    $.getJSON('/reporter/observe/statistics/${model.prefix}/userlogon?startTime=${model.from}&endTime=${model.to}', function(data) {
+    $.getJSON('/reporter/observe/statistics/${model.serviceName}/userlogon?startTime=${model.from}&endTime=${model.to}', function(data) {
         //var methodNames = '${model.methodName}'.split(".");
        // var niceNum=methodNames.length-2;
         var graphTitle='User Logons';//methodNames[niceNum] + '.' + methodNames[niceNum+1];

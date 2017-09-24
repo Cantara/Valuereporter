@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib serviceName="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>Whydah usersessions</title>
@@ -15,7 +15,7 @@
 <script src="//code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript">
     // Expected output
-    //{"prefix":"All","activityName":"userSession","startTime":1457332781744,"endTime":1457419181744,"activities":{"userSessions":[{"prefix":"","name":"userSession","startTime":1457419114782,"data":{"usersessionfunction":null,"applicationid":"app1","userid":"me","applicationtokenid":"token1"}},{"prefix":"","name":"userSession","startTime":1457419114782,"data":{"usersessionfunction":null,"applicationid":"app2","userid":"me","applicationtokenid":"token2"}}]}}
+    //{"serviceName":"All","activityName":"userSession","startTime":1457332781744,"endTime":1457419181744,"activities":{"userSessions":[{"serviceName":"","name":"userSession","startTime":1457419114782,"data":{"usersessionfunction":null,"applicationid":"app1","userid":"me","applicationtokenid":"token1"}},{"serviceName":"","name":"userSession","startTime":1457419114782,"data":{"usersessionfunction":null,"applicationid":"app2","userid":"me","applicationtokenid":"token2"}}]}}
     //-->
     Highcharts.setOptions({
         global: {
@@ -23,7 +23,7 @@
         }
     });
     var chart;
-    $.getJSON('/reporter/observe/statistics/${model.prefix}/usersession?startTime=${model.from}&endTime=${model.to}', function(data) {
+    $.getJSON('/reporter/observe/statistics/${model.serviceName}/usersession?startTime=${model.from}&endTime=${model.to}', function(data) {
         <%--var methodNames = '${model.methodName}'.split(".");--%>
 //        var niceNum=methodNames.length-2;
         var graphTitle='User Session Activities';//methodNames[niceNum] + '.' + methodNames[niceNum+1];

@@ -17,15 +17,15 @@ import java.util.Map;
 public class ValueController {
     private static final Logger log = LoggerFactory.getLogger(ValueController.class);
 
-    public static final String PREFIX = "prefix";
+    public static final String SERVICE_NAME = "SERVICE_NAME";
     public static final String FILTER_ON_NAME = "filterOnName";
 
     @RequestMapping("/inuse")
-    public ModelAndView showSlaGraph(@RequestParam(value = PREFIX, required = true) String prefix, @RequestParam(value = FILTER_ON_NAME, required = false) String filterOnName) {
+    public ModelAndView showSlaGraph(@RequestParam(value = SERVICE_NAME, required = true) String serviceName, @RequestParam(value = FILTER_ON_NAME, required = false) String filterOnName) {
         Map model = new HashMap<String,String>();
-        model.put(PREFIX, prefix);
+        model.put(SERVICE_NAME, serviceName);
         model.put(FILTER_ON_NAME, filterOnName);
-        log.trace("Input prefix {}, filterOnName {}", prefix, filterOnName);
+        log.trace("Input serviceName {}, filterOnName {}", serviceName, filterOnName);
         return new ModelAndView("inuse", "model", model);
     }
 

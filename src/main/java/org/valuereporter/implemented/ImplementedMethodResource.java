@@ -37,24 +37,24 @@ public class ImplementedMethodResource {
         this.mapper = mapper;
     }
 
-    //http://localhost:4901/reporter/observe/implementedmethod/{prefix}/{name}
+    //http://localhost:4901/reporter/observe/implementedmethod/{serviceName}/{name}
     /**
      * A request with no filtering parameters should return a list of all ImplementedMethods.
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @param name    package.classname.method
      * @return  List of ImplementedMethods
      */
     @GET
-    @Path("/{prefix}/{name}")
+    @Path("/{serviceName}/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findImplementedMethodsByName(@PathParam("prefix") String prefix,@PathParam("name") String name) {
+    public Response findImplementedMethodsByName(@PathParam("serviceName") String serviceName,@PathParam("name") String name) {
         final List<ImplementedMethod> implementedMethods;
 
         //Should also support no queryParams -> findAll
         if (name != null ) {
             log.trace("findImplementedMethodsByName name={}", name);
-            implementedMethods = queryOperations.findImplementedMethods(prefix, name);
+            implementedMethods = queryOperations.findImplementedMethods(serviceName, name);
         } else {
             throw new UnsupportedOperationException("You must supply a name. <package.classname.method>");
         }
@@ -69,25 +69,25 @@ public class ImplementedMethodResource {
         return Response.ok(strWriter.toString()).build();
     }
 
-    //http://localhost:4901/reporter/observe/implementedmethods/{prefix}
+    //http://localhost:4901/reporter/observe/implementedmethods/{serviceName}
     /**
      * A request with no filtering parameters should return a list of all ImplementedMethods.
      *
-     * @param prefix prefix used to identify running process
+     * @param serviceName serviceName used to identify running process
      * @return  List of ImplementedMethods
      */
     @GET
-    @Path("/{prefix}")
+    @Path("/{serviceName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findImplementedMethodsPrefix(@PathParam("prefix") String prefix) {
+    public Response findImplementedMethodsPrefix(@PathParam("serviceName") String serviceName) {
         final List<ImplementedMethod> implementedMethods;
 
         //Should also support no queryParams -> findAll
-        if (prefix != null ) {
-            log.trace("findImplementedMethodsByPrefix prefix={}", prefix);
-            implementedMethods = queryOperations.findImplementedMethods(prefix, null);
+        if (serviceName != null ) {
+            log.trace("findImplementedMethodsByPrefix serviceName={}", serviceName);
+            implementedMethods = queryOperations.findImplementedMethods(serviceName, null);
         } else {
-            throw new UnsupportedOperationException("You must supply a prefix.");
+            throw new UnsupportedOperationException("You must supply a serviceName.");
         }
 
         Writer strWriter = new StringWriter();
@@ -100,18 +100,18 @@ public class ImplementedMethodResource {
         return Response.ok(strWriter.toString()).build();
     }
 
-    //http://localhost:4901/reporter/observe/implementedmethod/{prefix}
+    //http://localhost:4901/reporter/observe/implementedmethod/{serviceName}
     @POST
-    @Path("/{prefix}")
+    @Path("/{serviceName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addObservationMethod(@PathParam("prefix") String prefix, String jsonBody){
-        log.trace("addObservationMethod prefix {} , jsonBody {}.", prefix, jsonBody);
+    public Response addObservationMethod(@PathParam("serviceName") String serviceName, String jsonBody){
+        log.trace("addObservationMethod serviceName {} , jsonBody {}.", serviceName, jsonBody);
         List<ImplementedMethod> implementedMethods = null;
         try {
             implementedMethods = mapper.readValue(jsonBody, new TypeReference<ArrayList<ImplementedMethodJson>>(){ });
             if (implementedMethods != null) {
                 for (ImplementedMethod implementedMethod : implementedMethods) {
-                    implementedMethod.setPrefix(prefix);
+                    implementedMethod.setPrefix(serviceName);
                 }
             }
         } catch (IOException e) {

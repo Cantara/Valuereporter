@@ -11,23 +11,23 @@ public class PrefixCollectionTest {
 
     @Test
     public void testUpdateStatistics() throws Exception {
-        PrefixCollection prefixCollection = new PrefixCollection("test");
+        PrefixCollection serviceNameCollection = new PrefixCollection("test");
         ObservedMethod method = new ObservedMethod("testMethod", System.currentTimeMillis(), System.currentTimeMillis());
-        prefixCollection.updateStatistics(method);
+        serviceNameCollection.updateStatistics(method);
 
     }
 
     @Test
     public void testGetIntervalls() throws Exception {
-        PrefixCollection prefixCollection = new PrefixCollection("test");
+        PrefixCollection serviceNameCollection = new PrefixCollection("test");
         ObservedMethod method1a = new ObservedMethod("testMethod", System.currentTimeMillis(), System.currentTimeMillis());
         ObservedMethod method1b = new ObservedMethod("testMethod", System.currentTimeMillis()+2, System.currentTimeMillis()+3);
         ObservedMethod method2 = new ObservedMethod("testMethod2", System.currentTimeMillis(), System.currentTimeMillis());
-        prefixCollection.updateStatistics(method1a);
-        prefixCollection.updateStatistics(method1b);
-        prefixCollection.updateStatistics(method2);
+        serviceNameCollection.updateStatistics(method1a);
+        serviceNameCollection.updateStatistics(method1b);
+        serviceNameCollection.updateStatistics(method2);
 
-        List<ObservedInterval> intervalls = prefixCollection.getIntervals();
+        List<ObservedInterval> intervalls = serviceNameCollection.getIntervals();
         assertNotNull(intervalls);
         assertEquals(intervalls.size(),2);
         ObservedInterval testMethod = findInList("testMethod", intervalls);

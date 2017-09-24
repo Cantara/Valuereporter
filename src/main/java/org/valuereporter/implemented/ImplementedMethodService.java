@@ -22,12 +22,12 @@ public class ImplementedMethodService implements QueryOperations, WriteOperation
     }
 
     @Override
-    public List<ImplementedMethod> findImplementedMethods(String prefix, String name) {
+    public List<ImplementedMethod> findImplementedMethods(String serviceName, String name) {
         List<ImplementedMethod> implementedMethods = new ArrayList<>();
-        if (prefix != null && name != null) {
-            implementedMethods = implementedMethodDao.findImplementedMethods(prefix,name);
-        } else if (prefix != null) {
-            implementedMethods = implementedMethodDao.findImplementedMethodsByPrefix(prefix);
+        if (serviceName != null && name != null) {
+            implementedMethods = implementedMethodDao.findImplementedMethods(serviceName,name);
+        } else if (serviceName != null) {
+            implementedMethods = implementedMethodDao.findImplementedMethodsByPrefix(serviceName);
         }
         return implementedMethods;
     }

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 
 public class ThreadSafeObservationsServiceVerification {
     private static final Logger log = LoggerFactory.getLogger(ThreadSafeObservationsServiceVerification.class);
-    public static final String PREFIX = "MultiThreadVerification";
+    public static final String SERVICE_NAME = "MultiThreadVerification";
 
     public static final String FIRST_METHOD = "org.valuereporter.first.firstMethod";
     public static final String SECOND_METHOD = "org.valuereporter.second.secondMethod";
@@ -31,7 +31,7 @@ public class ThreadSafeObservationsServiceVerification {
         UpdateObservationsToServiceRunner firstObservationsB = new UpdateObservationsToServiceRunner(FIRST_METHOD, observationsService);
         UpdateObservationsToServiceRunner secondObservationsB = new UpdateObservationsToServiceRunner(SECOND_METHOD, observationsService);
 
-       // PersistObservationsRunner persistObservations = new PersistObservationsRunner(PREFIX, repository);
+       // PersistObservationsRunner persistObservations = new PersistObservationsRunner(SERVICE_NAME, repository);
         firstObservationsA.start();
         secondObservationsA.start();
         firstObservationsB.start();
@@ -50,19 +50,19 @@ public class ThreadSafeObservationsServiceVerification {
         //Child processes are finished.
         //Verify
         log.info("Expect updateStatistics to be called more than once. Count: {}",observationDao.getUpdateStatisticsCount());
-        Map<String, PrefixCollection> prefixes = repository.getPrefixes();
-        Set<String> keys = prefixes.keySet();
+        Map<String, PrefixCollection> serviceNamees = repository.getPrefixes();
+        Set<String> keys = serviceNamees.keySet();
         log.info("Expect size of 1. Size is {}", keys.size());
-        for (String prefixKey : keys) {
-            log.info("Found prefix {}", prefixKey);
+        for (String serviceNameKey : keys) {
+            log.info("Found serviceName {}", serviceNameKey);
         }
 
-        PrefixCollection collection = prefixes.get(PREFIX);
+        PrefixCollection collection = serviceNamees.get(SERVICE_NAME);
         List<ObservedInterval> intervals = collection.getIntervals();
         for (ObservedInterval interval : intervals) {
             log.info("ObserveInterval. name {}, count {} mean {} " , interval.getMethodName(), interval.getCount(), interval.getMean());
         }
-        repository.persistAndResetStatistics(PREFIX, 1L);
+        repository.persistAndResetStatistics(SERVICE_NAME, 1L);
 
         log.info("-END-");
     }

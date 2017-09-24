@@ -10,12 +10,12 @@ public class PersistObservationsRunner extends Thread {
 
     private final Logger log = LoggerFactory.getLogger(PersistObservationsRunner.class);
     private final ObservationsRepository observationsRepository;
-    private final String prefix;
+    private final String serviceName;
 
-    PersistObservationsRunner(String prefix, ObservationsRepository observationsRepository) {
+    PersistObservationsRunner(String serviceName, ObservationsRepository observationsRepository) {
         super("PersistObservationsRunner");
         this.observationsRepository = observationsRepository;
-        this.prefix = prefix;
+        this.serviceName = serviceName;
     }
 
     public void run() {
@@ -25,7 +25,7 @@ public class PersistObservationsRunner extends Thread {
             } catch (InterruptedException e) {
                 log.trace("Interupted {}", getName());
             }
-            observationsRepository.persistAndResetStatistics(prefix,1L);
+            observationsRepository.persistAndResetStatistics(serviceName,1L);
         }
     }
 }

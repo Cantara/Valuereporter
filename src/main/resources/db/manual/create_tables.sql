@@ -1,7 +1,7 @@
 use valuereporter;
 create table if not exists ObservedMethod (
   id bigint auto_increment primary key,
-  prefix varchar(255) NOT NULL,
+  serviceName varchar(255) NOT NULL,
   methodName varchar(255) NOT NULL,
   startTime datetime NOT NULL,
   endTime datetime NOT NULL,
@@ -9,16 +9,16 @@ create table if not exists ObservedMethod (
 ) engine=InnoDB default charset latin1;
 
 
-insert into ObservedMethod (prefix,methodName, startTime, endTime, duration) values ('inital', 'com.valuereporter.test', '2014-05-13T12:02:43.296','2014-05-13T12:02:43.596',300);
+insert into ObservedMethod (serviceName,methodName, startTime, endTime, duration) values ('inital', 'com.valuereporter.test', '2014-05-13T12:02:43.296','2014-05-13T12:02:43.596',300);
 
 create table if not exists ObservedKeys (
   id bigint auto_increment primary key ,
-  prefix varchar(255) NOT NULL,
+  serviceName varchar(255) NOT NULL,
   methodName varchar(255) NOT NULL,
-  UNIQUE prefix_name(`prefix`, `methodName`)
+  UNIQUE serviceName_name(`serviceName`, `methodName`)
 );
 
-insert into ObservedKeys(prefix, methodName) value ('initial', 'com.valuereporter.test');
+insert into ObservedKeys(serviceName, methodName) value ('initial', 'com.valuereporter.test');
 
 create table if not exists ObservedInterval (
   id bigint auto_increment primary key,
@@ -41,4 +41,4 @@ create table if not exists ObservedInterval (
 insert into ObservedInterval (observedKeysId, startTime, duration, vrCount, vrMax, vrMean,vrMin,vrMedian, stdDev)
   select o.id, '2014-05-13T12:02:43.296', 15*60*1000, 4, 50, 5.0, 2,0,0
   from ObservedKeys o
-  where prefix='initial' and methodName = 'com.valuereporter.test';
+  where serviceName='initial' and methodName = 'com.valuereporter.test';

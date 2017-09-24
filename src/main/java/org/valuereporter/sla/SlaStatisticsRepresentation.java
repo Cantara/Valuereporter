@@ -9,12 +9,12 @@ public class SlaStatisticsRepresentation {
 
     private final Long start;
     private final Long end;
-    private String prefix;
+    private String serviceName;
     private String methodName;
     private List<SlaStatistics> slaStatisticses;
 
-    public SlaStatisticsRepresentation(String prefix, String methodName, Long start, Long end, List<SlaStatistics> slaStatisticses) {
-        this.prefix = prefix;
+    public SlaStatisticsRepresentation(String serviceName, String methodName, Long start, Long end, List<SlaStatistics> slaStatisticses) {
+        this.serviceName = serviceName;
         this.methodName = methodName;
         this.start = start;
         this.end = end;
@@ -22,7 +22,7 @@ public class SlaStatisticsRepresentation {
     }
 
     public String getPrefix() {
-        return prefix;
+        return serviceName;
     }
 
     public String getMethodName() {

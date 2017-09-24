@@ -29,16 +29,16 @@ public class JsonInputTester {
 
     private static String reporterHost;
     private static String reporterPort;
-    private static String prefix;
+    private static String serviceName;
 
-    public JsonInputTester(String reporterHost, String reporterPort, String prefix) {
+    public JsonInputTester(String reporterHost, String reporterPort, String serviceName) {
         this.reporterHost = reporterHost;
         this.reporterPort = reporterPort;
-        this.prefix = prefix;
+        this.serviceName = serviceName;
     }
 
     public static void main(String[] args) {
-        JsonInputTester tester = new JsonInputTester("localhost", "4901", "testprefix");
+        JsonInputTester tester = new JsonInputTester("localhost", "4901", "testserviceName");
         List<ObservedMethod> observedMethods = observedMethodsStub();
         tester.pushSomeData(observedMethods);
 
@@ -48,9 +48,9 @@ public class JsonInputTester {
             List<ObservedMethod> observedMethods = new ArrayList<>();
             long end = System.currentTimeMillis();
             long start = new DateTime(end).minusMillis(50).getMillis();
-            observedMethods.add(new ObservedMethod(prefix,"firstMethod",start, end));
-            observedMethods.add(new ObservedMethod(prefix,"firstMethod",start +2, end +3));
-            observedMethods.add(new ObservedMethod(prefix,"secondMethod",start +10, end +12));
+            observedMethods.add(new ObservedMethod(serviceName,"firstMethod",start, end));
+            observedMethods.add(new ObservedMethod(serviceName,"firstMethod",start +2, end +3));
+            observedMethods.add(new ObservedMethod(serviceName,"secondMethod",start +10, end +12));
             return observedMethods;
     }
 
@@ -59,8 +59,8 @@ public class JsonInputTester {
         String observationUrl = "http://"+reporterHost + ":" + reporterPort +"/reporter/observe/";
         log.info("Connection to ValueReporter on {}" , observationUrl);
         final WebTarget observationTarget = client.target(observationUrl);
-        //WebTarget webResource = findWebResourceByPrefix(prefix);
-        WebTarget webResource = observationTarget.path("observedmethods").path(prefix);
+        //WebTarget webResource = findWebResourceByPrefix(serviceName);
+        WebTarget webResource = observationTarget.path("observedmethods").path(serviceName);
         String observedMethodsJson = buildJson(observedMethods);
         log.trace("Forwarding implementedMethods as Json \n{}", observedMethodsJson);
 

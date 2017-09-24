@@ -4,16 +4,16 @@ package org.valuereporter.implemented;
  * @author <a href="bard.lind@gmail.com">Bard Lind</a>
  */
 public class ImplementedMethod {
-    private String prefix = "";
+    private String serviceName = "";
     private final String name;
 
 
     public ImplementedMethod(String name) {
         this.name = name;
-        prefix = "not-set";
+        serviceName = "not-set";
     }
-    public ImplementedMethod(String prefix, String name) {
-        this.prefix = prefix;
+    public ImplementedMethod(String serviceName, String name) {
+        this.serviceName = serviceName;
         this.name = name;
     }
 
@@ -24,7 +24,7 @@ public class ImplementedMethod {
     }
 
     public String getPrefix() {
-        return prefix;
+        return serviceName;
     }
 
 
@@ -32,7 +32,7 @@ public class ImplementedMethod {
     public String toString() {
         return "ObservedMethod{" +
                 "name='" + name +
-                ", prefix='" + prefix + '\'' +
+                ", serviceName='" + serviceName + '\'' +
                 '}';
     }
 
@@ -41,7 +41,7 @@ public class ImplementedMethod {
 
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setPrefix(String serviceName) {
+        this.serviceName = serviceName;
     }
 }

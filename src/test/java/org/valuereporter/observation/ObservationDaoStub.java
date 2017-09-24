@@ -17,11 +17,11 @@ public class ObservationDaoStub extends ObservationDao {
     }
 
     @Override
-    public int updateStatistics(String prefix, List<ObservedInterval> intervals) {
+    public int updateStatistics(String serviceName, List<ObservedInterval> intervals) {
 
         for (ObservedInterval interval : intervals) {
             updateStatisticsCount();
-            log.info("updateStatistics {}, {}, {}, {}", prefix, interval.getMethodName(), interval.getCount(), interval.getStartTime());
+            log.info("updateStatistics {}, {}, {}, {}", serviceName, interval.getMethodName(), interval.getCount(), interval.getStartTime());
         }
         return intervals.size();
     }

@@ -4,7 +4,7 @@ package org.valuereporter.observation;
  * @author <a href="bard.lind@gmail.com">Bard Lind</a>
  */
 public class ObservedMethod {
-    private String prefix = "";
+    private String serviceName = "";
     private final String name;
     private final long startTime;
     private final long endTime;
@@ -17,16 +17,16 @@ public class ObservedMethod {
         this.endTime = endTime;
         duration = endTime - startTime;
     }
-    public ObservedMethod(String prefix,String name, long startTime, long endTime) {
-        this.prefix = prefix;
+    public ObservedMethod(String serviceName,String name, long startTime, long endTime) {
+        this.serviceName = serviceName;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         duration = endTime - startTime;
     }
 
-    public ObservedMethod(String prefix, String name, long startTime, long endTime, long duration) {
-        this.prefix = prefix;
+    public ObservedMethod(String serviceName, String name, long startTime, long endTime, long duration) {
+        this.serviceName = serviceName;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -50,11 +50,11 @@ public class ObservedMethod {
     }
 
     public String getPrefix() {
-        return prefix;
+        return serviceName;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setPrefix(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ObservedMethod {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", duration=" + duration +
-                ", prefix='" + prefix + '\'' +
+                ", serviceName='" + serviceName + '\'' +
                 '}';
     }
 

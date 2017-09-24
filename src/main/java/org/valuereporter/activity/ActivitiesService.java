@@ -45,15 +45,15 @@ public class ActivitiesService {
         this.timeseriesUsername = timeseriesUsername;
         this.timeseriesPassword = timeseriesPassword;
         TimeseriesConnection defaultTSDb = new TimeseriesConnection(DEFAULT_DATABASE, timeseriesDatabaseName,timeseriesUsername,timeseriesPassword);
-        timeseriesConfigs.put(defaultTSDb.getPrefix(), defaultTSDb);
+        timeseriesConfigs.put(defaultTSDb.getServiceName(), defaultTSDb);
 
     }
 
-    public long updateActivities(String prefix, List<ObservedActivity> observedActivities) {
+    public long updateActivities(String serviceName, List<ObservedActivity> observedActivities) {
         long updatedActivities = 0;
 
         if (observedActivities != null && observedActivities.size() > 0) {
-            log.trace("Try to update {} activities for {}", observedActivities.size(), prefix);
+            log.trace("Try to update {} activities for {}", observedActivities.size(), serviceName);
             //TODO split into separate lambda/clojure expressions depending on activity.name
             Map<String,List<ObservedActivity>> activitiesByName = new HashMap<>();
             String name = null;
@@ -77,50 +77,50 @@ public class ActivitiesService {
                 updatedActivities += updateCount;
             }
 
-            sendActivities(prefix, observedActivities);
+            sendActivities(serviceName, observedActivities);
 
         }
         return updatedActivities;
     }
 
-    protected void sendActivities(String prefix, List<ObservedActivity> observedActivities) {
+    protected void sendActivities(String serviceName, List<ObservedActivity> observedActivities) {
         log.trace("Send {} activities to Timeseries", observedActivities.size());
-        TimeseriesConnection connection = findConnection(prefix);
+        TimeseriesConnection connection = findConnection(serviceName);
         if (connection != null) {
             CommandSendActivities sendActivities = new CommandSendActivities(timeseriesUri, connection, observedActivities);
             String result = sendActivities.execute();
             log.trace("Result from sending activities to Timeseries: {}", result);
         } else {
-            log.warn("No connection was found for prefix {}. Could not send {} activities to Timeseries", prefix, observedActivities.size());
+            log.warn("No connection was found for SERVICE_NAME {}. Could not send {} activities to Timeseries", serviceName, observedActivities.size());
         }
 
     }
 
-    protected TimeseriesConnection findConnection(String prefix) {
+    protected TimeseriesConnection findConnection(String serviceName) {
         TimeseriesConnection connection = null;
-        connection = timeseriesConfigs.get(prefix);
+        connection = timeseriesConfigs.get(serviceName);
         if (connection == null) {
-            connection = findConnectionInProperties(prefix);
+            connection = findConnectionInProperties(serviceName);
             if (connection == null) {
                 connection = timeseriesConfigs.get(DEFAULT_DATABASE);
             } else {
-                timeseriesConfigs.put(prefix, connection);
+                timeseriesConfigs.put(serviceName, connection);
             }
         }
 
         return connection;
     }
 
-    protected TimeseriesConnection findConnectionInProperties(String prefix) {
+    protected TimeseriesConnection findConnectionInProperties(String serviceName) {
         TimeseriesConnection connection = null;
-        if (hasContent(prefix)) {
+        if (hasContent(serviceName)) {
             try {
-                String timeseriesDatabaseName = getString("timeseries." + prefix + ".databasename");
-                String timeseriesUsername = getString("timeseries." + prefix + ".username");
-                String timeseriesPassword = getString("timeseries." + prefix + ".password");
-                connection = new TimeseriesConnection(prefix, timeseriesDatabaseName, timeseriesUsername, timeseriesPassword);
+                String timeseriesDatabaseName = getString("timeseries." + serviceName + ".databasename");
+                String timeseriesUsername = getString("timeseries." + serviceName + ".username");
+                String timeseriesPassword = getString("timeseries." + serviceName + ".password");
+                connection = new TimeseriesConnection(serviceName, timeseriesDatabaseName, timeseriesUsername, timeseriesPassword);
             } catch (ConstrettoException e) {
-                log.trace("Timeseries configuration for serviceName {} was not found. ", prefix);
+                log.trace("Timeseries configuration for SERVICE_NAME {} was not found. ", serviceName);
             }
         }
         return connection;

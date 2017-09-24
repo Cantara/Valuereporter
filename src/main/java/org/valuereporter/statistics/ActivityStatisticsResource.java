@@ -16,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by baardl on 02.03.16.
  */
 @Component
-@Path("/statistics/{prefix}")
+@Path("/statistics/{serviceName}")
 public class ActivityStatisticsResource {
     private static final Logger log = getLogger(ActivityStatisticsResource.class);
 
@@ -29,11 +29,11 @@ public class ActivityStatisticsResource {
         this.statisticsService = statisticsService;
     }
 
-    //Available at http://localhost:4901/reporter/observe/statistics/{prefix}/{activityName}
+    //Available at http://localhost:4901/reporter/observe/statistics/{serviceName}/{activityName}
     @GET
     @Path("/{activityName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listLogon(@PathParam("prefix") String prefix,@PathParam("activityName") String activityName, @QueryParam("startTime") Long startTime, @QueryParam("endTime") Long endTime) {
+    public Response listLogon(@PathParam("serviceName") String serviceName,@PathParam("activityName") String activityName, @QueryParam("startTime") Long startTime, @QueryParam("endTime") Long endTime) {
 
         ActivityStatistics activityStatistics = null;
         if (activityName != null) {
@@ -62,7 +62,7 @@ public class ActivityStatisticsResource {
     @GET
     @Path("/{activityName}/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listLogon(@PathParam("prefix") String prefix,@PathParam("activityName") String activityName,
+    public Response listLogon(@PathParam("serviceName") String serviceName,@PathParam("activityName") String activityName,
                               @PathParam("userid") String userid,
                               @QueryParam("startTime") Long startTime, @QueryParam("endTime") Long endTime) {
 

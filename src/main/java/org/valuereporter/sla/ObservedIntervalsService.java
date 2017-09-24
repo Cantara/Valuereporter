@@ -23,11 +23,11 @@ public class ObservedIntervalsService implements ObservedQueryOperations {
     }
 
     @Override
-    public List<UsageStatistics> findUsage(String prefix, String filter, DateTime from, DateTime to) {
-        log.trace("findUsage for prefix {}, filter {}", prefix, filter);
+    public List<UsageStatistics> findUsage(String serviceName, String filter, DateTime from, DateTime to) {
+        log.trace("findUsage for serviceName {}, filter {}", serviceName, filter);
         String methodFilter = filter;
-        List<UsageStatistics> usage = slaDao.findUsage(prefix, methodFilter, from, to);
-        log.trace("findUsage result for prefix {}, filter {}, from {}, to {}. Result count: {} ",prefix, filter, from, to,usage.size() );
+        List<UsageStatistics> usage = slaDao.findUsage(serviceName, methodFilter, from, to);
+        log.trace("findUsage result for serviceName {}, filter {}, from {}, to {}. Result count: {} ",serviceName, filter, from, to,usage.size() );
         return usage;
     }
 
