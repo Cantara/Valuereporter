@@ -70,11 +70,9 @@ public class ActivitiesService {
             Set<String> names = activitiesByName.keySet();
             for (String activityName : names) {
                 List<ObservedActivity> activities = activitiesByName.get(activityName);
-                //FIXME write userlogon to hsqldb
-                // long updateCount = updateActivitiesByName(activities);
-                long updateCount = 0;
-                log.warn("Write of userLogon to database is disabled.");
+                long updateCount = updateActivitiesByName(activities);
                 updatedActivities += updateCount;
+                log.trace("Updated {} activities to database.", updatedActivities);
             }
 
             sendActivities(serviceName, observedActivities);

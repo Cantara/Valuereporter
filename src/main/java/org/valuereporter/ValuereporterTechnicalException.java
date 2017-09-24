@@ -1,6 +1,5 @@
 package org.valuereporter;
 
-import org.valuereporter.helper.StatusType;
 
 /**
  * This class will identify that the root of these errors are tecnical, not user-created.

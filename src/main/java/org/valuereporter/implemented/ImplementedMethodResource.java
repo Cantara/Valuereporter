@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.valuereporter.StatusType;
 import org.valuereporter.ValuereporterInputException;
-import org.valuereporter.helper.StatusType;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.valuereporter.Main;
+import org.valuereporter.StatusType;
 import org.valuereporter.ValuereporterException;
 import org.valuereporter.ValuereporterTechnicalException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

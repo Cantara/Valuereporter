@@ -67,8 +67,8 @@ public class SlaStatisticsResource {
             }
             return Response.ok(strWriter.toString()).build();
         } catch (ValuereporterInputException vie) {
-            log.info("Failed to find sla statistics due to wrong input data. serviceName {}, methodName {}, from {}, to {}. MessageError: {}", serviceName, methodName, fromDate, toDate, vie.getUuid() );
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing or illegal input data. Report error " + vie.getUuid()).build();
+            log.info("Failed to find sla statistics due to wrong input data. serviceName {}, methodName {}, from {}, to {}. MessageError: {}", serviceName, methodName, fromDate, toDate, vie.getMessageId() );
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing or illegal input data. Report error " + vie.getMessageId()).build();
         }
     }
 }

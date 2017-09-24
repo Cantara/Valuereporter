@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.valuereporter.StatusType;
 import org.valuereporter.ValuereporterInputException;
-import org.valuereporter.helper.StatusType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

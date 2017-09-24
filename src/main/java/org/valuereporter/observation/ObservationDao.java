@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.valuereporter.StatusType;
 import org.valuereporter.ValuereporterException;
-import org.valuereporter.helper.StatusType;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

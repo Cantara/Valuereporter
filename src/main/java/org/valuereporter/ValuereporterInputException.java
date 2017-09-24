@@ -1,7 +1,5 @@
 package org.valuereporter;
 
-import org.valuereporter.helper.StatusType;
-
 /**
  * Created with IntelliJ IDEA.
  * User: bardl

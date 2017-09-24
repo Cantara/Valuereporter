@@ -3,6 +3,7 @@ package org.valuereporter.helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.valuereporter.Main;
+import org.valuereporter.StatusType;
 import org.valuereporter.ValuereporterException;
 import org.valuereporter.ValuereporterTechnicalException;
 
@@ -45,7 +46,7 @@ public class PropertiesHelper {
             }
             log.debug("Properties loaded: {}", properties.toString());
         } catch (IOException e) {
-            throw new ValuereporterException("Could not load properties from file.", e,StatusType.RETRY_NOT_POSSIBLE);
+            throw new ValuereporterException("Could not load properties from file.", e, StatusType.RETRY_NOT_POSSIBLE);
         }
         return properties;
     }
