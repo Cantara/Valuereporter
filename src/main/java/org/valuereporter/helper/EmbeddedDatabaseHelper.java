@@ -91,17 +91,23 @@ public class EmbeddedDatabaseHelper {
                 */
                 String filepath = "/home/baardl/sources/Valuereporter/db/Valuereporter";
                 Path rootPath = Paths.get(filepath);
-                try {
-                    Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
-                            .sorted(Comparator.reverseOrder())
-                            .map(Path::toFile)
-                            .peek(System.out::println)
-                            .forEach(File::delete);
-                } catch (IOException e) {
-                    ValuereporterException ve = new ValuereporterException("Failed to delete directory {}. Reason {}", e, filepath, e.getMessage());
+
+                if (Files.exists(rootPath)) {
+                    try {
+
+                        Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
+                                .sorted(Comparator.reverseOrder())
+                                .map(Path::toFile)
+                                .peek(System.out::println)
+                                .forEach(File::delete);
+                    } catch (IOException e) {
+                        ValuereporterException ve = new ValuereporterException("Failed to delete directory {}. Reason {}", e, filepath, e.getMessage());
+                        log.error("Failed to remove and replace existing HSQLDb ");
+                        throw ve;
+                    }
                 }
             }
-            return;
+//            return;
         }
 
         if (useEmbeddedDb) {
