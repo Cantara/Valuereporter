@@ -8,7 +8,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.valuereporter.activity.timeseries.CommandSendActivities;
 import org.valuereporter.activity.timeseries.TimeseriesConnection;
-import org.valuereporter.whydah.LogonDao;
 
 import java.net.URI;
 import java.util.*;
@@ -26,7 +25,6 @@ public class ActivitiesService {
     public static final String DEFAULT_DATABASE = "default";
 
     private final ActivitiesDao activitiesDao;
-    private final LogonDao logonDao;
     private final URI timeseriesUri;
     private final String timeseriesDatabaseName;
     private final String timeseriesUsername;
@@ -34,12 +32,11 @@ public class ActivitiesService {
     private Map<String, TimeseriesConnection> timeseriesConfigs = new HashMap<>();
 
     @Autowired
-    public ActivitiesService(ActivitiesDao activitiesDao, LogonDao logonDao, @Value("${timeseries.uri}") String timeseriesUrl ,
+    public ActivitiesService(ActivitiesDao activitiesDao, @Value("${timeseries.uri}") String timeseriesUrl ,
                              @Value("${timeseries.databasename}") String timeseriesDatabaseName,
                              @Value("${timeseries.username}") String timeseriesUsername,
                              @Value("${timeseries.password}") String timeseriesPassword) {
         this.activitiesDao = activitiesDao;
-        this.logonDao = logonDao;
         this.timeseriesUri = URI.create(timeseriesUrl);
         this.timeseriesDatabaseName = timeseriesDatabaseName;
         this.timeseriesUsername = timeseriesUsername;
@@ -150,10 +147,6 @@ public class ActivitiesService {
 
     private void createTable(String tableName, ArrayList<String> columnNames, List<ObservedActivity> observedActivities) {
         activitiesDao.createTable(tableName, columnNames, observedActivities.get(0));
-    }
-
-    public List<Long> findLogonsByUserid(String userid) {
-        return logonDao.findLogonsByUserId(userid);
     }
 
     private boolean isMissingTablexeption(DataAccessException de) {

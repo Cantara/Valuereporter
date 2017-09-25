@@ -1,9 +1,4 @@
 use ValueReporter;
-CREATE TABLE IF NOT EXISTS userLogon (
-  id bigint auto_increment primary key,
-  starttime TIMESTAMP  NOT NULL,
-  userid varchar(255)  NOT NULL
-);
 
 CREATE TABLE IF NOT EXISTS userSession (
   id bigint auto_increment primary key,

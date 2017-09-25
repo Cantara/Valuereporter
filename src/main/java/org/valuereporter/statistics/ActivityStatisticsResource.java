@@ -38,9 +38,6 @@ public class ActivityStatisticsResource {
         ActivityStatistics activityStatistics = null;
         if (activityName != null) {
             switch (activityName.toLowerCase()) {
-                case "userlogon":
-                    activityStatistics = statisticsService.findUserLogons(startTime, endTime);
-                    break;
                 case "usersession":
                     activityStatistics = statisticsService.findUserSessions(startTime, endTime);
                     break;
@@ -69,9 +66,6 @@ public class ActivityStatisticsResource {
         ActivityStatistics activityStatistics = null;
         if (activityName != null) {
             switch (activityName.toLowerCase()) {
-                case "userlogon":
-                    activityStatistics = statisticsService.findUserLogonsByUserid(userid,startTime, endTime);
-                    break;
                 case "usersession":
                     activityStatistics = statisticsService.findUserSessionsByUserid(userid,startTime, endTime);
                     break;

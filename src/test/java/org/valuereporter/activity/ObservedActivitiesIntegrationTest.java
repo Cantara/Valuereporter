@@ -4,6 +4,8 @@ package org.valuereporter.activity;
 import org.valuereporter.client.MonitorReporter;
 import org.valuereporter.client.activity.ObservedActivityDistributer;
 
+import static org.valuereporter.activity.ObservedActivity.Builder.observe;
+
 /**
  * Created by baardl on 05.03.16.
  */
@@ -24,7 +26,7 @@ public class ObservedActivitiesIntegrationTest {
 
         String userid = "TODO";
         do {
-            ObservedActivity observedActivity = new UserLogonObservedActivity(userid);
+            ObservedActivity observedActivity = observe("logon").addContext("userid", userid).build();
             MonitorReporter.reportActivity(observedActivity);
             Thread.sleep(100);
         } while (true);

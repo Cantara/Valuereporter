@@ -24,20 +24,6 @@ public class WhdyahGuiController {
     public static final String FROM = "from";
     public static final String TO = "to";
 
-    @RequestMapping("/whydah/userlogon")
-    public ModelAndView showSlaGraph(@RequestParam(value = SERVICE_NAME, required = false) String serviceName, @RequestParam(value = METHOD_NAME, required = false) String methodName) {
-        Map model = new HashMap<String,String>();
-        if (serviceName == null || serviceName.isEmpty()) {
-            serviceName = "all";
-        }
-        model.put(SERVICE_NAME, serviceName);
-        model.put(METHOD_NAME, methodName);
-        model.put("username", "All");
-        model.put(FROM, getDefaultFromTime());
-        log.trace("Input serviceName {}, methodName {}", serviceName,methodName);
-        return new ModelAndView("whydah/userlogon", "model", model);
-    }
-
 
     @RequestMapping("/whydah/usersession")
     public ModelAndView showSlaGraphInterval(@RequestParam(value = SERVICE_NAME, required = false) String serviceName, @RequestParam(value = METHOD_NAME, required = false) String methodName,

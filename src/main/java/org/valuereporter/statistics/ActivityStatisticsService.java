@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.valuereporter.activity.ActivitiesDao;
 import org.valuereporter.activity.ObservedActivity;
-import org.valuereporter.whydah.LogonDao;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,46 +21,12 @@ public class ActivityStatisticsService {
     private static final Logger log = getLogger(ActivityStatisticsService.class);
 
     private final ActivitiesDao activitiesDao;
-    private final LogonDao logonDao;
     private boolean allowStubData;
 
     @Autowired
-    public ActivityStatisticsService(ActivitiesDao activitiesDao, LogonDao logonDao) {
+    public ActivityStatisticsService(ActivitiesDao activitiesDao) {
         this.activitiesDao = activitiesDao;
-        this.logonDao = logonDao;
         allowStubData = Boolean.valueOf(System.getProperty("allowStubData"));
-    }
-
-
-    public ActivityStatistics findUserLogons(Long startTime, Long endTime) {
-        DateTime endPeriod = buildEndPeriod(endTime);
-        DateTime startPeriod = buildStartPeriod(startTime, endPeriod);
-
-        List<Long> logons = logonDao.findLogons(startPeriod,endPeriod);
-        ActivityStatistics activityStatistics = new ActivityStatistics("All","userlogon", startPeriod.getMillis(), endPeriod.getMillis());
-        if (allowStubData) {
-            if (logons == null || logons.size() == 0) {
-                logons.add(System.currentTimeMillis());
-            }
-        }
-        activityStatistics.add("userlogons", logons);
-        return activityStatistics;
-    }
-
-    public ActivityStatistics findUserLogonsByUserid(String userid, Long startTime, Long endTime) {
-        DateTime endPeriod = buildEndPeriod(endTime);
-        DateTime startPeriod = buildStartPeriod(startTime, endPeriod);
-
-        List<Long> logons = logonDao.findLogonsByUserId(userid,startPeriod,endPeriod);
-        ActivityStatistics activityStatistics = new ActivityStatistics("All","userlogon", startPeriod.getMillis(), endPeriod.getMillis());
-        if (allowStubData) {
-            if (logons == null || logons.size() == 0) {
-                logons.add(System.currentTimeMillis());
-            }
-        }
-
-        activityStatistics.add("userlogons", logons);
-        return activityStatistics;
     }
 
     private DateTime buildStartPeriod(Long startTime, DateTime endPeriod) {
