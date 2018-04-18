@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.valuereporter</groupId>
@@ -7,7 +8,9 @@
     <packaging>jar</packaging>
 
     <name>valuereporter</name>
-    <description>javaagent monitoring activities in your application. This information is forwarded to Valuereporter via http.</description>
+    <description>javaagent monitoring activities in your application. This information is forwarded to Valuereporter via
+        http.
+    </description>
 
     <url>http://www.valuereporter.org</url>
     <developers>
@@ -33,8 +36,8 @@
         <developerConnection>scm:git:ssh://git@github.com/cantara/Valuereporter.git</developerConnection>
         <connection>scm:git:https://github.com/cantara/Valuereporter.git</connection>
         <url>https://github.com/cantara/Valuereporter</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <repositories>
 
@@ -50,8 +53,9 @@
     <properties>
         <service.name>valuereporter</service.name>
         <slf4j.version>1.7.7</slf4j.version>
-        <spring.version>4.3.15.RELEASE</spring.version>
+        <spring.version>5.0.5.RELEASE</spring.version>
         <jetty.version>9.1.4.v20140401</jetty.version>
+        <!--        <jetty.version>9.4.8.v20171121</jetty.version>  --><!---->
         <jersey.version>2.25.1</jersey.version>
         <metrics.version>3.1.0</metrics.version>
         <jtds.version>1.3.1</jtds.version>
@@ -73,22 +77,22 @@
         </resources>
         <finalName>value-reporter</finalName>
         <plugins>
-           <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-javadoc-plugin</artifactId>
-               <version>2.9</version>
-               <executions>
-                  <execution>
-                    <id>attach-javadocs</id>
-                      <goals>
-                        <goal>jar</goal>
-                      </goals>
-                      <configuration>
-                        <additionalparam>-Xdoclint:none</additionalparam>
-                      </configuration>
-                   </execution>
-                 </executions>
-               </plugin>            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>            <!--
             http://confluence.highsource.org/display/~lexi/How+to+run+both+JUnit+and+TestNG+with+maven-surefire-plugin
             -->
             <plugin>
@@ -141,36 +145,46 @@
                             <shadedClassifierName>with-deps</shadedClassifierName>
 
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>org.valuereporter.Main</Main-Class>
                                     </manifestEntries>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.handlers</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.schemas</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/cxf/cxf.extension</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/extensions.xml</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/cxf/extensions.xml</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/cxf/bus-extensions.txt</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/cxf/bus-extensions.xml</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/wsdl.plugin.xml</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/tools.service.validator.xml</resource>
                                 </transformer>
                                 <!--
@@ -178,7 +192,8 @@
                                     <resource>META-INF/tools-plugin.xml</resource>
                                 </transformer>
                                 -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                     <resource>META-INF/cxf/java2wsbeans.xml</resource>
                                 </transformer>
                                 <!--
@@ -275,7 +290,8 @@
                                 <extraArguments>
                                     <extraArgument>-XX:PermSize=64m</extraArgument>
                                     <extraArgument>-XX:MaxPermSize=128m</extraArgument>
-                                    <extraArgument>-Dlogback.configurationFile=file:config_override/logback.xml</extraArgument>
+                                    <extraArgument>-Dlogback.configurationFile=file:config_override/logback.xml
+                                    </extraArgument>
                                 </extraArguments>
                             </jvmSettings>
                         </daemon>
@@ -428,13 +444,11 @@
             <artifactId>postgresql</artifactId>
             <version>9.4-1200-jdbc41</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>net.sourceforge.jtds</groupId>
             <artifactId>jtds</artifactId>
             <version>${jtds.version}</version>
         </dependency>
-        -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -578,7 +592,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.2.2.RELEASE</version>
+            <version>5.0.5.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -1,27 +1,47 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
     http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.2.xsd
 	">
 
-	<context:component-scan base-package="org.valuereporter.observation" />
+
+    <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+
+        <property name="locations">
+            <list>
+                <value>classpath:valuereporter.properties</value>
+                <!--<value>file:config_override/valuereporter.properties</value>-->
+            </list>
+        </property>
+    </bean>
+
+
+    <context:component-scan base-package="org.valuereporter.observation"/>
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg><ref bean="dataSource"/></constructor-arg>
+        <constructor-arg>
+            <ref bean="dataSource"/>
+        </constructor-arg>
+
     </bean>
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/valuereporter"/>
 
-        <property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
-        <property name="url" value="jdbc:jtds:sqlserver://localhost:1433/ValueReporter" />
-        <property name="username" value="vr" />
-        <property name="password" value="vr1234" />
+        <!--        <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver"/>
+                <property name="url" value="jdbc:hsqldb:file:db/hsqldb/ValueReporter"/> -->
+        <property name="username" value="vr"/>
+        <property name="password" value="vr1234"/>
     </bean>
 
-    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
 
 </beans>

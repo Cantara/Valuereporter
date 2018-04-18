@@ -10,7 +10,7 @@ import org.valuereporter.observation.ObservationDao;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-@Test
+@Test(enabled = false)
 @ContextConfiguration(locations = { "classpath:spring-test-config.xml" })
 public class TestSpring extends AbstractTestNGSpringContextTests {
 
@@ -19,7 +19,7 @@ public class TestSpring extends AbstractTestNGSpringContextTests {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-	@Test()
+    @Test(enabled = false)
 	void testEmailGenerator() {
 
 

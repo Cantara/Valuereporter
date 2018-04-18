@@ -13,7 +13,7 @@ import java.util.List;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-@Test
+@Test(enabled = false)
 @ContextConfiguration(locations = { "classpath:spring-test-config.xml" })
 public class ObservationDaoTest extends AbstractTestNGSpringContextTests {
     private static final Logger log = LoggerFactory.getLogger(ObservationDaoTest.class);
@@ -22,7 +22,7 @@ public class ObservationDaoTest extends AbstractTestNGSpringContextTests {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Test()
+    @Test(enabled = false)
     void findObservedMethods() {
 
 
