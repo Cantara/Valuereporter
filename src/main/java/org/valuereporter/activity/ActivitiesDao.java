@@ -104,6 +104,8 @@ public class ActivitiesDao {
     }
 
     protected String buildSql(String tableName, List<String> columnNames) {
+    	
+    	createTable(tableName);
         String sql = "INSERT INTO " + tableName +
                 "(" + START_TIME_COLUMN +", ";
         for (String columnName : columnNames) {
@@ -122,7 +124,8 @@ public class ActivitiesDao {
         return sql;
     }
 
-    public void createTable(String tableName, ArrayList<String> columnNames, ObservedActivity observedActivity) {
+    //public void createTable(String tableName, ArrayList<String> columnNames, ObservedActivity observedActivity) {
+      public void createTable(String tableName) {
         //TODO
         String tableSql = "";
         if (tableName.equalsIgnoreCase("userlogon")){

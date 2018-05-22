@@ -70,7 +70,7 @@ public class ActivitiesService {
             } catch (DataAccessException de) {
                 log.warn("Insert into {} failed, trying createTable",tableName);
                 if (isMissingTablexeption(de)) {
-                    createTable(tableName, columnNames, observedActivities);
+                    createTable(tableName);
                     updatedActivities = activitiesDao.insertActivities(tableName, columnNames, observedActivities);
                 }
             }
@@ -78,8 +78,8 @@ public class ActivitiesService {
         return updatedActivities;
     }
 
-    private void createTable(String tableName, ArrayList<String> columnNames, List<ObservedActivity> observedActivities) {
-        activitiesDao.createTable(tableName, columnNames, observedActivities.get(0));
+    private void createTable(String tableName) {
+        activitiesDao.createTable(tableName);
     }
 
     public List<Long> findLogonsByUserid(String userid) {
