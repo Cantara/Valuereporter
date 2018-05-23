@@ -111,4 +111,12 @@ public class ActivityStatisticsService {
         activityStatistics.add("userSessions", userSessions);
         return activityStatistics;
     }
+    public ActivityStatistics findUserSessionsByAppid(String appId, Long startTime, Long endTime) {
+        DateTime endPeriod = buildEndPeriod(endTime);
+        DateTime startPeriod = buildStartPeriod(startTime, endPeriod);
+        List<ObservedActivity> userSessions = activitiesDao.findUserSessionsByAppid(appId,startPeriod, endPeriod);
+        ActivityStatistics activityStatistics = new ActivityStatistics("All","userSession", startPeriod.getMillis(), endPeriod.getMillis());
+        activityStatistics.add("userSessions", userSessions);
+        return activityStatistics;
+    }
 }

@@ -60,21 +60,24 @@ public class ActivityStatisticsResource {
     }
 
     @GET
-    @Path("/{activityName}/{userid}")
+    @Path("/{activityName}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listLogon(@PathParam("prefix") String prefix,@PathParam("activityName") String activityName,
-                              @PathParam("userid") String userid,
+    public Response listActivities(@PathParam("prefix") String prefix,@PathParam("activityName") String activityName,
+                              @PathParam("id") String id,
                               @QueryParam("startTime") Long startTime, @QueryParam("endTime") Long endTime) {
 
         ActivityStatistics activityStatistics = null;
         if (activityName != null) {
             switch (activityName.toLowerCase()) {
                 case "userlogon":
-                    activityStatistics = statisticsService.findUserLogonsByUserid(userid,startTime, endTime);
+                    activityStatistics = statisticsService.findUserLogonsByUserid(id, startTime, endTime);
                     break;
                 case "usersession":
-                    activityStatistics = statisticsService.findUserSessionsByUserid(userid,startTime, endTime);
+                    activityStatistics = statisticsService.findUserSessionsByUserid(id, startTime, endTime);
                     break;
+                case "appsession": //HUY added
+                	 activityStatistics = statisticsService.findUserSessionsByAppid(id, startTime, endTime);
+                	 break;
                 default:
                     activityStatistics = new ActivityStatistics(activityName);
             }
@@ -89,5 +92,6 @@ public class ActivityStatisticsResource {
         return Response.ok(resultJson).build();
 
     }
+    
 
 }
