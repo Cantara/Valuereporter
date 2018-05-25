@@ -51,6 +51,7 @@
 
     <properties>
         <service.name>valuereporter</service.name>
+	<valuereporter-agent>0.6</valuereporter-agent>
         <slf4j.version>1.7.7</slf4j.version>
         <spring.version>5.0.6.RELEASE</spring.version>
         <jetty.version>9.2.24.v20180105</jetty.version>
@@ -581,13 +582,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.valuereporter</groupId>
             <artifactId>valuereporter-agent</artifactId>
-            <version>0.6</version>
+            <version>${valuereporter-agent}</version>
             <scope>test</scope>
         </dependency>
 
