@@ -51,7 +51,7 @@
 
     <properties>
         <service.name>valuereporter</service.name>
-	<valuereporter-agent>0.9</valuereporter-agent>
+        <valuereporter-agent>0.9</valuereporter-agent>
         <slf4j.version>1.7.7</slf4j.version>
         <spring.version>5.0.9.RELEASE</spring.version>
         <jetty.version>9.4.12.v20180830</jetty.version>
@@ -373,12 +373,12 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>${jetty.version}</version>
+            <version>9.4.12.v20180830</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>${jetty.version}</version>
+            <version>9.4.12.v20180830</version>
         </dependency>
 
         <!-- JSP and JSTL SUPPORT -->
@@ -386,7 +386,7 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-jsp</artifactId>
-		    <version>${jetty.version}</version>
+            <version>9.4.12.v20180830</version>
 		</dependency>
 
 
