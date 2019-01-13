@@ -3,7 +3,7 @@
 
     <groupId>org.valuereporter</groupId>
     <artifactId>valuereporter</artifactId>
-    <version>0.11.2-SNAPSHOT</version>
+    <version>0.11.2</version>
     <packaging>jar</packaging>
 
     <name>valuereporter</name>
@@ -35,7 +35,7 @@
         <developerConnection>scm:git:ssh://git@github.com/cantara/Valuereporter.git</developerConnection>
         <connection>scm:git:https://github.com/cantara/Valuereporter.git</connection>
         <url>https://github.com/cantara/Valuereporter</url>
-        <tag>HEAD</tag>
+        <tag>valuereporter-0.11.2</tag>
     </scm>
 
     <repositories>
