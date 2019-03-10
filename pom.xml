@@ -53,7 +53,7 @@
         <service.name>valuereporter</service.name>
         <valuereporter-agent>0.9</valuereporter-agent>
         <slf4j.version>1.7.7</slf4j.version>
-        <spring.version>5.1.4.RELEASE</spring.version>
+        <spring.version>5.1.5.RELEASE</spring.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
         <jersey.version>2.25.1</jersey.version>
         <metrics.version>3.1.0</metrics.version>
@@ -373,21 +373,34 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>9.4.12.v20180830</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>9.4.12.v20180830</version>
+            <version>${jetty.version}</version>
         </dependency>
+        <dependency>
+      		<groupId>org.eclipse.jetty</groupId>
+      		<artifactId>jetty-annotations</artifactId>
+      		<version>${jetty.version}</version>
+   		 </dependency>
 
         <!-- JSP and JSTL SUPPORT -->
-       <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp -->
+       <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp 
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-jsp</artifactId>
             <version>9.3.0.M1</version>
 		</dependency>
+		-->
+
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>apache-jsp</artifactId>
+		    <version>${jetty.version}</version>
+		</dependency>         
+		
 
 
         <dependency>
@@ -604,5 +617,19 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>2.2.3</version>
         </dependency>
+      
+ 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl -->
+		 <dependency>
+	        <groupId>javax.servlet</groupId>
+	        <artifactId>jstl</artifactId>
+	        <version>1.2</version>
+   		 </dependency>
+		  <dependency>
+		    <groupId>org.eclipse.jdt.core.compiler</groupId>
+		    <artifactId>ecj</artifactId>
+		    <version>4.6.1</version>
+		</dependency>
+		
+	
     </dependencies>
 </project>
