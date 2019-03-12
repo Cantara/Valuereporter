@@ -132,6 +132,15 @@ public class EmbeddedDatabaseHelper {
         try {
             String hsqldbUrl = jdbcUrl + ";ifexists=true";
             log.info("Try to connect to existing database with url {}", hsqldbUrl);
+            try {
+                Class.forName("org.hsqldb.jdbc.JDBCDriver" );
+            } catch (Exception e) {
+                System.err.println("ERROR: failed to load HSQLDB JDBC driver.");
+                e.printStackTrace();
+                return false;
+            }
+
+            
             DriverManager.getConnection(hsqldbUrl, jdbcUserName, jdbcPassword);
             isExistingDb = true;
         } catch (SQLException e) {
