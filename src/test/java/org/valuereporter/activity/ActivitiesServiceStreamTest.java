@@ -17,6 +17,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
@@ -77,7 +78,7 @@ public class ActivitiesServiceStreamTest {
         String json = this.mapper.writeValueAsString(observedActivities);
         assertTrue(json.contains("ByPin"));
         log.debug("Activities json {}", json);
-        Map<String, Long> counted = observedActivities.stream().collect(groupingBy(UserSessionObservedActivity::getName, counting()));
+        Map<String, Long> counted = observedActivities.stream().collect(groupingBy(UserSessionObservedActivity::getUserSessionFunction, counting()));
 
         assertEquals(observedActivities.size(),3);
         assertEquals(counted.get(UserSessionObservedActivity.USER_SESSION_ACTIVITY).longValue(),3);
@@ -121,12 +122,12 @@ public class ActivitiesServiceStreamTest {
 
     }
 
-    public class UserSessionObservedActivity extends org.valuereporter.agent.activity.ObservedActivity {
+    public class UserSessionObservedActivity extends org.valuereporter.activity.ObservedActivity {
         public static final String USER_SESSION_ACTIVITY = "userSession";
         private static final String USER_SESSION_ACTIVITY_DB_KEY = "userid";
 
         public UserSessionObservedActivity(String name, long time) {
-            super(name, time);
+            super(name, time, null);
         }
 
         public UserSessionObservedActivity(String userid, String userSessionActivity, String applicationtokenid) {
