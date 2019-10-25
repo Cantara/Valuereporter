@@ -28,33 +28,33 @@ public class UpdateObservationsRunner extends Thread {
                 } catch (InterruptedException e) {
                     log.trace("Interupted {}", getName());
                 }
-                observationsRepository.updateStatistics(PREFIX, 1L,getFirstMethods());
+                observationsRepository.updateStatistics(PREFIX, 1L, (ArrayList<ObservedMethodJson>) getFirstMethods());
             } else {
                 try {
                     Thread.sleep((int)(Math.random() * 1000));
                 } catch (InterruptedException e) {
                     log.trace("Interupted {}", getName());
                 }
-                observationsRepository.updateStatistics(PREFIX,1L,getSecondMethods());
+                observationsRepository.updateStatistics(PREFIX, 1L, (ArrayList<ObservedMethodJson>) getSecondMethods());
             }
         }
     }
 
-    List<ObservedMethod> getFirstMethods() {
-        List<ObservedMethod> firstMethods = new ArrayList<>();
+    List<ObservedMethodJson> getFirstMethods() {
+        List<ObservedMethodJson> firstMethods = new ArrayList<>();
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 1000;
         long duration = 1000;
-        firstMethods.add(new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
+        firstMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.FIRST_METHOD, startTime, endTime, duration));
         return firstMethods;
     }
 
-    List<ObservedMethod> getSecondMethods() {
-        List<ObservedMethod> firstMethods = new ArrayList<>();
+    List<ObservedMethodJson> getSecondMethods() {
+        List<ObservedMethodJson> firstMethods = new ArrayList<>();
         long endTime = System.currentTimeMillis();
         long startTime = endTime - 200;
         long duration = 200;
-        firstMethods.add(new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
+        firstMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, ThreadSafeObservationsRepositoryVerification.SECOND_METHOD, startTime, endTime, duration));
         return firstMethods;
     }
 }

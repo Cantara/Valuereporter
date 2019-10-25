@@ -120,7 +120,7 @@ public class ObservationDao {
         return observedMethods;
     }
 
-    public void addAll(final String prefix, final List<ObservedMethod> observedMethods) {
+    public void addAll(final String prefix, final ArrayList<ObservedMethodJson> observedMethods) {
         if (observedMethods != null && observedMethods.size() > 0) {
             try {
                 String sql = "INSERT INTO "

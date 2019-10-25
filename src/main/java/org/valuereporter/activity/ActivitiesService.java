@@ -26,7 +26,7 @@ public class ActivitiesService {
         this.logonDao = logonDao;
     }
 
-    public long updateActivities(String prefix, List<ObservedActivity> observedActivities) {
+    public long updateActivities(String prefix, ArrayList<ObservedActivityJson> observedActivities) {
         long updatedActivities = 0;
 
         if (observedActivities != null && observedActivities.size() > 0) {

@@ -25,7 +25,7 @@ public class ObservationsRepository {
         this.observationDao = observationDao;
     }
 
-    public void updateStatistics(String prefix, Long intervalInSec,List<ObservedMethod> methods) {
+    public void updateStatistics(String prefix, Long intervalInSec, ArrayList<ObservedMethodJson> methods) {
         PrefixCollection prefixCollection = getCollection(prefix, intervalInSec);
 
         for (ObservedMethod method : methods) {

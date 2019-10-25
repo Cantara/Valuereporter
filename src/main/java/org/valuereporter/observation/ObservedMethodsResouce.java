@@ -87,7 +87,7 @@ public class ObservedMethodsResouce {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addObservationMethod(@PathParam("prefix") String prefix, String jsonBody){
         log.trace("addObservationMethod prefix {} , jsonBody {}.", prefix, jsonBody);
-        List<ObservedMethod> observedMethods = null;
+        ArrayList<ObservedMethodJson> observedMethods = null;
         try {
             observedMethods = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedMethodJson>>(){ });
             if (observedMethods != null) {

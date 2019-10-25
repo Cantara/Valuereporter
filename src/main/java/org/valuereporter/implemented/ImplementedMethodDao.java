@@ -60,8 +60,7 @@ public class ImplementedMethodDao {
     }
 
 
-
-    public int addAll(final List<ImplementedMethod> implementedMethods) {
+    public int addAll(final List<ImplementedMethodJson> implementedMethods) {
         String sql = "INSERT INTO "
                 + "ImplementedMethod "
                 + "(prefix,methodName) "

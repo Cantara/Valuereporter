@@ -60,13 +60,13 @@ public class ObservationsRepositoryManualTest extends AbstractTestNGSpringContex
         repository.persistAndResetStatistics(PREFIX, 1L);
     }
 
-    private static List<ObservedMethod> observedMethodsStubs() {
-        List<ObservedMethod> observedMethods = new ArrayList<>();
+    private static ArrayList<ObservedMethodJson> observedMethodsStubs() {
+        List<ObservedMethodJson> observedMethods = new ArrayList<>();
         long end = System.currentTimeMillis();
         long start = new DateTime(end).minusMillis(50).getMillis();
-        observedMethods.add(new ObservedMethod(PREFIX,"firstMethod",start, end));
-        observedMethods.add(new ObservedMethod(PREFIX,"firstMethod",start +2, end +3));
-        observedMethods.add(new ObservedMethod(PREFIX,"secondMethodddd",start +10, end +12));
-        return observedMethods;
+        observedMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, "firstMethod", start, end));
+        observedMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, "firstMethod", start + 2, end + 3));
+        observedMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, "secondMethodddd", start + 10, end + 12));
+        return (ArrayList<ObservedMethodJson>) observedMethods;
     }
 }

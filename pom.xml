@@ -394,8 +394,15 @@
             <version>9.3.0.M1</version>
 		</dependency>
 		-->
+        <!-- https://mvnrepository.com/artifact/org.reactivestreams/reactive-streams -->
+        <dependency>
+            <groupId>org.reactivestreams</groupId>
+            <artifactId>reactive-streams</artifactId>
+            <version>1.0.3</version>
+        </dependency>
 
-		<dependency>
+
+        <dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>apache-jsp</artifactId>
 		    <version>${jetty.version}</version>

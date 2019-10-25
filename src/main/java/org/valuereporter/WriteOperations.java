@@ -1,12 +1,12 @@
 package org.valuereporter;
 
-import org.valuereporter.observation.ObservedMethod;
+import org.valuereporter.observation.ObservedMethodJson;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author <a href="bard.lind@gmail.com">Bard Lind</a>
  */
 public interface WriteOperations {
-    long addObservations(String prefix,List<ObservedMethod> observedMethods);
+    long addObservations(String prefix, ArrayList<ObservedMethodJson> observedMethods);
 }

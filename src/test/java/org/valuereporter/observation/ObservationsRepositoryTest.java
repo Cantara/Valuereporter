@@ -31,7 +31,7 @@ public class ObservationsRepositoryTest {
     public static void testObservationsRepositoryAddAndPersist() {
         ObservationDao observationDaoMock = mock(ObservationDao.class);
         ObservationsRepository repository = new ObservationsRepository(observationDaoMock);
-        repository.updateStatistics(PREFIX,1L,observedMethodsStubs());
+        repository.updateStatistics(PREFIX, 1L, (ArrayList<ObservedMethodJson>) observedMethodsStubs());
         PrefixCollection prefixCollection = repository.getCollection(PREFIX,1L);
         List<ObservedInterval> intervalls = prefixCollection.getIntervals();
         assertEquals(intervalls.size(),1);
@@ -43,7 +43,7 @@ public class ObservationsRepositoryTest {
     public static void verifyCollectionIsCleared() {
         ObservationDao observationDaoMock = mock(ObservationDao.class);
         ObservationsRepository repository = new ObservationsRepository(observationDaoMock);
-        repository.updateStatistics(PREFIX,1L,observedMethodsStubs());
+        repository.updateStatistics(PREFIX, 1L, (ArrayList<ObservedMethodJson>) observedMethodsStubs());
         PrefixCollection prefixCollection = repository.getCollection(PREFIX,1L);
         log.debug("Collection size before {}", prefixCollection.getIntervals().size());
         List<ObservedInterval> intervalls = prefixCollection.getIntervals();
@@ -52,11 +52,11 @@ public class ObservationsRepositoryTest {
         assertNull(repository.getCollection(PREFIX,1L));
     }
 
-    private static List<ObservedMethod> observedMethodsStubs() {
-        List<ObservedMethod> observedMethods = new ArrayList<>();
+    private static List<ObservedMethodJson> observedMethodsStubs() {
+        List<ObservedMethodJson> observedMethods = new ArrayList<>();
         long end = System.currentTimeMillis();
         long start = new DateTime(end).minusMillis(50).getMillis();
-        observedMethods.add(new ObservedMethod(PREFIX,"firstMethod",start, end));
+        observedMethods.add((ObservedMethodJson) new ObservedMethod(PREFIX, "firstMethod", start, end));
         return observedMethods;
     }
 }

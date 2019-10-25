@@ -60,7 +60,7 @@ public class ActivitiesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addObservationActivity(@PathParam("prefix") String prefix, String jsonBody){
         log.trace("addObservationActivity prefix {} , jsonBody {}.", prefix, jsonBody);
-        List<ObservedActivity> observedActivities = null;
+        ArrayList<ObservedActivityJson> observedActivities = null;
         try {
             observedActivities = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedActivityJson>>(){ });
             if (observedActivities != null) {

@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,9 +105,10 @@ public class ImplementedMethodResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addObservationMethod(@PathParam("prefix") String prefix, String jsonBody){
         log.trace("addObservationMethod prefix {} , jsonBody {}.", prefix, jsonBody);
-        List<ImplementedMethod> implementedMethods = null;
+        List<ImplementedMethodJson> implementedMethods = null;
         try {
-            implementedMethods = mapper.readValue(jsonBody, new TypeReference<ArrayList<ImplementedMethodJson>>(){ });
+            implementedMethods = mapper.readValue(jsonBody, new TypeReference<List<ImplementedMethodJson>>() {
+            });
             if (implementedMethods != null) {
                 for (ImplementedMethod implementedMethod : implementedMethods) {
                     implementedMethod.setPrefix(prefix);

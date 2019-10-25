@@ -53,7 +53,7 @@ public class ObservationsService implements QueryOperations, WriteOperations {
     }
 
     @Override
-    public long addObservations(String prefix, List<ObservedMethod> observedMethods) {
+    public long addObservations(String prefix, ArrayList<ObservedMethodJson> observedMethods) {
         long size = 0;
         if (observedMethods != null) {
             if (!isScheduled(prefix)) {
