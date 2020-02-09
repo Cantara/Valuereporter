@@ -1,5 +1,6 @@
 package org.valuereporter.activity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,6 +32,9 @@ public class ObservedActivity {
     public ObservedActivity(String name, long startTime, Map<String,Object> data) {
         this.name = name;
         this.startTime = startTime;
+        if (data == null) {
+            data = new HashMap<String, Object>();
+        }
         this.data = data;
     }
 
@@ -44,6 +48,9 @@ public class ObservedActivity {
 
 
     public Map<String, Object> getData() {
+        if (data == null) {
+            return new HashMap<String, Object>();// null;
+        }
         return data;
     }
 

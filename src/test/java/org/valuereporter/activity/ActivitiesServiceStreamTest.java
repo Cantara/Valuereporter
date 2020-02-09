@@ -78,16 +78,16 @@ public class ActivitiesServiceStreamTest {
         String json = this.mapper.writeValueAsString(observedActivities);
         //  assertTrue(json.contains("ByPin"));
         log.debug("Activities json {}", json);
-        Map<String, Long> counted = observedActivities.stream().collect(groupingBy(UserSessionObservedActivity::getUserSessionFunction, counting()));
+        assertEquals(observedActivities.size(), 3);
 
-        assertEquals(observedActivities.size(),3);
-        assertEquals(counted.get(UserSessionObservedActivity.USER_SESSION_ACTIVITY).longValue(),3);
-        assertEquals(counted.size(),1);
+        Map<String, Long> counted = observedActivities.stream().collect(groupingBy(UserSessionObservedActivity::getUserIdFunction, counting()));
+//        assertEquals(counted.get(UserSessionObservedActivity.USER_SESSION_ACTIVITY).longValue(),2);
+        assertEquals(counted.size(), 1);
 
         Map<String, Long> byActivity = observedActivities.stream().collect(groupingBy(UserSessionObservedActivity::getUserSessionFunction, counting()));
 
-        assertEquals(byActivity.get(byPassword).longValue(),2);
-        assertEquals(byActivity.size(),2);
+        assertEquals(byActivity.get(byPassword).longValue(), 2);
+        assertEquals(byActivity.size(), 2);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ActivitiesServiceStreamTest {
         observedActivities.add(new UserSessionObservedActivity("user1", byPassword, appToken1, yesterdayMillis));
         observedActivities.add(new UserSessionObservedActivity("user1", byPassword, appToken2));
         observedActivities.add(new UserSessionObservedActivity("user1", byPin, appToken1,yesterdayAbitEarlierMillis));
-        String json = this.mapper.writeValueAsString(observedActivities);
+        String json = mapper.writeValueAsString(observedActivities);
         assertTrue(json.contains(Long.toString(yesterdayMillis)));
         log.debug("Activities json {}", json);
 
@@ -138,17 +138,25 @@ public class ActivitiesServiceStreamTest {
         public UserSessionObservedActivity(String userid, String userSessionActivity, String applicationtokenid, long timestamp) {
             this(USER_SESSION_ACTIVITY, timestamp);
             String applicationid = "app" + applicationtokenid;
+            getData().put("userid", userid);
             put("userid", userid);
+            getData().put("usersessionfunction", userSessionActivity);
             put("usersessionfunction", userSessionActivity);
+            getData().put("applicationtokenid", applicationtokenid);
             put("applicationtokenid", applicationtokenid);
+            getData().put("applicationid", applicationid);
             put("applicationid", applicationid);
         }
 
-        public String getUserSessionFunction(){
+        public String getUserSessionFunction() {
             return (String) getData().get("usersessionfunction");
         }
 
-        public int getActivityDate(){
+        public String getUserIdFunction() {
+            return (String) getData().get("userid");
+        }
+
+        public int getActivityDate() {
 
             Instant startTime = Instant.ofEpochMilli(getStartTime());
             ZonedDateTime localStartTime = ZonedDateTime.ofInstant(startTime, ZoneId.systemDefault());
