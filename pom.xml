@@ -381,10 +381,10 @@
             <version>${jetty.version}</version>
         </dependency>
         <dependency>
-      		<groupId>org.eclipse.jetty</groupId>
-      		<artifactId>jetty-annotations</artifactId>
-      		<version>${jetty.version}</version>
-   		 </dependency>
+      	    <groupId>org.eclipse.jetty</groupId>
+      	    <artifactId>jetty-annotations</artifactId>
+      	    <version>${jetty.version}</version>
+   	</dependency>
 
         <!-- JSP and JSTL SUPPORT -->
        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp 
@@ -400,16 +400,11 @@
             <artifactId>reactive-streams</artifactId>
             <version>1.0.3</version>
         </dependency>
-
-
         <dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>apache-jsp</artifactId>
-		    <version>${jetty.version}</version>
-		</dependency>         
-		
-
-
+	    <groupId>org.eclipse.jetty</groupId>
+	    <artifactId>apache-jsp</artifactId>
+	    <version>${jetty.version}</version>
+	</dependency>         
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -449,10 +444,11 @@
             <version>${flyway.version}</version>
         </dependency>
         <!--Database drivers-->
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.12.jre7</version>
+            <version>42.2.14.jre7</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.jtds</groupId>
