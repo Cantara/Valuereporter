@@ -1,17 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.valuereporter</groupId>
     <artifactId>valuereporter</artifactId>
     <version>1.0.19-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>valuereporter</name>
     <description>javaagent monitoring activities in your application. This information is forwarded to Valuereporter via
         http.
     </description>
-
     <url>http://www.valuereporter.org</url>
+
     <developers>
         <developer>
             <id>baardl</id>
@@ -38,20 +36,10 @@
         <tag>HEAD</tag>
     </scm>
 
-    <repositories>
-
-        <!-- Needed for parent  -->
-        <repository>
-            <id>cantara-releases</id>
-            <name>Cantara Release Repository</name>
-            <url>http://mvnrepo.cantara.no/content/repositories/releases/</url>
-        </repository>
-    </repositories>
-
 
     <properties>
         <service.name>valuereporter</service.name>
-        <valuereporter-agent>1.0.11</valuereporter-agent>
+        <valuereporter-agent>1.0.18</valuereporter-agent>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.version>5.2.9.RELEASE</spring.version>
         <jetty.version>9.4.33.v20201020</jetty.version>
@@ -60,292 +48,6 @@
         <jtds.version>1.3.1</jtds.version>
         <flyway.version>4.2.0</flyway.version>
     </properties>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-
-            <!-- Add webapp as resource folder to embed it in the jar file. -->
-            <resource>
-                <directory>src/main/webapp</directory>
-                <targetPath>webapp</targetPath>
-            </resource>
-        </resources>
-        <finalName>value-reporter</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>            <!--
-            http://confluence.highsource.org/display/~lexi/How+to+run+both+JUnit+and+TestNG+with+maven-surefire-plugin
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!--<testNGArtifactName>none:none</testNGArtifactName>-->
-                    <!-- http://maven.apache.org/plugins/maven-surefire-plugin/examples/class-loading.html -->
-                    <!-- Need to support very long class-paths (i.e. longer than what Windows command lines or environment
-                        variables support) at the same time as supporting code which uses list of URLs directly from thread-context class-loader
-                        and system class-loader. We can't use the isolated class-loader technique because it might break programs which access the
-                        system class-loader directly. So we need 'useSystemClassLoader' to be true. The 'manifestOnlyJar' must also be true, otherwise
-                        we can't use very-long class-paths. -->
-                    <useSystemClassLoader>true</useSystemClassLoader>
-                    <useManifestOnlyJar>false</useManifestOnlyJar>
-                    <systemProperties>
-                        <property>
-                            <name>logback.configurationFile</name>
-                            <value>file:target/test-classes/logback-test.xml</value>
-                        </property>
-                    </systemProperties>
-                    <!--<argLine>-Xmx1024m -XX:MaxPermSize=256m ${argLine} -XX:+HeapDumpOnOutOfMemoryError</argLine>-->
-                    <forkMode>once</forkMode>
-                    <!--
-                    <threadCount>1</threadCount>
-                    -->
-                    <failIfNoTests>false</failIfNoTests>
-                    <junitArtifactName>none:none</junitArtifactName>
-                    <testNGArtifactName>none:none</testNGArtifactName>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-            <!--
-             http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html
-             Workaround when handling signed jars
-             http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>with-deps</shadedClassifierName>
-
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>org.valuereporter.Main</Main-Class>
-                                    </manifestEntries>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.handlers</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.schemas</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/cxf/cxf.extension</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/extensions.xml</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/cxf/extensions.xml</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/cxf/bus-extensions.txt</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/cxf/bus-extensions.xml</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/wsdl.plugin.xml</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/tools.service.validator.xml</resource>
-                                </transformer>
-                                <!--
-                                <transformer implementation="org.apache.cxf.maven.PluginTransformer">
-                                    <resource>META-INF/tools-plugin.xml</resource>
-                                </transformer>
-                                -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                    <resource>META-INF/cxf/java2wsbeans.xml</resource>
-                                </transformer>
-                                <!--
-                                <transformer implementation="org.apache.cxf.maven.CXFAllTransformer" />
-                                 -->
-                            </transformers>
-
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.3</version>
-                <configuration>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <includeConfigurationDirectoryInClasspath>false</includeConfigurationDirectoryInClasspath>
-                    <target>${project.build.directory}</target>
-                    <daemons>
-                        <daemon>
-                            <id>${project.name}</id>
-                            <mainClass>org.valuereporter.Main</mainClass>
-                            <!--<environmentSetupFileName>set-env</environmentSetupFileName>-->
-                            <!--
-                            <commandLineArguments>
-                                <commandLineArgument>start</commandLineArgument>
-                            </commandLineArguments>
-                            -->
-                            <platforms>
-                                <platform>jsw</platform>
-                            </platforms>
-                            <generatorConfigurations>
-                                <generatorConfiguration>
-                                    <generator>jsw</generator>
-                                    <includes>
-                                        <!--<include>windows-x86-32</include>-->
-                                        <include>windows-x86-64</include>
-                                    </includes>
-                                    <configuration>
-                                        <property>
-                                            <name>configuration.directory.in.classpath.first</name>
-                                            <value>config_override</value>
-                                        </property>
-                                        <property>
-                                            <name>set.default.REPO_DIR</name>
-                                            <value>lib</value>
-                                        </property>
-                                        <property>
-                                            <name>wrapper.logfile</name>
-                                            <value>logs/wrapper.log</value>
-                                        </property>
-
-                                        <property>
-                                            <name>wrapper.console.title</name>
-                                            <value>${service.name}</value>
-                                        </property>
-                                        <property>
-                                            <name>wrapper.ntservice.name</name>
-                                            <value>${service.name}</value>
-                                        </property>
-                                        <property>
-                                            <name>wrapper.ntservice.displayname</name>
-                                            <value>${service.name}</value>
-                                        </property>
-                                        <property>
-                                            <name>wrapper.java.command</name>
-                                            <value>%JAVA_HOME%/bin/java</value>
-                                        </property>
-                                    </configuration>
-                                </generatorConfiguration>
-                            </generatorConfigurations>
-                            <jvmSettings>
-                                <initialMemorySize>128M</initialMemorySize>
-                                <maxMemorySize>1024M</maxMemorySize>
-                                <!--
-                                <systemProperties>
-                                    <systemProperty>com.sun.management.jmxremote</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.port=3100</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
-                                </systemProperties>
-                                -->
-                                <extraArguments>
-                                    <extraArgument>-XX:PermSize=64m</extraArgument>
-                                    <extraArgument>-XX:MaxPermSize=128m</extraArgument>
-                                    <extraArgument>-Dlogback.configurationFile=file:config_override/logback.xml
-                                    </extraArgument>
-                                </extraArguments>
-                            </jvmSettings>
-                        </daemon>
-                    </daemons>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-jsw-scripts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>generate-daemons</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                    <appendAssemblyId>false</appendAssemblyId>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>assemble-zip</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <!--Codehale Metrics -->
@@ -645,4 +347,303 @@
 		
 	
     </dependencies>
+
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+
+            <!-- Add webapp as resource folder to embed it in the jar file. -->
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>webapp</targetPath>
+            </resource>
+        </resources>
+        <finalName>value-reporter</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>            <!--
+            http://confluence.highsource.org/display/~lexi/How+to+run+both+JUnit+and+TestNG+with+maven-surefire-plugin
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--<testNGArtifactName>none:none</testNGArtifactName>-->
+                    <!-- http://maven.apache.org/plugins/maven-surefire-plugin/examples/class-loading.html -->
+                    <!-- Need to support very long class-paths (i.e. longer than what Windows command lines or environment
+                        variables support) at the same time as supporting code which uses list of URLs directly from thread-context class-loader
+                        and system class-loader. We can't use the isolated class-loader technique because it might break programs which access the
+                        system class-loader directly. So we need 'useSystemClassLoader' to be true. The 'manifestOnlyJar' must also be true, otherwise
+                        we can't use very-long class-paths. -->
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <systemProperties>
+                        <property>
+                            <name>logback.configurationFile</name>
+                            <value>file:target/test-classes/logback-test.xml</value>
+                        </property>
+                    </systemProperties>
+                    <!--<argLine>-Xmx1024m -XX:MaxPermSize=256m ${argLine} -XX:+HeapDumpOnOutOfMemoryError</argLine>-->
+                    <forkMode>once</forkMode>
+                    <!--
+                    <threadCount>1</threadCount>
+                    -->
+                    <failIfNoTests>false</failIfNoTests>
+                    <junitArtifactName>none:none</junitArtifactName>
+                    <testNGArtifactName>none:none</testNGArtifactName>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <!--
+             http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html
+             Workaround when handling signed jars
+             http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>with-deps</shadedClassifierName>
+
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>org.valuereporter.Main</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/cxf/cxf.extension</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/extensions.xml</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/cxf/extensions.xml</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/cxf/bus-extensions.txt</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/cxf/bus-extensions.xml</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/wsdl.plugin.xml</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/tools.service.validator.xml</resource>
+                                </transformer>
+                                <!--
+                                <transformer implementation="org.apache.cxf.maven.PluginTransformer">
+                                    <resource>META-INF/tools-plugin.xml</resource>
+                                </transformer>
+                                -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                    <resource>META-INF/cxf/java2wsbeans.xml</resource>
+                                </transformer>
+                                <!--
+                                <transformer implementation="org.apache.cxf.maven.CXFAllTransformer" />
+                                 -->
+                            </transformers>
+
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.3</version>
+                <configuration>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <includeConfigurationDirectoryInClasspath>false</includeConfigurationDirectoryInClasspath>
+                    <target>${project.build.directory}</target>
+                    <daemons>
+                        <daemon>
+                            <id>${project.name}</id>
+                            <mainClass>org.valuereporter.Main</mainClass>
+                            <!--<environmentSetupFileName>set-env</environmentSetupFileName>-->
+                            <!--
+                            <commandLineArguments>
+                                <commandLineArgument>start</commandLineArgument>
+                            </commandLineArguments>
+                            -->
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <includes>
+                                        <!--<include>windows-x86-32</include>-->
+                                        <include>windows-x86-64</include>
+                                    </includes>
+                                    <configuration>
+                                        <property>
+                                            <name>configuration.directory.in.classpath.first</name>
+                                            <value>config_override</value>
+                                        </property>
+                                        <property>
+                                            <name>set.default.REPO_DIR</name>
+                                            <value>lib</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>logs/wrapper.log</value>
+                                        </property>
+
+                                        <property>
+                                            <name>wrapper.console.title</name>
+                                            <value>${service.name}</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.ntservice.name</name>
+                                            <value>${service.name}</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.ntservice.displayname</name>
+                                            <value>${service.name}</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.java.command</name>
+                                            <value>%JAVA_HOME%/bin/java</value>
+                                        </property>
+                                    </configuration>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                            <jvmSettings>
+                                <initialMemorySize>128M</initialMemorySize>
+                                <maxMemorySize>1024M</maxMemorySize>
+                                <!--
+                                <systemProperties>
+                                    <systemProperty>com.sun.management.jmxremote</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.port=3100</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+                                </systemProperties>
+                                -->
+                                <extraArguments>
+                                    <extraArgument>-XX:PermSize=64m</extraArgument>
+                                    <extraArgument>-XX:MaxPermSize=128m</extraArgument>
+                                    <extraArgument>-Dlogback.configurationFile=file:config_override/logback.xml
+                                    </extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+                        </daemon>
+                    </daemons>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-jsw-scripts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    
+    <repositories>
+
+        <!-- Needed for parent  -->
+        <repository>
+            <id>cantara-releases</id>
+            <name>Cantara Release Repository</name>
+            <url>http://mvnrepo.cantara.no/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+	
 </project>
