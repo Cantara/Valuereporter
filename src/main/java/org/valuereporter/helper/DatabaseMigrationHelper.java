@@ -27,14 +27,22 @@ public class DatabaseMigrationHelper {
 
     public DatabaseMigrationHelper(Properties resources) {
         this.properties = resources;
+        Properties configuration = null;
         try {
 //            DataSource masterDs = createMasterDataSource(resources);
-            flyway = new Flyway();
-            flyway.setValidateOnMigrate(false);
+
+            String sqlLocations = buildSqlMigrationLocations();
+
             String jdbcUrl = (String) properties.get(JDBC_URL);
             String adminUser = (String) properties.get(ADMIN_USERNAME);
             String adminPassword = (String) properties.get(ADMIN_PASSWORD);
-            flyway.setDataSource(jdbcUrl, adminUser, adminPassword);
+            flyway = Flyway.configure().validateOnMigrate(false)
+                    .baselineOnMigrate(true)
+                    .locations(sqlLocations)
+                    .dataSource(jdbcUrl, adminUser, adminPassword).load();
+//            flyway = new Flyway();
+//            flyway.setValidateOnMigrate(false);
+//            flyway.setDataSource(jdbcUrl, adminUser, adminPassword);
 //            flyway.setDataSource(masterDs);
         } catch (Exception e) {
             ValuereporterTechnicalException tte = new ValuereporterTechnicalException("Error migrating the database. Please verify properties are in place " +
@@ -48,11 +56,11 @@ public class DatabaseMigrationHelper {
     public void upgradeDatabase() {
         Properties configuration = null;
         try {
-            configuration = new Properties();
-            configuration.setProperty("flyway.validateOnMigrate", "false");
-            String sqlLocations = buildSqlMigrationLocations();
-            configuration.setProperty("flyway.locations", sqlLocations);
-            flyway.configure(configuration);
+//            configuration = new Properties();
+//            configuration.setProperty("flyway.validateOnMigrate", "false");
+//            String sqlLocations = buildSqlMigrationLocations();
+//            configuration.setProperty("flyway.locations", sqlLocations);
+//            flyway.configure(configuration);
             flyway.migrate();
         } catch (FlywayException e) {
             log.error("Failed to upgrade using Flyway. Configuration \n{}. \nReason {}. ", properties,e.getMessage(), e);
