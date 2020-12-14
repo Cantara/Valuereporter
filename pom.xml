@@ -10,19 +10,6 @@
     </description>
     <url>http://www.valuereporter.org</url>
 
-    <developers>
-        <developer>
-            <id>baardl</id>
-            <name>Bard Lind</name>
-            <email>bard.lind@gmail.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <organization>Cantara</organization>
-            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
-        </developer>
-    </developers>
-
     <parent>
         <groupId>no.cantara.emi</groupId>
         <artifactId>parent</artifactId>
@@ -39,7 +26,7 @@
 
     <properties>
         <service.name>valuereporter</service.name>
-        <valuereporter-agent>1.0.18</valuereporter-agent>
+        <valuereporter-agent>1.0.20</valuereporter-agent>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.version>5.3.1</spring.version>
         <jetty.version>9.4.35.v20201120</jetty.version>
@@ -49,6 +36,20 @@
         <flyway.version>7.2.1</flyway.version>
     </properties>
 
+    <developers>
+        <developer>
+            <id>baardl</id>
+            <name>Bard Lind</name>
+            <email>bard.lind@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Cantara</organization>
+            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
+        </developer>
+    </developers>
+
+	
     <dependencies>
         <!--Codehale Metrics -->
         <dependency>
