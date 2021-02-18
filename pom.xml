@@ -30,7 +30,7 @@
         <slf4j.version>1.7.30</slf4j.version>
         <spring.version>5.3.3</spring.version>
         <jetty.version>9.4.35.v20201120</jetty.version>
-        <jersey.version>2.33</jersey.version>
+        <jersey.version>3.0.1</jersey.version>
         <metrics.version>4.1.17</metrics.version>
         <jtds.version>1.3.1</jtds.version>
         <flyway.version>7.5.1</flyway.version>
