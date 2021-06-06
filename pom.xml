@@ -31,7 +31,7 @@
         <spring.version>5.3.7</spring.version>
         <jetty.version>9.4.39.v20210325</jetty.version>
         <jersey.version>2.34</jersey.version>
-        <metrics.version>4.1.21</metrics.version>
+        <metrics.version>4.2.0</metrics.version>
         <jtds.version>1.3.1</jtds.version>
         <flyway.version>7.9.0</flyway.version>
     </properties>
