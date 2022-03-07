@@ -9,7 +9,6 @@ import org.slf4j.MarkerFactory;
 import org.valuereporter.Main;
 import org.valuereporter.ValuereporterException;
 import org.valuereporter.ValuereporterTechnicalException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -128,7 +127,7 @@ public class DatabaseMigrationHelper {
         ds.setDatabaseName(databasename);
         return ds;
         */
-        throw new NotImplementedException();
+        throw new IllegalArgumentException();
     }
 
     private boolean isNullOrEmpty(String value) {
