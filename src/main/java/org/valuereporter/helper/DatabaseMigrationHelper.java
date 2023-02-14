@@ -142,10 +142,10 @@ public class DatabaseMigrationHelper {
     public static boolean isFlywaySupported(Properties resources) {
         boolean isSupported = false;
         String url = resources.getProperty(Main.DATABASE_URL);
-        if (url != null && url.contains("mysql")) {
+        if (url != null && (url.contains("mysql") || url.contains("mariadb"))) {
             isSupported = true;
         } else {
-            log.warn("Currently database migration supports mysql only. Database will not be automatically upgraded.");
+            log.warn("Currently database migration supports only mysql or mariadb. Database will not be automatically upgraded.");
         }
         return isSupported;
     }
