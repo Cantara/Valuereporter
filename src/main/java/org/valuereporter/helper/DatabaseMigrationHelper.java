@@ -68,7 +68,7 @@ public class DatabaseMigrationHelper {
     }
 
     private String buildSqlMigrationLocations() {
-        String defaultLocations = "db/migration/mysql";
+        String defaultLocations = "db/migration/mysql"; // These will also work for MariaDB
         String locations = defaultLocations;
         return locations;
 
