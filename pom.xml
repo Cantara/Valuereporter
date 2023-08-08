@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.valuereporter</groupId>
     <artifactId>valuereporter</artifactId>
-    <version>1.14.6-SNAPSHOT</version>
+    <version>1.14.8-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>valuereporter</name>
     <description>javaagent monitoring activities in your application. This information is forwarded to Valuereporter via
@@ -29,7 +29,7 @@
 	<java.version>1.8</java.version>
         <valuereporter-agent>1.10.2</valuereporter-agent>
         <slf4j.version>1.7.36</slf4j.version>
-        <spring.version>5.3.27</spring.version>
+        <spring.version>6.0.8</spring.version>
         <jetty.version>11.0.15</jetty.version>
         <jersey.version>2.39.1</jersey.version>
         <metrics.version>4.2.18</metrics.version>
@@ -276,7 +276,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.11</version>
+            <version>1.4.7</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Used by logback SmtpAppender -->
