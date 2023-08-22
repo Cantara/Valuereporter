@@ -35,10 +35,20 @@ public class DatabaseMigrationHelper {
             String jdbcUrl = (String) properties.get(JDBC_URL);
             String adminUser = (String) properties.get(ADMIN_USERNAME);
             String adminPassword = (String) properties.get(ADMIN_PASSWORD);
+            
+            flyway = Flyway.configure()
+                    .baselineOnMigrate(true)
+                    .outOfOrder(true)
+                    .ignoreMigrationPatterns("*:pending")
+                    .locations(sqlLocations)
+                    .table("schema_version")
+                    .dataSource(jdbcUrl, adminUser, adminPassword).load();
+            /*
+            
             flyway = Flyway.configure().validateOnMigrate(false)
                     .baselineOnMigrate(true)
                     .locations(sqlLocations)
-                    .dataSource(jdbcUrl, adminUser, adminPassword).load();
+                    .dataSource(jdbcUrl, adminUser, adminPassword).load();*/
 //            flyway = new Flyway();
 //            flyway.setValidateOnMigrate(false);
 //            flyway.setDataSource(jdbcUrl, adminUser, adminPassword);
@@ -60,6 +70,7 @@ public class DatabaseMigrationHelper {
 //            String sqlLocations = buildSqlMigrationLocations();
 //            configuration.setProperty("flyway.locations", sqlLocations);
 //            flyway.configure(configuration);
+        	flyway.repair();
             flyway.migrate();
         } catch (FlywayException e) {
             log.error("Failed to upgrade using Flyway. Configuration \n{}. \nReason {}. ", properties,e.getMessage(), e);
