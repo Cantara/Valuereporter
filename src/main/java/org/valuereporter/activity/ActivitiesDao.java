@@ -147,7 +147,7 @@ public class ActivitiesDao {
                         "      applicationtokenid varchar(255)  NOT NULL,\n" +
                         "      applicationid varchar(255)  NOT NULL,\n" +
                         "    );";
-                tableSql = "CREATE TABLE IF NOT EXISTS userSession (\n" +
+                tableSql = "CREATE TABLE IF NOT EXISTS usersession (\n" +
                         "      id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
                         "      starttime TIMESTAMP  NOT NULL,\n" +
                         "      userid varchar(255)  NOT NULL,\n" +
