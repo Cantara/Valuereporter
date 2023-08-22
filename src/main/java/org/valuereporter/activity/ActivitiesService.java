@@ -69,6 +69,7 @@ public class ActivitiesService {
                 updatedActivities = activitiesDao.insertActivities(tableName, columnNames, observedActivities);
             } catch (DataAccessException de) {
                 log.warn("Insert into {} failed, trying createTable",tableName);
+                log.error("Exception:", de);
                 if (isMissingTablexeption(de)) {
                     createTable(tableName);
                     updatedActivities = activitiesDao.insertActivities(tableName, columnNames, observedActivities);

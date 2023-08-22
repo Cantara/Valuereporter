@@ -157,6 +157,7 @@ public class ActivitiesDao {
 						"    );";
 			}
 		jdbcAdminTemplate.execute(tableSql);
+            log.error("Created: table " + tableSql);
 		} catch (Exception e) {
 			log.error("Unable to create table. SQL:" + tableSql + "\n", e);
 		}
