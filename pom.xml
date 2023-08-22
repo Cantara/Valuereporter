@@ -633,6 +633,9 @@
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>
                     </descriptors>
+                    <descriptorRefs>
+          				<descriptorRef>jar-with-dependencies</descriptorRef>
+        			</descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
