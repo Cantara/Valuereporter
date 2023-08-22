@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.valuereporter.activity.ObservedActivity;
 import org.valuereporter.activity.ObservedActivityJson;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class ObservedActivityJsonMapperTest {
         ArrayList<ObservedActivityJson> activities = mapper.readValue(jsonFromTheWild, new TypeReference<ArrayList<ObservedActivityJson>>() {
         });
         assertTrue(activities.size() > 0);
+        ObservedActivity activity = activities.get(0);
+        String tableName = activity.getName();
+        assertTrue(tableName.length() > 0);
 
     }
 

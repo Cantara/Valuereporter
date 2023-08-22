@@ -30,7 +30,7 @@ public class ObservedActivity {
     private final Map<String,Object> data;
 
     public ObservedActivity(String name, long startTime, Map<String,Object> data) {
-        this.name = name;
+        this.name = name.toLowerCase().replace("null__", "");
         this.startTime = startTime;
         if (data == null) {
             data = new HashMap<String, Object>();
