@@ -41,7 +41,7 @@ public class ActivitiesDao {
             throw new IllegalArgumentException("tableName must have a value");
         }
         if (columnNames == null) {
-            throw new IllegalArgumentException("columntNames must not be null");
+            throw new IllegalArgumentException("columnNames must not be null");
         }
         String sql = buildSql(tableName, columnNames);
 
