@@ -10,18 +10,19 @@ import java.util.Map;
  */
 public class ObservedActivityJson extends ObservedActivity {
 
-    @JsonCreator
+    //@JsonCreator
     public ObservedActivityJson(@JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String, Object> data) {
         super(name, startTime, data);
     }
 
-    @JsonCreator
+    //@JsonCreator
     public ObservedActivityJson(@JsonProperty("serviceName") String serviceName, @JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String, Object> data) {
         super(name + "_" + serviceName, startTime, data);
     }
 
-    public ObservedActivityJson(@JsonProperty("serviceName") String serviceName, @JsonProperty("activityName") String activityName, @JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String, Object> data) {
-        super(name + "_" + serviceName + "_" + activityName, startTime, data);
+    @JsonCreator
+    public ObservedActivityJson(@JsonProperty("serviceName") String serviceName, @JsonProperty("activityName") String activityName, @JsonProperty("name") String name, @JsonProperty("startTime") long startTime, @JsonProperty("data") Map<String, Object> data, @JsonProperty("contextInfo") Map<String, Object> contextInfo) {
+        super(name + "_" + serviceName + "_" + activityName, startTime, data!=null?data:contextInfo);
     }
 
 }
