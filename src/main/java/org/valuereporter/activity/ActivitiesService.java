@@ -88,6 +88,8 @@ public class ActivitiesService {
     }
 
     private boolean isMissingTablexeption(DataAccessException de) {
+        log.error("isMissingTablexeption", de);
+        if (1 == 1) return true;
         boolean missingTable = false;
         if (de.getCause()!= null) {
             missingTable = de.getCause().getMessage().contains("object not found");
