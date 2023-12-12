@@ -343,13 +343,9 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.3.0</version>
+            <version>3.2.0</version>
         </dependency>
-        <dependency>
-		    <groupId>org.mariadb.jdbc</groupId>
-		    <artifactId>mariadb-java-client-jre6</artifactId>
-		    <version>1.6.1</version>
-		</dependency>
+      
 
         <!-- https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard -->
         <dependency>
