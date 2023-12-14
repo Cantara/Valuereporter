@@ -28,7 +28,7 @@
         <service.name>valuereporter</service.name>
         <java.version>11</java.version>
         <valuereporter-agent>1.10.5</valuereporter-agent>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.9</slf4j.version>
         <spring.version>5.3.31</spring.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
         <jersey.version>2.41</jersey.version>
@@ -269,6 +269,13 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
