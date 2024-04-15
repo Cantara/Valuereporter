@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.valuereporter</groupId>
     <artifactId>valuereporter</artifactId>
-    <version>1.27.0</version>
+    <version>1.27.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>valuereporter</name>
     <description>javaagent monitoring activities in your application. This information is forwarded to Valuereporter via
@@ -20,7 +20,7 @@
         <developerConnection>scm:git:ssh://git@github.com/cantara/Valuereporter.git</developerConnection>
         <connection>scm:git:https://github.com/cantara/Valuereporter.git</connection>
         <url>https://github.com/cantara/Valuereporter</url>
-        <tag>valuereporter-1.27.0</tag>
+        <tag>valuereporter-1.20.10</tag>
     </scm>
 
 
