@@ -28,7 +28,7 @@
         <service.name>valuereporter</service.name>
         <java.version>11</java.version>
         <valuereporter-agent>1.10.5</valuereporter-agent>
-        <slf4j.version>2.0.14</slf4j.version>
+        <slf4j.version>2.0.15</slf4j.version>
         <spring.version>5.3.39</spring.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
         <jersey.version>2.44</jersey.version>
