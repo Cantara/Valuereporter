@@ -1,9 +1,6 @@
 package org.valuereporter;
 
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.NCSARequestLog;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
@@ -109,12 +106,15 @@ public class Main {
     private void enableRequestLogging(RequestLogHandler requestLogHandler) {
         String logDir = "./logs";
         ensureLogDirexist(logDir);
-        NCSARequestLog requestLog = new NCSARequestLog(logDir + "/jetty-yyyy_mm_dd.request.log");
-        requestLog.setRetainDays(90);
-        requestLog.setAppend(true);
-        requestLog.setExtended(false);
-        requestLog.setLogLatency(true);
-        requestLog.setLogTimeZone("GMT");
+
+        // Create a RequestLogWriter to write the logs to files
+        RequestLogWriter logWriter = new RequestLogWriter(logDir + "/jetty-yyyy_mm_dd.request.log");
+        logWriter.setRetainDays(90);
+        logWriter.setAppend(true);
+        logWriter.setTimeZone("GMT");
+
+        // Create a CustomRequestLog with the NCSA format
+        CustomRequestLog requestLog = new CustomRequestLog(logWriter, CustomRequestLog.NCSA_FORMAT);
         requestLogHandler.setRequestLog(requestLog);
     }
 
@@ -139,8 +139,6 @@ public class Main {
         return useLocal;
     }
 
-
-
     public int getPortNumber() {
         return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
     }
@@ -152,5 +150,4 @@ public class Main {
     public String getResourceBase() {
         return resourceBase;
     }
-
 }
