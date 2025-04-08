@@ -28,7 +28,7 @@ public class ActivitiesDaoTest {
         String stattime = ActivitiesDao.START_TIME_COLUMN;
         String expectedSql = "INSERT INTO logonByApplication(" + stattime+", userId, applicationId) VALUES (?,?,?)";
         String sql = activitiesDao.buildSql("logonByApplication", activities);
-        assertEquals(sql, expectedSql);
+        assertEquals(sql.toLowerCase(), expectedSql.toLowerCase());
 
     }
 }

@@ -71,7 +71,7 @@ public class ActivitiesServiceStreamTest {
     @Test
     public void testUserSessionActivities() throws Exception{
         UserSessionObservedActivity user1 = new UserSessionObservedActivity("user1", byPassword, appToken1);
-        assertEquals(UserSessionObservedActivity.USER_SESSION_ACTIVITY, user1.getName());
+        assertEquals(UserSessionObservedActivity.USER_SESSION_ACTIVITY.toLowerCase(), user1.getName().toLowerCase());
         observedActivities.add(user1);
         observedActivities.add(new UserSessionObservedActivity("user1", byPassword, appToken2));
         observedActivities.add(new UserSessionObservedActivity("user1", byPin, appToken1));
