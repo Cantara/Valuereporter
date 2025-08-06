@@ -21,11 +21,22 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 
+
 public class Main {
     public static final int DEFAULT_PORT_NO = 4901;
     public static final String CONTEXT_PATH = "/reporter";
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     public static final java.lang.String DATABASE_URL = "jdbc.url";
+
+    static {
+        System.out.println("Main class is being loaded");
+        // Disable Jersey virtual thread support at multiple levels
+        System.setProperty("jersey.config.server.virtualThreads", "false");
+        System.setProperty("jersey.config.client.virtualThreads", "false");
+        System.setProperty("jersey.config.virtualThreads.disable", "true");
+        // Disable virtual thread executor
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
+    }
 
     private Server server;
     private String resourceBase;
