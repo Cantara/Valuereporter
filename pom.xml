@@ -20,7 +20,6 @@
         <developerConnection>scm:git:ssh://git@github.com/cantara/Valuereporter.git</developerConnection>
         <connection>scm:git:https://github.com/cantara/Valuereporter.git</connection>
         <url>https://github.com/cantara/Valuereporter</url>
-        <tag>valuereporter-2.0.1</tag>
     </scm>
 
 
