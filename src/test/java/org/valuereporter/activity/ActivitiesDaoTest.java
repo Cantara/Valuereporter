@@ -29,6 +29,8 @@ public class ActivitiesDaoTest {
         String expectedSql = "INSERT INTO logonByApplication(" + stattime+", userId, applicationId) VALUES (?,?,?)";
         String sql = activitiesDao.buildSql("logonByApplication", activities);
         assertEquals(sql.toLowerCase(), expectedSql.toLowerCase());
-
     }
+
+    // Injection protection is tested exhaustively in SqlIdentifierValidatorTest.
+    // These integration-level checks confirm the validator is wired into buildSql.
 }
