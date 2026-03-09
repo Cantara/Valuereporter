@@ -111,6 +111,10 @@ public class ActivitiesDao {
         return userSessions;
     }
     protected String buildSql(String tableName, List<String> columnNames) {
+        SqlIdentifierValidator.validate(tableName, "tableName");
+        for (String col : columnNames) {
+            SqlIdentifierValidator.validate(col, "columnName");
+        }
 
         String sql = "INSERT INTO " + tableName.toLowerCase() +
                 "(" + START_TIME_COLUMN + ", ";
@@ -132,6 +136,7 @@ public class ActivitiesDao {
 
     //public void createTable(String tableName, ArrayList<String> columnNames, ObservedActivity observedActivity) {
     public void createTable(String tableName) {
+        SqlIdentifierValidator.validate(tableName, "tableName");
         //TOD
         String tableSql = "";
         try {
