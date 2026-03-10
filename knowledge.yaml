@@ -1,0 +1,25 @@
+id: valuereporter
+name: Valuereporter
+version: 2.1.12-SNAPSHOT
+description: |
+  Monitoring and observability service that aggregates activity data from
+  instrumented Java applications. Stores activity records, exposes metrics via
+  REST, and provides health-check aggregation across a service fleet.
+units:
+  - id: activity-api
+    name: Activity API
+    type: api
+    description: REST API for activity ingestion and time-range queries of recorded events.
+    path: src/main/java/org/valuereporter
+  - id: health-aggregator
+    name: Health Aggregator
+    type: component
+    description: Fleet-wide health status aggregation — combines health reports from all services.
+  - id: storage
+    name: Storage
+    type: component
+    description: Time-series activity storage for persisting and querying event records.
+  - id: reporting
+    name: Reporting
+    type: component
+    description: Metrics and reporting endpoints for dashboards and alerting integrations.
