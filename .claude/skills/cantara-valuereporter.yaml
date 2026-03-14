@@ -1,0 +1,183 @@
+name: cantara-valuereporter
+version: 1.0.0
+description: >
+  Valuereporter monitoring and observability ecosystem. Covers the server (activity
+  ingestion, observation tracking, SLA metrics, statistics) and the Java agent
+  (automatic instrumentation, async batch reporting). Used across Whydah and
+  Cantara services for fleet-wide health monitoring.
+
+  Trigger phrases: "valuereporter, value reporter, monitoring cantara, observability,
+  activity tracking, observation service, sla metrics, valuereporter agent,
+  java agent instrumentation, method tracking, fleet health"
+
+context:
+  org: cantara
+  repos:
+    - Valuereporter (server)
+    - Valuereporter-Agent (JVM agent)
+
+instructions: |
+  ## Overview
+
+  Valuereporter is Cantara's monitoring and observability service. It aggregates activity
+  data, method invocation observations, and SLA metrics from instrumented Java applications.
+  The Agent is a JVM agent that transparently captures method timings and forwards them to
+  the server without code changes.
+
+  **Server package:** `org.valuereporter`
+  **Server version:** 2.1.12-SNAPSHOT
+  **Agent version:** 1.10.3-SNAPSHOT
+
+  ## Server Architecture
+
+  ```
+  Instrumented Services (Valuereporter-Agent)
+       |
+       | POST /observe/activities (activity data)
+       | POST /observe/observations (method timings)
+       v
+  Valuereporter Server (embedded Jetty + Jersey)
+       |
+       v
+  HSQLDB (embedded time-series storage)
+       |
+       v
+  Dashboard GUI (Spring MVC controllers)
+  ```
+
+  ### Core Domain: Activities
+  - `ObservedActivity` -- a recorded activity event (e.g., user logon)
+  - `ActivitiesService` -- activity ingestion and query service
+  - `ActivitiesDao` -- JDBC persistence for activities
+  - `ActivitiesResource` -- REST API: `POST /observe/activities`, `GET /observe/activities`
+  - `UserSessionMapper` -- maps activities to user sessions
+
+  ### Core Domain: Observations (Method Tracking)
+  - `ObservedMethod` -- a method invocation observation (name, count, duration)
+  - `ObservationsService` -- observation aggregation (thread-safe, in-memory accumulation)
+  - `ObservationsRepository` -- in-memory repository for current-interval observations
+  - `ObservationDao` -- JDBC persistence for historical observations
+  - `ObservedMethodsResouce` -- REST API for method observation data
+  - `ObservedInterval` -- time-bucketed observation aggregation
+  - `PrefixCollection` -- groups methods by package prefix for filtering
+
+  ### SLA & Statistics
+  - `SlaStatistics` / `SlaStatisticsService` -- SLA metric tracking and reporting
+  - `SlaDao` -- SLA persistence
+  - `SlaStatisticsResource` -- REST API for SLA data
+  - `UsageStatistics` -- usage pattern statistics
+  - `ActivityStatistics` / `ActivityStatisticsService` -- activity-level statistics
+  - `ActivityStatisticsResource` -- REST API for activity statistics
+
+  ### Value Methods
+  - `ValuableMethod` -- methods identified as high-value (business-critical)
+  - `ValueMethodService` -- value method management
+  - `ValuableMethodResource` -- REST API for valuable methods
+  - `ValueDao` -- persistence for value assignments
+
+  ### Implemented Methods
+  - `ImplementedMethod` -- tracks which methods actually exist in the codebase
+  - `ImplementedMethodService` / `ImplementedMethodDao` -- persistence
+  - `ImplementedMethodResource` / `ImplementedPrefixResource` -- REST API
+
+  ### Scheduler
+  - `StatisticsPersister` -- scheduled task that flushes in-memory observations to database
+
+  ### GUI (Spring MVC)
+  - `HomeController` -- dashboard home page
+  - `ValueController` -- value method views
+  - `SlaController` -- SLA views
+  - `ImplementedController` -- implemented methods views
+  - `WhdyahGuiController` -- Whydah-specific views
+
+  ### Infrastructure
+  - `Main` -- application entry point
+  - `JerseyApplication` -- Jersey REST application configuration
+  - `EmbeddedDatabaseHelper` -- HSQLDB setup
+  - `DatabaseMigrationHelper` -- Flyway database migrations
+  - `SqlIdentifierValidator` -- SQL injection prevention (validates table/column names)
+  - `XSSFilter` -- XSS protection filter
+  - `LogonDao` -- Whydah authentication integration
+
+  ## Agent Architecture
+
+  The Valuereporter-Agent is a JVM agent (Java Instrumentation API) that attaches at startup:
+
+  - **Agent Core** -- JVM agent bootstrap, attaches via `-javaagent:valuereporter-agent.jar`
+  - **Interceptors** -- bytecode interceptors that capture method invocations and latencies
+  - **Reporter** -- async batch reporter that forwards captured events to the Valuereporter
+    server via HTTP POST (non-blocking, buffered)
+
+  ### Agent Usage
+  ```bash
+  java -javaagent:valuereporter-agent-1.10.3.jar \
+       -Dvaluereporter.url=http://valuereporter:8080 \
+       -Dvaluereporter.prefix=com.myapp \
+       -jar myservice.jar
+  ```
+
+  The agent automatically instruments methods matching the configured prefix without
+  requiring any code changes in the target application.
+
+  ## Key API Endpoints (Server)
+
+  | Endpoint | Method | Purpose |
+  |----------|--------|---------|
+  | `/observe/activities` | POST | Ingest activity records |
+  | `/observe/activities` | GET | Query activity records by time range |
+  | `/observe/methods` | GET | Query observed method statistics |
+  | `/observe/sla` | GET | SLA statistics |
+  | `/observe/statistics` | GET | Activity statistics |
+  | `/health` | GET | Health check |
+
+  ## How To: Common Tasks
+
+  ### Add Valuereporter monitoring to a service
+  1. Add `Valuereporter-Agent` to the service JVM as a `-javaagent`
+  2. Configure the agent with the Valuereporter server URL and method prefix
+  3. No code changes needed -- agent instruments automatically
+
+  ### Build and test
+  ```bash
+  # Server
+  cd /src/cantara/Valuereporter && mvn clean install
+
+  # Agent
+  cd /src/cantara/Valuereporter-Agent && mvn clean install
+  ```
+
+  ## Gotchas & Pitfalls
+
+  1. **HSQLDB embedded database:** Valuereporter uses HSQLDB for storage, not PostgreSQL.
+     Different from ConfigService's embedded Postgres approach.
+
+  2. **Thread-safe observation accumulation:** `ObservationsService` and
+     `ObservationsRepository` accumulate data in memory before periodic flush.
+     High-volume services may cause memory pressure between flush intervals.
+
+  3. **SQL identifier validation:** `SqlIdentifierValidator` validates table and column names
+     to prevent SQL injection. Activity names become SQL identifiers -- they must be
+     alphanumeric + underscore only.
+
+  4. **Whydah integration:** `LogonDao` integrates with Whydah for admin authentication.
+     When Whydah is unavailable, admin GUI may be inaccessible.
+
+  5. **Agent prefix filtering:** The agent only instruments methods matching the configured
+     prefix (e.g., `com.myapp`). Too broad a prefix causes excessive overhead.
+     Too narrow misses important methods.
+
+  6. **Batch reporting lag:** The agent batches observations before sending to the server.
+     There is a configurable delay between method execution and observation appearing
+     on the server dashboard.
+
+  ## Related Skills
+
+  - `cantara-whydah.yaml` -- Whydah auth (Valuereporter uses Whydah for admin login)
+  - `cantara-visuale.yaml` -- Visuale (complementary monitoring: Visuale = health status,
+    Valuereporter = method-level metrics)
+  - `cantara-stingray.yaml` -- Stingray framework (some services use both)
+
+  ## Repository Paths
+
+  - Server: `/src/cantara/Valuereporter/`
+  - Agent: `/src/cantara/Valuereporter-Agent/`
