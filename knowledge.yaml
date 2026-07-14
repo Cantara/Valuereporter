@@ -1,4 +1,4 @@
-kcp_version: "0.21"
+kcp_version: "0.26"
 updated: "2026-06-20"
 language: en
 license: "Apache-2.0"
@@ -25,27 +25,23 @@ units:
     type: api
     description: REST API for activity ingestion and time-range queries of recorded events.
     path: src/main/java/org/valuereporter
-      content_hash:
-        algorithm: sha256
-        value: ""
   - id: health-aggregator
     name: Health Aggregator
     type: component
     description: Fleet-wide health status aggregation — combines health reports from all services.
-      content_hash:
-        algorithm: sha256
-        value: ""
   - id: storage
     name: Storage
     type: component
     description: Time-series activity storage for persisting and querying event records.
-      content_hash:
-        algorithm: sha256
-        value: ""
   - id: reporting
     name: Reporting
     type: component
     description: Metrics and reporting endpoints for dashboards and alerting integrations.
-      content_hash:
-        algorithm: sha256
-        value: ""
+
+# Serving Endpoint Binding (KCP SPEC v0.26 §3.12): authoritative manifest URL
+# and authorized MCP representative. Ignored by pre-0.26 verifiers.
+serving:
+  manifest:
+    - https://raw.githubusercontent.com/Cantara/Valuereporter/master/knowledge.yaml
+  mcp:
+    - https://mcp.cantara.no/mcp
